@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="C:\Users\pc\Documents\Jibi\App-JIBI-Frontend\src\app\app.component.scss">
+<div class="header pb-8 pt-5 pt-md-8">
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row mt-2">
+    <div class="col">
+      <div class="table-responsive">
+        <div class="container-fluid">
+          <div class="card border-0 shadow px-1">
+            <div class="detailsAgentScroll">
+              <div class="card-header text-white d-flex justify-content-end align-items-center rounded-top" style="background-color:#e37431">
+                <div type="button" [routerLink]="['/agent']">
+                  <i class="fas fa-sign-out-alt"></i>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h1 class="MontserratB align-self-center">{{client.firstName}} {{client.lastName}}</h1>
+                    <hr class="col-sm-12">
+                    <dl class="row">
+                      <dt class="col-sm-4 Lato text-primary">Email</dt>
+                      <dd class="col-sm-8 Lato">{{client.email}}</dd>
+                      <hr class="col-sm-12">
+                      <dt class="col-sm-4 Lato text-primary">N° téléphone</dt>
+                      <dd class="col-sm-8 Lato">{{client.phoneNumber}}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

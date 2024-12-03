@@ -1,0 +1,23 @@
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rounded-image {
+  width: 30%;
+  border-radius: 40%;
+}
+
+.image-name {
+  flex-grow: 1;
+  text-align: center;
+}
+
+
+.custom {
+  width: 50%;
+  hight: 22px;
+  margin: 0 auto;
+  text-align: center;
+}
