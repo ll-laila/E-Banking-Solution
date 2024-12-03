@@ -15,12 +15,12 @@ import org.example.user.portefeuille.Portefeuille;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String address;
     private String CIN;
-    private String portefeuilleId;
+    private Long portefeuilleId;
 }
