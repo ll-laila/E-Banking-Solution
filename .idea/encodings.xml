@@ -7,8 +7,10 @@
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/discovery/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/transaction-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/transaction-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/user/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/wallet/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/wallet/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/carte-vertuelle/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/discovery/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />

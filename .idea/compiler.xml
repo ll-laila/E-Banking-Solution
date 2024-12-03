@@ -7,19 +7,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
-        <module name="user" />
         <module name="discovery" />
         <module name="carte-virtuelle" />
+        <module name="transaction-service" />
+        <module name="user" />
         <module name="gateway" />
       </profile>
-      <profile name="Annotation profile for transaction-service" enabled="true">
+      <profile name="Annotation profile for wallet" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="transaction-service" />
         <module name="wallet" />
       </profile>
     </annotationProcessing>
@@ -30,7 +30,7 @@
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="gateway" options="-parameters" />
-      <module name="transaction-service" options="-parameters" />
+      <module name="transaction-service" options="" />
       <module name="user" options="-parameters" />
       <module name="wallet" options="-parameters" />
     </option>
