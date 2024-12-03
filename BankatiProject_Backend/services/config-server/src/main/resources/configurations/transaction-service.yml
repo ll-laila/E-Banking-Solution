@@ -1,0 +1,26 @@
+server:
+  port: 8060
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transactions_db
+    username: chaimaehouda
+    password: chaimaehouda
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+  cloud:
+    gateway:
+      routes:
+        - id: transaction-service-route
+          uri: lb:http://TRANSACTION-SERVICE
+          predicates:
+            - Path=/transactions/**

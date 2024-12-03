@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Agent</title>
+  <link rel="stylesheet" href="profileAdmin.component.scss">
+</head>
+<body>
+<div class="header pb-8 pt-5 pt-lg-60 d-flex align-items-center">
+  <!-- Mask -->
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="col-lg-7 col-md-10">
+      <a href="#!" class="btn btn-primary">Modifier profile</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-8 order-xl-1">
+      <div class="card shadow">
+        <div class="card-header">
+          <h3 class="mb custom-title">Mon Compte</h3>        </div>
+        <div class="card-body">
+          <form>
+            <h6 class="heading-small text-muted mb-4">Information d'utilisateur</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="phone">N° téléphone</label>
+                    <input type="text" id="phone" class="form-control form-control-alternative" placeholder="téléphone">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email">Email</label>
+                    <input type="email" id="input-email" class="form-control form-control-alternative" placeholder="gmail@example.com">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">Prénom</label>
+                    <input type="text" id="input-first-name" class="form-control form-control-alternative" placeholder="prénom">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-last-name">Nom</label>
+                    <input type="text" id="input-last-name" class="form-control form-control-alternative" placeholder="nom">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-address">Adresse</label>
+                    <input id="input-address" class="form-control form-control-alternative" placeholder="Adresse" type="text">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

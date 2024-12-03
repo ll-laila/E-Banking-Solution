@@ -15,4 +15,9 @@ spring:
           uri: lb:http://CARTEVIRTUELLE-SERVICE
           predicates:
             - Path=/api/v1/carteVirtuelles/**
+        - id: transaction-service
+          uri: lb:http://TRANSACTION-SERVICE
+          predicates:
+            - Path=/api/v1/transaction/**
+
 

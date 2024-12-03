@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="login.component.scss">
+</head>
+<body style="background-image: url('/assets/img/icons/common/BG.png'); background-size: cover; background-position: center;">
+
+<div class="login-container" >
+  <div class="login-box">
+    <img src="../assets/img/icons/common/logo.jpeg" alt="Logo" class="logo">
+    <form #loginForm="ngForm" >
+      <label for="phone">Numéro de Téléphone</label>
+      <input type="text" id="phone" ngModel name="phoneNumber" placeholder="Entrer numéro de téléphone">
+
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" ngModel name="password" placeholder="Entrer mot de passe">
+
+      <div class="remember-me">
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Se souvenir de moi</label>
+      </div>
+
+      <button type="submit">CONNEXION</button>
+    </form>
+  </div>
+</div>
+</body>
+<footer class="py-5">
+  <div class="container">
+    <div class="row align-items-center justify-content-xl-between">
+      <div class="col-xl-6">
+        <div class="copyright text-center text-xl-left text-muted">
+          &copy; {{ test | date: "yyyy" }} <a href="https://www.creative-tim.com?ref=ada-footer-auth-layout" class="font-weight-bold ml-1" target="_blank">Bankati</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
+</html>
