@@ -1,0 +1,48 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);
+">
+</div>
+
+<div class="container-fluid mt--7">
+    <!-- Dark table -->
+    <div class="row mt-2">
+        <div class="col">
+            <div class="table-responsive">
+                <!-- Loading spinner -->
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="card border-0 shadow px-1">
+                        <form (submit)="createService()">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="card-title text-right Montserrat" style="color:#e37431; margin-bottom: 0;">Caractéristiques du Service </h2>
+                                    <div type="button" [routerLink]="['/agent-service']">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </div>
+                                </div>
+                                <hr style="color:#6415FF" />
+                                <div class="card-text py-2">
+                                    <div class="row g-2 mb-4">
+                                        <div class="form-floating col-md-6">
+                                            <label for="serviceName" class="Montserrat" style="color:#2f3a8a">Nom du service *</label>
+                                            <input type="text" class="form-control" [(ngModel)]="service.name" name="serviceName" id="serviceName" placeholder="Service Name" style="border-radius:20px; background-color:#F8F8F8" required />
+                                        </div>
+                                        <div class="form-floating col-md-6">
+                                            <label for="serviceType" class="Montserrat" style="color:#2f3a8a">Type du service *</label>
+                                            <input type="text" class="form-control" [(ngModel)]="service.type" name="serviceType" id="serviceType" placeholder="Service Type" style="border-radius:20px; background-color:#F8F8F8" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn mt-2 justify-content-center btn-block" style="background-color:#e37431; color:#fff; border-radius:20px;">
+                                    <span class="Montserrat" style="color:white">Créer nouveau service</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

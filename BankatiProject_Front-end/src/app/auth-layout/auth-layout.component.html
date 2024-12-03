@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil - Bankati</title>
+  <link rel="stylesheet" href="auth-layout.component.scss">
+</head>
+<body style="background-image: url('/assets/img/icons/common/BG.jpg'); background-size: cover; background-position: center;">
+
+<div class="home-container">
+  <header class="header">
+    <img src="../assets/img/icons/common/logo.jpeg" alt="Logo" class="logo">
+    <nav>
+      <ul>
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Bienvenue sur Bankati</h1>
+      <p>Le service de paiement en ligne rapide, sécurisé et facile à utiliser.</p>
+      <a routerLink="/login" class="cta-button">Commencer</a>
+    </section>
+
+    <section id="features" class="features">
+      <h2>Nos Fonctionnalités</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <h3>Paiement Sécurisé</h3>
+          <p>Garantissez la sécurité de vos transactions avec notre technologie de pointe.</p>
+        </div>
+        <div class="feature-item">
+          <h3>Transferts Rapides</h3>
+          <p>Effectuez des transferts d'argent instantanément et en toute simplicité.</p>
+        </div>
+        <div class="feature-item">
+          <h3>Suivi des Transactions</h3>
+          <p>Gardez un œil sur toutes vos transactions grâce à notre interface intuitive.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>À propos de Bankati</h2>
+      <p>Bankati est une application de paiement en ligne conçue pour offrir une expérience utilisateur fluide et sécurisée. Nous nous engageons à fournir des services de qualité pour faciliter vos transactions quotidiennes.</p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contactez-Nous</h2>
+      <p>Pour toute question ou assistance, n'hésitez pas à nous contacter à <a href="mailto:support@Bankati.com">support@Bankati.com</a>.</p>
+    </section>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; {{ date.getFullYear() }} Bankati. Tous droits réservés.</p>
+  </div>
+</footer>
+
+</body>
+</html>

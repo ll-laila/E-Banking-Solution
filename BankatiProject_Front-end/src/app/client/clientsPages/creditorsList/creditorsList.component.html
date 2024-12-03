@@ -1,0 +1,36 @@
+<div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+<!-- Page content -->
+<!-- Table -->
+<div>
+  <div class="alert alert-warning custom" role="alert" *ngIf="responseMessage">
+    {{responseMessage}}
+  </div>
+
+</div>
+<div class="container-fluid mt--3">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <h3 class="mb-0">Liste des créanciers
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="row icon-examples">
+            <div *ngFor="let agent of agents" class="col-lg-4 col-md-4 col-sm-6">
+              <button type="button" placement="top-center" triggers="hover focus click" ngbTooltip="{{ copy === agent.firstName ? 'Copied':'' }}" class="btn-icon-clipboard" ngxClipboard [cbContent]="agent.firstName" (cbOnSuccess)="copy = agent.firstName">
+                <div class="image-container" style="height: 130px;">
+                  <img [src]="agent.image" alt="{{ agent.firstName }}" class="rounded-image" />
+                  <ul>
+                    <h3>{{ agent?.firstName }}{{" "}}{{ agent?.lastName }}</h3>
+                    <li *ngFor="let service of agent.services" (click)="redirectToPayment(agent, service)">{{ service.name }}</li>
+                  </ul>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
