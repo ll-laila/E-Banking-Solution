@@ -1,8 +1,8 @@
 package org.example.user.agent.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.user.agent.dto.ClientRequest;
-import org.example.user.agent.dto.ClientResponse;
+import org.example.user.client.dto.ClientRequest;
+import org.example.user.client.dto.ClientResponse;
 import org.example.user.client.entity.Client;
 import org.example.user.client.repository.ClientRepository;
 import org.example.user.wallet.Wallet;
@@ -36,7 +36,7 @@ public class AgentService{
 
         // 3. Créer un client en associant le walletId
         Client client = Client.builder()
-                .CIN(addClientRequest.cin())
+                .CIN(addClientRequest.CIN())
                 .email(addClientRequest.email())
                 .firstName(addClientRequest.firstName())
                 .lastName(addClientRequest.lastName())
@@ -68,8 +68,11 @@ public class AgentService{
                     return ClientResponse.builder()
                             .firstName(client.getFirstName())
                             .lastName(client.getLastName())
+                            .email(client.getEmail())
+                            .password(client.getPassword())
+                            .address(client.getAddress())
+                            .CIN(client.getCIN())
                             .walletId(walletId)
-                            .balance(balance)
                             .build();
                 })
                 .collect(Collectors.toList());

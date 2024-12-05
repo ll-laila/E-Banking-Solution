@@ -1,16 +1,14 @@
-package org.example.user.client.dto;
-
+package org.example.user.agent.dto;
 
 import lombok.Builder;
 
 @Builder
-public record ClientRequest (
+public record AgentResponse (
+
         Long id,
         String firstName,
         String lastName,
         String email,
-        String password,
         String address,
-        String CIN
-){
-}
+        String cin
+){}

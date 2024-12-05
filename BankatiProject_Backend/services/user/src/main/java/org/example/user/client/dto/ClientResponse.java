@@ -1,5 +1,9 @@
 package org.example.user.client.dto;
 
+
+import lombok.Builder;
+
+@Builder
 public record ClientResponse (
 
         Long id,
@@ -9,6 +13,6 @@ public record ClientResponse (
         String password,
         String address,
         String CIN,
-        Long portefeuilleId
+        Long walletId
 ){
 }

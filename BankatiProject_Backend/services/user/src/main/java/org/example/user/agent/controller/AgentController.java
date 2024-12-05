@@ -1,9 +1,9 @@
 package org.example.user.agent.controller;
 
-import org.example.user.agent.dto.ClientRequest;
-import org.example.user.agent.dto.ClientResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.user.agent.service.AgentService;
+import org.example.user.client.dto.ClientRequest;
+import org.example.user.client.dto.ClientResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
