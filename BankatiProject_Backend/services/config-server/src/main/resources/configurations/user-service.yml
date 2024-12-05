@@ -22,3 +22,5 @@ application:
   config:
     carteVirtuelle-url: http://localhost:8222/api/v1/carteVirtuelles
     wallet-url: http://localhost:8222/api/v1/wallet
+
+

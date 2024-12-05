@@ -1,9 +1,9 @@
 package org.example.user.agent.controller;
 
-import org.example.user.agent.dto.AddClientRequest;
+import org.example.user.agent.dto.ClientRequest;
 import org.example.user.agent.dto.ClientResponse;
-import org.example.user.agent.service.AgentService;
 import lombok.RequiredArgsConstructor;
+import org.example.user.agent.service.AgentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +25,7 @@ public class AgentController {
      * @return Une réponse HTTP avec le statut 201 (Created) si l'opération réussit
      */
     @PostMapping("/addClient")
-    public ResponseEntity<Void> addClient(@RequestBody AddClientRequest addClientRequest) {
+    public ResponseEntity<Void> addClient(@RequestBody ClientRequest addClientRequest) {
         agentService.addClient(addClientRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

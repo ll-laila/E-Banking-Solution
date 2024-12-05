@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
+@Table(name="client")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

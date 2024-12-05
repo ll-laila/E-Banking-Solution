@@ -34,7 +34,7 @@ public class ClientMapper {
                 client.getPassword(),
                 client.getAddress(),
                 client.getCIN(),
-                client.getPortefeuilleId()
+                client.getWalletId()
         );
     }
 

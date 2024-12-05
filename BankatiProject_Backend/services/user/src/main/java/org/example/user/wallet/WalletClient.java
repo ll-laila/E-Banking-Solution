@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="", url = "${}")
+@FeignClient(name="wallet-service", url = "${application.config.wallet-url}")
 public interface WalletClient {
 
     @PostMapping("/addWallet")
