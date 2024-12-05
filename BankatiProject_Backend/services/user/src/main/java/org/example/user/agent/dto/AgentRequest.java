@@ -1,6 +1,8 @@
 package org.example.user.agent.dto;
 import lombok.Builder;
 
+import java.util.Date;
+
 @Builder
 public record AgentRequest (
         Long id,
@@ -8,7 +10,10 @@ public record AgentRequest (
         String lastName,
         String email,
         String address,
-        String cin
+        String cin,
+        Date birthDate ,
+        String password,
+        String phoneNumber
 ){
 }
 

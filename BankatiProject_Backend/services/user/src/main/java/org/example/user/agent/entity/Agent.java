@@ -24,6 +24,6 @@ public class Agent {
     private String address;
     private String cin;
     private Date birthDate ;
-    private String newPassword;
+    private String password;
     private String phoneNumber;
 }
