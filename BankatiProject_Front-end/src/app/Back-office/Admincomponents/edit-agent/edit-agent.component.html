@@ -1,0 +1,90 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #0965c0, #c53a94);" >
+</div>
+<div class="container-fluid mt--7">
+  <!-- Dark table -->
+  <div class="row mt-2">
+    <div class="col">
+      <div class="table-responsive">
+        <div class="container-fluid">
+          <div class="card border-0 shadow px-1">
+            <form (submit)="update()">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="card-title text-right Montserrat" style="color:#e37431; margin-bottom: 0;">Informations personnelles</h2>
+                  <div type="button" [routerLink]="['/admin']">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </div>
+                </div>
+
+                <hr style="color:#6415FF" />
+                <div class="card-text py-2">
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="firstName" class="Montserrat" style="color:#2f3a8a">Prénom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.firstName" name="firstName" [value]="agent.firstName" id="firstName" placeholder="First Name" style="border-radius:20px; background-color:#F8F8F8" />
+
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="lastName" class="Montserrat" style="color:#2f3a8a">Nom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.lastName" name="lastName" [value]="agent.lastName" id="lastName" placeholder="Last Name" style="border-radius:20px; background-color:#F8F8F8" />
+
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="dateOfBirth" class="Montserrat" style="color:#2f3a8a">Date de naissance *</label>
+                      <input type="date" class="form-control" [(ngModel)]="agent.birthDate" name="birthDate" [value]="agent.birthDate" id="dateOfBirth" placeholder="Date of Birth" style="border-radius:20px; background-color:#F8F8F8" />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4 mt-10">
+                    <div class="form-floating col-md-6">
+                      <label for="identityPiece" class="Montserrat" style="color:#2f3a8a">Pièce d'identité *</label>
+                      <select class="form-select  form-control" id="identityPiece" style="border-radius:20px; background-color:#F8F8F8" required>
+                        <option value="Cin">Cin</option>
+                        <option value="Passport">Passport</option>
+                      </select>
+                    </div>
+                    <div class="form-floating col-md-6">
+                      <label for="identityNumber" class="Montserrat" style="color:#2f3a8a">N° pièce d'identité *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.cin" name="cin" [value]="agent.cin" id="identityNumber" placeholder="N° pièce d'identité" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-6">
+                      <label for="address" class="Montserrat" style="color:#2f3a8a">Adresse *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.address" name="address" [value]="agent.address" id="address" placeholder="Address" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+
+                    <div class="form-floating col-md-6">
+                      <label for="email" class="Montserrat" style="color:#2f3a8a">Email *</label>
+                      <input type="email" class="form-control" [(ngModel)]="agent.email" name="email" [value]="agent.email" id="email" placeholder="Email" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="phoneNumber" class="Montserrat" style="color:#2f3a8a">N° téléphone *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.phoneNumber" name="phoneNumber" [value]="agent.phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="commercialRn" class="Montserrat" style="color:#2f3a8a">N° d'immatriculation *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.commercialRn" name="commercialRn" [value]="agent.commercialRn" id="commercialRn" placeholder="Commercial Register Number" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="patentNumber" class="Montserrat" style="color:#2f3a8a">N° de patente *</label>
+                      <input type="text" class="form-control" [(ngModel)]="agent.patentNumber" name="patentNumber" [value]="agent.patentNumber" id="patentNumber" placeholder="Patent Number" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+
+                  </div>
+                </div>
+                <button  class="btn btn-block py-2 container-fluid " type="submit"
+                         style="background-color:#e37431; color:#fff; border-radius:20px; cursor:pointer" >
+                  <span class='Montserrat' style="color:white">Modifier agent</span></button>
+              </div>
+            </form>
+
+              </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

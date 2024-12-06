@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/Gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/NotificationService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/Offre/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/Payment/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/ServicesTiers/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/TransactionService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/User/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/VirtualCardService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/WalletService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/config-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/discovery/src/main/java" charset="UTF-8" />
+  </component>
+</project>

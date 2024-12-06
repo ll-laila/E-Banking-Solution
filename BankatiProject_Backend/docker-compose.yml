@@ -1,0 +1,78 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongo_db_bankati
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=bankatidb
+      - MONGO_INITDB_ROOT_PASSWORD=bankatidb
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express_bankati
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=bankatidb
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=bankatidb
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper_bankati
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181"
+    networks:
+      - microservices-net
+
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: ms_kafka_bankati
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+    networks:
+      - microservices-net
+
+  mail-dev:
+    container_name: ms-mail-dev_bankati
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+
+  zipkin:
+    container_name: zipkin_bankati
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - microservices-net
+
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  mongo:

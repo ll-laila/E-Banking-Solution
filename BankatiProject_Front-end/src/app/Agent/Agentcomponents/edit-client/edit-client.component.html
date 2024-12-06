@@ -1,0 +1,69 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);
+" >
+</div>
+<div class="container-fluid mt--7">
+  <!-- Dark table -->
+  <div class="row mt-2">
+    <div class="col">
+      <div class="table-responsive">
+        <div class="container-fluid">
+          <div class="card border-0 shadow px-1">
+            <form >
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="card-title text-right Montserrat" style="color:#e37431; margin-bottom: 0;">Informations personnelles</h2>
+                  <div type="button" [routerLink]="['/agent']">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </div>
+                </div>
+
+                <hr style="color:#6415FF" />
+                <div class="card-text py-2">
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="firstName" class="Montserrat" style="color:#2f3a8a">Prénom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.firstName" name="firstName" [value]="client.firstName" id="firstName" placeholder="First Name" style="border-radius:20px; background-color:#F8F8F8" />
+
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="lastName" class="Montserrat" style="color:#2f3a8a">Nom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.lastName" name="lastName" [value]="client.lastName" id="lastName" placeholder="Last Name" style="border-radius:20px; background-color:#F8F8F8" />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4 mt-10">
+                    <div class="form-group">
+                      <label for="product" class="Montserrat">Sélectionner le type de compte</label>
+                      <select class="form-control" id="product" name="product">
+                        <option value="hssab1">Hssab 1 - Plafond : 200 DH</option>
+                        <option value="hssab1">Hssab 2 - Plafond : 5000 DH</option>
+                        <option value="hssab1">Hssab 3 - Plafond : 20000 DH</option>
+                      </select>
+                    </div>
+
+
+                    <div class="form-floating col-md-6">
+                      <label for="email" class="Montserrat" style="color:#2f3a8a">Email *</label>
+                      <input type="email" class="form-control" [(ngModel)]="client.email" name="email" [value]="client.email" id="email" placeholder="Email" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="phoneNumber" class="Montserrat" style="color:#2f3a8a">N° téléphone *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.phoneNumber" name="phoneNumber" [value]="client.phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+                </div>
+                <button  class="btn btn-block py-2 container-fluid " type="submit"
+                         style="background-color:#e37431; color:#fff; border-radius:20px; cursor:pointer" >
+                  <span class='Montserrat' style="color:white">Modifier client</span></button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
