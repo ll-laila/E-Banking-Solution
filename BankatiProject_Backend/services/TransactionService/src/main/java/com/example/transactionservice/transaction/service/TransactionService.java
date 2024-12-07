@@ -42,10 +42,10 @@ public class TransactionService {
                     request.transactionType(), // Type de transaction
                     request.status(), // Statut de la transaction
                     request.currency(), // Devise
-                    request.user().firstname(), // Prénom de l'utilisateur
-                    request.user().lastname(), // Nom de l'utilisateur
-                    request.user().email(), // Email de l'utilisateur
-                    request.user().phone(), // Numéro de téléphone de l'utilisateur
+                    request.beneficiaryName(),
+                    request.beneficiaryPhone(),
+                    request.senderName(),
+                    request.senderPhoneNumber(),
                     request.validatedDate() // Date de validation
             );
 
@@ -62,7 +62,7 @@ public class TransactionService {
                 .orElseThrow(() -> new RuntimeException("Transaction introuvable pour l'ID : " + id));
     }
     public List<Transaction> getAllTransactionsByUser(String userId) {
-        return repository.findByUserId(userId);
+        return repository.findBySenderId(userId);
     }
 
     public Transaction updateTransactionStatus(String transactionId, TransactionStatus status) {
@@ -80,7 +80,7 @@ public class TransactionService {
         transaction.setStatus(TransactionStatus.CANCELLED);
         return repository.save(transaction);
     }
-    public Transaction transferMoney(Integer senderId, Integer recipientId, BigDecimal amount, String currency) {
+    public Transaction transferMoney(String senderId, String recipientId, BigDecimal amount, String currency) {
         // Validation du montant
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant doit être supérieur à zéro.");
@@ -93,6 +93,7 @@ public class TransactionService {
                 .transactionType(TransactionType.TRANSFER)
                 .status(TransactionStatus.PENDING)
                 .beneficiaryId(recipientId)
+                .senderId(senderId)
                 .currency(currency)
                 .build();
 
@@ -104,7 +105,7 @@ public class TransactionService {
         return repository.save(transaction);
     }
     public List<Transaction> getTransactionHistory(String userId, LocalDateTime startDate, LocalDateTime endDate) {
-        return repository.findByUserIdAndCreatedDateBetween(userId, startDate, endDate);
+        return repository.findBySenderIdAndCreatedDateBetween(userId, startDate, endDate);
     }
 
     public Transaction retryTransaction(String transactionId) {
