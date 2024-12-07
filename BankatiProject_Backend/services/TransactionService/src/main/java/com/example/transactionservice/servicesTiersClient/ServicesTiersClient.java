@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(
         name = "servicestiers-service",
-        url = "${application.config.servicesTiers-url}"
+        url = "${application.config.servicestiers-url}"
 )
 public interface ServicesTiersClient {
 }
