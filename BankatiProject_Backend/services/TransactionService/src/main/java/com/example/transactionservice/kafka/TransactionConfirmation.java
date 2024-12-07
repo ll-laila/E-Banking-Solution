@@ -16,8 +16,8 @@ public record TransactionConfirmation(
         String currency, // Devise utilisée
         String userFirstname, // Prénom de l'utilisateur
         String userLastname, // Nom de l'utilisateur
-        String userEmail, // Email de l'utilisateur
         String userPhone, // Numéro de téléphone de l'utilisateur
+        String beneficiaryPhone,
         LocalDateTime timestamp
 ) {
 }

@@ -67,8 +67,8 @@ public class TransactionController {
     // Transférer de l’argent entre utilisateurs
     @PostMapping("/transfer")
     public ResponseEntity<Transaction> transferMoney(
-            @RequestParam Integer senderId,
-            @RequestParam Integer recipientId,
+            @RequestParam String senderId,
+            @RequestParam String recipientId,
             @RequestParam BigDecimal amount,
             @RequestParam String currency) {
         Transaction transaction = transactionService.transferMoney(senderId, recipientId, amount, currency);

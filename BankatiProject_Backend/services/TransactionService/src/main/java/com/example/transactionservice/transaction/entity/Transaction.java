@@ -27,7 +27,17 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
 
-    private Integer beneficiaryId; // Bénéficiaire (si applicable)
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String beneficiaryPhone;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String beneficiaryRole;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String beneficiaryId; // Bénéficiaire (si applicable)
 
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType; // Paiement, Transfert, etc.
@@ -37,13 +47,34 @@ public class Transaction {
 
     private String currency; // Devise (EUR, USD, MAD)
 
-    private String externalReference; // Référence système tiers
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
     private String userId;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String userFirstname;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String userLastname;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String userEmail;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String userPhone;
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String userRole;
 
     @LastModifiedDate
     @Column(insertable = false)
