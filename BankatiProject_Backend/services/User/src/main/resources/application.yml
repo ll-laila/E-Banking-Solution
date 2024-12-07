@@ -4,11 +4,11 @@ spring:
   application:
     name: user-service
 
-env:
-  twilio:
-    sms:
-      authToken: ${AUTH_TOKEN:x}
-      accountSid: ${ACCOUNT_SID:x}
-      fromNo: ${FROM_NUMBER:x}
+#env:
+#  twilio:
+#    sms:
+#      authToken: ${AUTH_TOKEN:da2ff872c2daf0b32743f8bc28cb37b8}
+#      accountSid: ${ACCOUNT_SID:AC8c9b77171a457bf6fc8e72a5506f7d06}
+#      fromNo: ${FROM_NUMBER:+17756183795}
 
 
