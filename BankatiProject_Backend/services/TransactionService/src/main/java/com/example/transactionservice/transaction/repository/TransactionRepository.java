@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends MongoRepository<Transaction, String> {
-    List<Transaction> findByUserId(String userId);
-    List<Transaction> findByUserIdAndCreatedDateBetween(String userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Transaction> findBySenderId(String senderId);
+    List<Transaction> findBySenderIdAndCreatedDateBetween(String userId, LocalDateTime startDate, LocalDateTime endDate);
     List<Transaction> findByStatus(TransactionStatus status);
 }

@@ -14,10 +14,10 @@ public record TransactionConfirmation(
         TransactionType transactionType, // Type de transaction (paiement, transfert, etc.)
         TransactionStatus transactionStatus, // Statut de la transaction
         String currency, // Devise utilisée
-        String userFirstname, // Prénom de l'utilisateur
-        String userLastname, // Nom de l'utilisateur
-        String userEmail, // Email de l'utilisateur
-        String userPhone, // Numéro de téléphone de l'utilisateur
+        String beneficiaryName,
+        String beneficiaryPhone,
+        String senderName,
+        String senderPhoneNumber,
         LocalDateTime timestamp
 ) {
 }
