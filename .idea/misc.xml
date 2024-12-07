@@ -1,20 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/User/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/Payment/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/Offre/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/Gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/discovery/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/config-server/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/NotificationService/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/ServicesTiers/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/user/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/discovery/pom.xml" />
+        <option value="$PROJECT_DIR$/carte-vertuelle/pom.xml" />
+        <option value="$PROJECT_DIR$/carte-virtuelle/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/carte-virtuelle/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/wallet/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/transaction-service/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/TransactionService/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/VirtualCardService/pom.xml" />
-        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/WalletService/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/carte-vertuelle/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK" />
