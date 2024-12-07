@@ -1,4 +1,8 @@
 package com.example.walletservice.wallet.response;
 
-public record WalletResponse(){
+public record WalletResponse(
+        String id,
+        Double balance,
+        String clientId
+){
 }

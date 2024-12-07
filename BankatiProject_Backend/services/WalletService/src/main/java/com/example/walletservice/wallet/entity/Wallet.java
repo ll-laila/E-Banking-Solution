@@ -12,5 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Wallet {
     @Id
     private String id;
-
+    private Double balance;
+    private String clientId;
 }

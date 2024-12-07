@@ -1,26 +1,33 @@
-package com.example.walletservice.virtualcard.mapper;
+package com.example.walletservice.wallet.mapper;
 
+import com.example.walletservice.wallet.entity.Wallet;
+import com.example.walletservice.wallet.request.WalletRequest;
+import com.example.walletservice.wallet.response.WalletResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WalletMapper {
-   /*
-    public Agent toAgent(AgentRequest request) {
+
+    public Wallet toWallet(WalletRequest request) {
         if (request == null) {
             return null;
         }
-        return Agent.builder()
+        return Wallet.builder()
                 .id(request.id())
+                .balance(request.balance())
+                .clientId(request.clientId())
                 .build();
     }
 
-    public AgentResponse fromAgent(Agent agent) {
+    public WalletResponse fromWallet(Wallet wallet) {
 
-        return new AgentResponse(
-                agent.getId(),
+        return new WalletResponse(
+                wallet.getId(),
+                wallet.getBalance(),
+                wallet.getClientId()
 
         );
     }
 
-    */
+
 }
