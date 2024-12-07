@@ -4,7 +4,7 @@ import lombok.Builder;
 
 import java.util.Date;
 
-@Builder
+
 public record AgentResponse (
         String id,
         String firstName,
@@ -13,6 +13,9 @@ public record AgentResponse (
         String address,
         String cin,
         Date birthDate ,
+        String commercialRn,
+        String image,
         String password,
-        String phoneNumber
+        String phoneNumber,
+        boolean isFirstLogin
 ){}

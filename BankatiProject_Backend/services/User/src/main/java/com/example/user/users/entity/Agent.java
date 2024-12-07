@@ -21,6 +21,9 @@ public class Agent {
     private String address;
     private String cin;
     private Date birthDate ;
+    private String commercialRn;
+    private String image;
     private String password;
     private String phoneNumber;
+    private boolean isFirstLogin;
 }

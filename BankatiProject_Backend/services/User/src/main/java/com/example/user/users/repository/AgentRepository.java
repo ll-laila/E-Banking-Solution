@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgentRepository extends MongoRepository<Agent, String> {
-
+    boolean existsByPhoneNumber(String phoneNumber);
+    boolean existsByEmail(String email);
 }
