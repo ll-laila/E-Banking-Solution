@@ -1,6 +1,7 @@
-package com.example.user.users.request;
+package com.example.user.users.response;
 
-public record AdminRequest (
+
+public record AdminResponse (
         String id,
         String firstname,
         String lastname,

@@ -9,4 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
+
 }
