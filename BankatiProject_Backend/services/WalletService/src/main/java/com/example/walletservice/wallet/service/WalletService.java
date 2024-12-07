@@ -32,4 +32,11 @@ public class WalletService {
         return walletMapper.fromWallet(wallet);
     }
 
+
+    public WalletResponse findWalletByIdClient(String clientId) {
+        Wallet wallet = walletRepository.findWalletByClientId(clientId);
+        return walletMapper.fromWallet(wallet);
+    }
+
+
 }

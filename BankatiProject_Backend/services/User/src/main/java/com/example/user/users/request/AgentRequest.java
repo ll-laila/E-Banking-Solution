@@ -13,7 +13,8 @@ public record AgentRequest (
         String commercialRn,
         String image,
         String password,
-        String phoneNumber
+        String phoneNumber,
+        boolean isFirstLogin
 ){
 }
 

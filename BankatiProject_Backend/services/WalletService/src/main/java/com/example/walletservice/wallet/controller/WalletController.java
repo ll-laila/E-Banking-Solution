@@ -29,7 +29,10 @@ public class WalletController {
         return ResponseEntity.ok(walletService.findWallet(walletId));
     }
 
-
+    @GetMapping("/IdClient/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletByIdClient(@PathVariable("clientId") String clientId){
+        return ResponseEntity.ok(walletService.findWalletByIdClient(clientId));
+    }
 
 
 }
