@@ -12,6 +12,7 @@ spring:
           predicates:
             - Path=/api/v1/users/**
 
+
         - id: wallet-service
           uri: lb:http://WALLET-SERVICE
           predicates:

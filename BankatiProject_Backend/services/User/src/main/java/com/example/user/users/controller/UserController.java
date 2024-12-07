@@ -14,23 +14,25 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/users/admin")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class AdminController {
+public class UserController {
 
     @Autowired
     private AdminService service;
 
 
     //--------------------------------------Admin-----------------------------------//
+    @GetMapping("/msg")
+    public ResponseEntity<String> getAgentById() {
+        return ResponseEntity.ok("hello");
+    }
+
 
     @PostMapping("/addAdmin")
     public ResponseEntity<Admin> saveAdmin(@RequestBody AdminRequest request) {
         return ResponseEntity.ok(service.saveAdmin(request));
     }
-
-    //--------------------------------------Agent-----------------------------------//
-
 
     @PostMapping("/addAgent")
     public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request){
@@ -62,6 +64,14 @@ public class AdminController {
     public ResponseEntity<List<AgentResponse>> getAllAgents() {
         return ResponseEntity.ok( service.findAllAgents());
     }
+
+
+    //--------------------------------------Agent-----------------------------------//
+
+
+
+
+    //--------------------------------------Client-----------------------------------//
 
 
 

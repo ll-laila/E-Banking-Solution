@@ -1,10 +1,7 @@
 package com.example.user.users.request;
 
-import lombok.Builder;
-
 import java.util.Date;
 
-@Builder
 public record AgentRequest (
         String id,
         String firstName,
@@ -13,6 +10,8 @@ public record AgentRequest (
         String address,
         String cin,
         Date birthDate ,
+        String commercialRn,
+        String image,
         String password,
         String phoneNumber
 ){

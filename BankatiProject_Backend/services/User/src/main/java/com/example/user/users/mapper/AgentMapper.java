@@ -5,6 +5,8 @@ import com.example.user.users.request.AgentRequest;
 import com.example.user.users.response.AgentResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class AgentMapper {
     public Agent toAgent(AgentRequest request) {
@@ -19,6 +21,8 @@ public class AgentMapper {
                 .address(request.address())
                 .cin(request.cin())
                 .birthDate(request.birthDate())
+                .commercialRn(request.commercialRn())
+                .image(request.image())
                 .password(request.password())
                 .phoneNumber(request.phoneNumber())
                 .build();
@@ -35,9 +39,11 @@ public class AgentMapper {
                 agent.getAddress(),
                 agent.getCin(),
                 agent.getBirthDate(),
+                agent.getCommercialRn(),
+                agent.getImage(),
                 agent.getPassword(),
-                agent.getPhoneNumber()
-
+                agent.getPhoneNumber(),
+                agent.isFirstLogin()
         );
 
 

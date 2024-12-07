@@ -24,4 +24,4 @@ application:
     virtualCard-url: http://localhost:8222/api/v1/virtualcard
     wallet-url: http://localhost:8222/api/v1/wallet
     users-url: http://localhost:8222/api/v1/users
-    servicesTiers-url: http://localhost:8222/api/v1/servicestiers
+    servicestiers-url: http://localhost:8222/api/v1/servicestiers
