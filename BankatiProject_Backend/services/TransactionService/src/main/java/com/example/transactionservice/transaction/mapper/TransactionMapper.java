@@ -12,14 +12,18 @@ public class TransactionMapper {
         }
         return Transaction.builder()
                 .id(request.id())
-                .transactionMethod(request.transactionMethod()) // Méthode de transaction
                 .amount(request.amount()) // Montant
-                .beneficiaryId(request.beneficiaryId()) // Bénéficiaire
+                .transactionMethod(request.transactionMethod()) // Méthode de transaction
+                .beneficiaryId(request.beneficiaryId())
+                .beneficiaryRole(request.beneficiaryRole())// Bénéficiaire
+                .beneficiaryPhone(request.beneficiaryPhone())
                 .transactionType(request.transactionType()) // Type de transaction
                 .status(request.status()) // Statut de la transaction
                 .currency(request.currency()) // Devise
-                .externalReference(request.externalReference()) // Référence externe
+                .userId(request.userId())
                 .validatedDate(request.validatedDate()) // Date de validation
+                .userPhone(request.userPhone())
+                .userRole(request.userRole())
                 .build();
     }
 
