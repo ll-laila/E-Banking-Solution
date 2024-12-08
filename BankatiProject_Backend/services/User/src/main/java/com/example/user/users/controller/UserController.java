@@ -15,11 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -28,24 +29,18 @@ public class UserController {
     @Autowired
     private AdminService service;
 
-
     //--------------------------------------Admin-----------------------------------//
-    @GetMapping("/msg")
-    public ResponseEntity<String> getAgentById() {
-        return ResponseEntity.ok("hello");
-    }
-
 
     @PostMapping("/addAdmin")
     public ResponseEntity<Admin> saveAdmin(@RequestBody AdminRequest request) {
         return ResponseEntity.ok(service.saveAdmin(request));
     }
 
+
     @PostMapping("/addAgent")
     public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request){
         return ResponseEntity.ok(service.addAgent(request));
     }
-
 
 
     @GetMapping("/getAgent/{id}")
@@ -54,6 +49,7 @@ public class UserController {
     }
 
 
+    // for updating password also
     @PutMapping("/updateAgent/{id}")
     public ResponseEntity<AgentResponse> updateUser(@RequestBody AgentRequest updatedAgent){
         return ResponseEntity.ok(service.updateAgent(updatedAgent));

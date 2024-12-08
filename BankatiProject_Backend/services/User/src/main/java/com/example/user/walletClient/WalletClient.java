@@ -20,4 +20,8 @@ public interface WalletClient {
     @GetMapping("/getwallet/{walletId}")
     public ResponseEntity<WalletResponse> getWallet(@PathVariable("walletId") String walletId);
 
-}
+
+    @GetMapping("/IdClient/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletByIdClient(@PathVariable("clientId") String clientId);
+
+    }
