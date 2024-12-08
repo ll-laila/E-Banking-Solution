@@ -47,14 +47,13 @@ public class AgentService {
 
     @Transactional
     public Client createClient(Client client) {
-        // Enregistrer le client dans la base de données
         Client savedClient = clientRepository.save(client);
 
-        // Créer un wallet pour ce client
+
         WalletRequest walletRequest = new WalletRequest(
-                null, // ID sera généré par le service wallet
-                0.0, // Solde initial
-                savedClient.getId() // Le clientId est l'ID du client créé
+                null,
+                0.0,
+                savedClient.getId()
         );
         try {
             ResponseEntity<String> walletResponse = walletClient.saveWallet(walletRequest);

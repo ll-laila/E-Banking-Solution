@@ -78,13 +78,13 @@ public class UserController {
     private final AgentService agentService;
     private final ClientMapper clientMapper;
 
-    // Endpoint pour créer un nouveau client
+
     @PostMapping("/addClient")
     public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
         Client client = clientMapper.toClient(clientRequest);
         Client savedClient = agentService.createClient(client);
 
-        // Vérifier que le client a été ajouté
+
         if (savedClient != null) {
             ClientResponse clientResponse = clientMapper.fromClient(savedClient);
             return ResponseEntity.status(HttpStatus.CREATED).body(clientResponse); // Status 201
@@ -93,7 +93,7 @@ public class UserController {
         }
     }
 
-    // Endpoint pour récupérer tous les clients
+
     @GetMapping("/getClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = agentService.getAllClients();
@@ -103,7 +103,7 @@ public class UserController {
         return ResponseEntity.ok(clientResponses);
     }
 
-    // Endpoint pour récupérer un client par son ID
+
     @GetMapping("/getClient/{id}")
     public ResponseEntity<ClientResponse> getClientById(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
@@ -112,7 +112,6 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Endpoint pour mettre à jour un client par son ID
     @PutMapping("/updateClient/{id}")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable String id, @RequestBody ClientRequest clientRequest) {
         Optional<Client> existingClientOpt = agentService.getClientById(id);
@@ -121,20 +120,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // Convertir le ClientRequest en entité Client
         Client clientToUpdate = clientMapper.toClient(clientRequest);
-        clientToUpdate.setId(id); // Assurer que l'ID reste intact
+        clientToUpdate.setId(id);
 
-        // Mettre à jour le client
         Client updatedClient = agentService.updateClient(id, clientToUpdate);
 
-        // Convertir l'entité Client mise à jour en ClientResponse
         ClientResponse clientResponse = clientMapper.fromClient(updatedClient);
 
         return ResponseEntity.ok(clientResponse);
     }
 
-    // Endpoint pour supprimer un client par son ID
     @DeleteMapping("/deleteClient/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
