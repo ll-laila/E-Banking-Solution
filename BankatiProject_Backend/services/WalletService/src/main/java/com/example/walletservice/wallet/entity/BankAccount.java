@@ -1,7 +1,7 @@
 package com.example.walletservice.wallet.entity;
+
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @AllArgsConstructor
@@ -10,12 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @Document
-public class Wallet {
+public class BankAccount {
     @Id
     private String id;
-    private Double balance;
-    private String clientId;
-
-    @DBRef
-    private BankAccount bankAccount;
+    private Double solde;
 }

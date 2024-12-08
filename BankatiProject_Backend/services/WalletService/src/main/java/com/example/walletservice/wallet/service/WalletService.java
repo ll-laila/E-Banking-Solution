@@ -2,6 +2,7 @@ package com.example.walletservice.wallet.service;
 
 import com.example.walletservice.wallet.entity.Wallet;
 import com.example.walletservice.wallet.mapper.WalletMapper;
+import com.example.walletservice.wallet.repository.BankAccountRepository;
 import com.example.walletservice.wallet.repository.WalletRepository;
 import com.example.walletservice.wallet.request.WalletRequest;
 import com.example.walletservice.wallet.response.WalletResponse;
@@ -17,6 +18,9 @@ public class WalletService {
 
     @Autowired
     private WalletRepository walletRepository;
+
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
 
     @Autowired
     private WalletMapper walletMapper;

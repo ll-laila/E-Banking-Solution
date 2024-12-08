@@ -1,13 +1,9 @@
 package com.example.servicestiers.walletClient;
 
 
-import com.example.servicestiers.CMI.request.WalletTransactionRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "wallet-service",
@@ -15,16 +11,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface WalletClient {
 
-
     @PostMapping("/addWallet")
     public ResponseEntity<String> saveWallet(@RequestBody WalletRequest walletRequest);
 
     @GetMapping("/getwallet/{walletId}")
-    public ResponseEntity<WalletResponse> getWallet(@PathVariable("walletId") Long walletId);
+    public ResponseEntity<WalletResponse> getWallet(@PathVariable("walletId") String walletId);
 
-    @PostMapping("/debit-wallet")
-    public void debitWallet(@RequestBody WalletTransactionRequest request);
 
-    @PostMapping("/credit-wallet")
-    public void creditWallet(@RequestBody WalletTransactionRequest request);
+    @GetMapping("/IdClient/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletByIdClient(@PathVariable("clientId") String clientId);
+
+    @PutMapping("/updateWallet")
+    public ResponseEntity<WalletResponse> updateWallet(@RequestBody WalletRequest walletRequest);
+
+
 }

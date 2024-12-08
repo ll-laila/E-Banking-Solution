@@ -35,4 +35,12 @@ public class WalletController {
     }
 
 
+    @PutMapping("/updateWallet")
+    public ResponseEntity<WalletResponse> updateWallet(@RequestBody WalletRequest walletRequest){
+        // logic her
+        return ResponseEntity.ok(null);
+    }
+
+
+
 }
