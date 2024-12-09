@@ -25,6 +25,7 @@ public class AgentMapper {
                 .image(request.image())
                 .password(request.password())
                 .phoneNumber(request.phoneNumber())
+                .isFirstLogin(request.isFirstLogin())
                 .build();
 
     }

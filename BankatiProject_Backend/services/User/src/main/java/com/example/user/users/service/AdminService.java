@@ -10,20 +10,32 @@ import com.example.user.users.repository.AgentRepository;
 import com.example.user.users.request.AdminRequest;
 import com.example.user.users.request.AgentRequest;
 import com.example.user.users.response.AgentResponse;
-import com.vonage.client.VonageClient;
-import com.vonage.client.sms.MessageStatus;
-import com.vonage.client.sms.SmsSubmissionResponse;
-import com.vonage.client.sms.messages.TextMessage;
+import com.example.user.users.twilio.Const;
+import com.example.user.users.twilio.ENVConfig;
+import com.example.user.users.twilio.TwilioConfiguration;
+import com.example.user.walletClient.BankAccountRequest;
+import com.example.user.walletClient.WalletClient;
+import com.example.user.walletClient.WalletRequest;
+import com.twilio.exception.ApiException;
+import com.twilio.rest.api.v2010.account.Message;
+
+import com.twilio.type.PhoneNumber;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -41,11 +53,16 @@ public class AdminService {
     @Autowired
     private AgentMapper agentMapper;
 
-    private static final String CHARACTERS = "0123456789";
+    @Autowired
+    private WalletClient walletClient;
 
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private static final String CHARACTERS = "0123456789";
+
+    private final TwilioConfiguration twilioConfiguration;
+    private final ENVConfig envConfig;
 
 
     //--------------------------------------Admin-----------------------------------//
@@ -81,23 +98,18 @@ public class AdminService {
         System.out.println(formattedPhoneNumber);
         var savedAgent = agentRepository.save(agent);
 
-        // vonage
-        VonageClient client = VonageClient.builder().apiKey("2053ed34").apiSecret("j2Cy3qjnDhKlnCbi").build();
-        System.out.println(client);
-        TextMessage message = new TextMessage("BANKATI LKLCSF",
-                formattedPhoneNumber,
-                "Bonjour "+ request.firstName() +" "+request.lastName() + ", votre mot de passe est "+ generatedPassword + "."
-        );
-        SmsSubmissionResponse response = client.getSmsClient().submitMessage(message);
-        if (response.getMessages().get(0).getStatus() == MessageStatus.OK) {
-            System.out.println("Message sent successfully.");
-        } else {
-            System.out.println("Message failed with error: " + response.getMessages().get(0).getErrorText());
-        }
+        // add wallet
+        BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
+        WalletRequest wallet = new WalletRequest(null,0D,savedAgent.getId(),bankAccountRequest);
+        var idWallet = walletClient.saveWallet(wallet);
+
+        //twilio
+        String msg =   "Bonjour "+ request.firstName() +" "+request.lastName() + ", votre mot de passe est "+ generatedPassword + ".";
+        Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
+        log.info("Twilio Response : {}", twilioMessage.getStatus());
 
         return agentMapper.fromAgent(savedAgent);
     }
-
 
 
 
@@ -116,7 +128,50 @@ public class AdminService {
     public String formatPhoneNumber(String phoneNumber) {
 
         String formatted = phoneNumber.substring(1);
-        return "212" + formatted;
+        return "+212" + formatted;
+    }
+
+
+    public Object sendSms(String phoneNumber, String message) {
+
+        if (phoneNumber!=null) {
+            PhoneNumber to = new PhoneNumber(phoneNumber);
+            PhoneNumber from = new PhoneNumber(envConfig.getTwilioSmsFromNo());
+            return Message.creator(to,from,message).create();
+        } else {
+            throw new IllegalArgumentException(
+                    "Phone number [" + phoneNumber + "] is not a valid number"
+            );
+        }
+
+    }
+
+
+
+    public AgentResponse updateAgent(AgentRequest request) {
+        Optional<Agent> agent = agentRepository.findById(request.id());
+        if(agent!=null) {
+           Agent agentUp =  Agent.builder()
+                    .id(request.id())
+                    .firstName(request.firstName())
+                    .lastName(request.lastName())
+                    .email(request.email())
+                    .address(request.address())
+                    .cin(request.cin())
+                    .birthDate(request.birthDate())
+                    .commercialRn(request.commercialRn())
+                    .image(request.image())
+                    .password(request.password())
+                    .phoneNumber(request.phoneNumber())
+                    .isFirstLogin(false)
+                    .build();
+            return agentMapper.fromAgent(agentRepository.save(agentUp));
+
+        }else {
+            System.out.println("The Agent with the Id Given not exist in the database ");
+            return null;
+        }
+
     }
 
 
@@ -125,12 +180,6 @@ public class AdminService {
         Agent agent = agentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Agent not found with id: " + id));
         return agentMapper.fromAgent(agent);
-    }
-
-
-    public AgentResponse updateAgent(AgentRequest updateRequest) {
-
-        return null;
     }
 
 
