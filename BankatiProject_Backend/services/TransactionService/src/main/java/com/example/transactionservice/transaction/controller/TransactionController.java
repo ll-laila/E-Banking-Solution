@@ -64,16 +64,7 @@ public class TransactionController {
         return ResponseEntity.ok(cancelledTransaction);
     }
 
-    // Transférer de l’argent entre utilisateurs
-    @PostMapping("/transfer")
-    public ResponseEntity<Transaction> transferMoney(
-            @RequestParam String senderId,
-            @RequestParam String recipientId,
-            @RequestParam BigDecimal amount,
-            @RequestParam String currency) {
-        Transaction transaction = transactionService.transferMoney(senderId, recipientId, amount, currency);
-        return ResponseEntity.ok(transaction);
-    }
+
 
     @GetMapping("/history")
     public ResponseEntity<List<Transaction>> getTransactionHistory(

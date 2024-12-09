@@ -13,14 +13,14 @@ public class TransactionMapper {
         return Transaction.builder()
                 .id(request.id())
                 .amount(request.amount()) // Montant
-                .transactionMethod(request.transactionMethod()) // Méthode de transaction
                 .beneficiaryId(request.beneficiaryId()) // Bénéficiaire
                 .beneficiaryName(request.beneficiaryName())
                 .beneficiaryPhone(request.beneficiaryPhone())
                 .beneficiaryRole(request.beneficiaryRole())
                 .transactionType(request.transactionType()) // Type de transaction
                 .status(request.status()) // Statut de la transaction
-                .currency(request.currency()) // Devise
+                .senderCurrency(request.senderCurrency())
+                .beneficiaryCurrency(request.beneficiaryCurrency())// Devise
                 .validatedDate(request.validatedDate()) // Date de validation
                 .senderId(request.senderId())
                 .senderName(request.senderName())

@@ -38,10 +38,10 @@ public class TransactionService {
             TransactionConfirmation transactionConfirmation = new TransactionConfirmation(
                     request.id(), // ID de la transaction
                     request.amount(), // Montant de la transaction
-                    request.transactionMethod(), // Méthode de transaction
                     request.transactionType(), // Type de transaction
                     request.status(), // Statut de la transaction
-                    request.currency(), // Devise
+                    request.senderCurrency(),
+                    request.beneficiaryCurrency(),// Devise
                     request.beneficiaryName(),
                     request.beneficiaryPhone(),
                     request.senderName(),
@@ -80,30 +80,7 @@ public class TransactionService {
         transaction.setStatus(TransactionStatus.CANCELLED);
         return repository.save(transaction);
     }
-    public Transaction transferMoney(String senderId, String recipientId, BigDecimal amount, String currency) {
-        // Validation du montant
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant doit être supérieur à zéro.");
-        }
 
-        // Création de la transaction pour le transfert
-        Transaction transaction = Transaction.builder()
-                .amount(amount)
-                .transactionMethod(TransactionMethod.TRANSFER)
-                .transactionType(TransactionType.TRANSFER)
-                .status(TransactionStatus.PENDING)
-                .beneficiaryId(recipientId)
-                .senderId(senderId)
-                .currency(currency)
-                .build();
-
-        // Sauvegarde dans la base
-        transaction = repository.save(transaction);
-
-        // Simuler la confirmation (peut-être remplacé par une intégration bancaire)
-        transaction.setStatus(TransactionStatus.COMPLETED);
-        return repository.save(transaction);
-    }
     public List<Transaction> getTransactionHistory(String userId, LocalDateTime startDate, LocalDateTime endDate) {
         return repository.findBySenderIdAndCreatedDateBetween(userId, startDate, endDate);
     }
@@ -115,7 +92,6 @@ public class TransactionService {
         if (!transaction.getStatus().equals(TransactionStatus.FAILED)) {
             throw new IllegalStateException("Seules les transactions échouées peuvent être réessayées.");
         }
-
         // Simuler un nouvel essai de la transaction
         transaction.setStatus(TransactionStatus.PENDING);
         transaction = repository.save(transaction);

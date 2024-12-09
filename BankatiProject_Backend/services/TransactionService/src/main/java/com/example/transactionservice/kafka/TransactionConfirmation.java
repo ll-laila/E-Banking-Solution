@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 public record TransactionConfirmation(
         String transactionId, // ID unique de la transaction
         BigDecimal amount, // Montant
-        TransactionMethod transactionMethod, // Méthode de transaction
         TransactionType transactionType, // Type de transaction (paiement, transfert, etc.)
         TransactionStatus transactionStatus, // Statut de la transaction
-        String currency, // Devise utilisée
+        String beneficiaryCurrency, // Devise utilisée
+        String senderCurrency,
         String beneficiaryName,
         String beneficiaryPhone,
         String senderName,
