@@ -21,7 +21,7 @@ public class cmiService {
 
     private final DeviseService deviseService;
 
-    @GetMapping("/doTransaction")
+    @PostMapping("/doTransaction")
     public  ResponseEntity<CmiResponse> doTransaction(@RequestBody CmiRequest cmiRequest){
 
         WalletResponse walletSender = walletClient.getWalletByIdClient(cmiRequest.senderId()).getBody();

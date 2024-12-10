@@ -9,6 +9,7 @@
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/TransactionService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/User/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/VirtualCardService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/WalletCryptoService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/WalletService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/config-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/BankatiProject_Backend/services/discovery/src/main/java" charset="UTF-8" />

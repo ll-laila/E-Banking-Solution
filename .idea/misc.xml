@@ -20,6 +20,7 @@
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/NotificationService/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/VirtualCardService/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/WalletService/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/WalletCryptoService/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

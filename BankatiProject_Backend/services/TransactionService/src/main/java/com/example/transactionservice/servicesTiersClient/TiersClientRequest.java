@@ -3,10 +3,13 @@ package com.example.transactionservice.servicesTiersClient;
 import java.math.BigDecimal;
 
 public record TiersClientRequest(
-        String beneficiaryId,
-        String senderId,
-        BigDecimal amount,
+        String senderCurrency,
         String beneficiaryCurrency,
-        String senderCurrency
+        BigDecimal amount,
+        String senderId,
+        String beneficiaryId
+
+
+
 ) {
 }

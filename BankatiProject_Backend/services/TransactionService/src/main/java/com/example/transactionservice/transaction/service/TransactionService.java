@@ -31,16 +31,25 @@ public class TransactionService {
 
     public String createTransaction(TransactionRequest request) {
         TiersClientRequest tiersClientRequest = new TiersClientRequest(
-                request.beneficiaryId(),
-                request.senderId(),
-                request.amount(),
+                request.senderCurrency(),
                 request.beneficiaryCurrency(),
-                request.senderCurrency()
+                request.amount(),
+                request.senderId(),
+                request.beneficiaryId()
         );
-        TiersClientResponse response = servicesTiersClient.doTransaction(tiersClientRequest);
-        if (response.isValid() != null && !response.isValid()) {
-            throw new IllegalStateException("Transaction invalide selon le service tiers.");
+        // Appeler le service tiers
+        ResponseEntity<TiersClientResponse> responseEntity = servicesTiersClient.doTransaction(tiersClientRequest);
+
+        // Vérifier si le service tiers a répondu correctement
+        if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
+            TiersClientResponse response = responseEntity.getBody();
+            if (response.isValid() != null && !response.isValid()) {
+                throw new IllegalStateException("Transaction invalide selon le service tiers.");
+            }
+        } else {
+            throw new IllegalStateException("Échec de l'appel au service tiers.");
         }
+
         Transaction transaction = mapper.toTransaction(request);
         transaction = repository.save(transaction);
 
