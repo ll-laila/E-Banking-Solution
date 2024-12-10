@@ -1,8 +1,10 @@
 package com.example.servicestiers.walletClient;
 
 public record WalletRequest(
-        Long id,
+        String id,
         Double balance,
-        String clientId
+        String clientId,
+
+        BankAccountRequest bankAccountRequest
 ) {
 }

@@ -34,6 +34,7 @@ public class NotificationCustomer {
 
         //send sms
         String formattedPhoneNumber=formatPhoneNumber(transactionConfirmation.userPhone());
+        //add type trans
         String message = "Bonjour " +transactionConfirmation.userFirstname()+" "+transactionConfirmation.userLastname() +
                 "nous vous confirmons que votre transaction d'un montant de "+ transactionConfirmation.amount()+
            " "+transactionConfirmation.currency()+" a été "+ transactionConfirmation.transactionStatus();

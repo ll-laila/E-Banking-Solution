@@ -13,6 +13,7 @@ import com.example.user.users.response.AgentResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
+import com.example.user.walletClient.BankAccountRequest;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
 import com.twilio.exception.ApiException;
@@ -98,7 +99,9 @@ public class AdminService {
         var savedAgent = agentRepository.save(agent);
 
         // add wallet
-        WalletRequest wallet = new WalletRequest(null,1000D,savedAgent.getId(),"MAD");
+
+        BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
+        WalletRequest wallet = new WalletRequest(null,0D,savedAgent.getId(),"MAD",bankAccountRequest);
         var idWallet = walletClient.saveWallet(wallet);
 
         //twilio
