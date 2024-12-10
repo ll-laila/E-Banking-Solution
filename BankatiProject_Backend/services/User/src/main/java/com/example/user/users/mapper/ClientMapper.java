@@ -43,7 +43,8 @@ public class ClientMapper {
                 client.getLastName(),
                 client.getEmail(),
                 client.getPhoneNumber(),
-                client.getCreatedDate()
+                client.getCreatedDate(),
+                client.getTypeHissab()
         );
     }
 

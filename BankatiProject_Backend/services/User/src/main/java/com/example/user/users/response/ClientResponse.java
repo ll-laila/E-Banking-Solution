@@ -9,6 +9,7 @@ public record ClientResponse(
         String lastName,
         String email,
         String phoneNumber,
-        Date createdDate
+        Date createdDate,
+        String typeHissab
 ) {
 }

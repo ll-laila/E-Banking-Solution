@@ -54,8 +54,6 @@
   </style>
 </head>
 
-<body>
-
 <div class="header pb-8 pt-5 pt-md-8"></div>
 
 <div class="container-fluid mt--7">
@@ -72,11 +70,11 @@
 
         <div class="container-fluid">
           <div class="card border-0 shadow px-1 custom-card">
-            <form (submit)="createSubmit()">
+            <form  >
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                   <h2 class="card-title text-right Montserrat">Ouverture d'un compte de paiement</h2>
-                  <div type="button" [routerLink]="['/agent']">
+                  <div type="button" [routerLink]="['/client']">
                     <i class="fas fa-sign-out-alt"></i>
                   </div>
                 </div>
@@ -84,39 +82,105 @@
                 <div class="card-text py-2">
                   <div class="form-group">
                     <label for="product" class="Montserrat">Sélectionner le type de compte</label>
-                    <select class="form-control" id="product" name="product">
+                    <select class="form-control" id="product" name="product" [(ngModel)]="client.typeHissab">
                       <option value="hssab1">Hssab 1 - Plafond : 200 DH</option>
-                      <option value="hssab1">Hssab 2 - Plafond : 5000 DH</option>
-                      <option value="hssab1">Hssab 3 - Plafond : 20000 DH</option>
+                      <option value="hssab2">Hssab 2 - Plafond : 5000 DH</option>
+                      <option value="hssab3">Hssab 3 - Plafond : 20000 DH</option>
                     </select>
                   </div>
 
                   <!-- New section for Personal Information -->
-                  <h3 class="section-title Montserrat">Informations personnelles</h3>
+                  <h2 class="section-title Montserrat">Informations personnelles</h2>
                   <div class="section-divider"></div>
+                  <div class="form-section">
+                    <div class="row">
+                      <!-- First Name and Last Name on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="firstName">Prénom</label>
+                          <input type="text" class="form-control" id="firstName" [(ngModel)]="client.firstName" name="firstName">
+                        </div>
+                      </div>
 
-                  <div class="form-group">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="lastName">Nom</label>
+                          <input type="text" class="form-control" id="lastName" [(ngModel)]="client.lastName" name="lastName">
+                        </div>
+                      </div>
+                    </div>
 
-                    <label for="firstName" class="Montserrat">Nom *</label>
-                    <input type="text" class="form-control" id="firstName"  [(ngModel)]="client.lastName" name="firstName" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="lastName" class="Montserrat">Prénom *</label>
-                    <input type="text" class="form-control" id="lastName"  [(ngModel)]="client.firstName"  name="lastName" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="phoneNumber" class="Montserrat">Téléphone *</label>
-                    <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="client.phoneNumber"  name="phoneNumber" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="email" class="Montserrat">Email</label>
-                    <input type="email" class="form-control" id="email"  [(ngModel)]="client.email" name="email" required>
+                    <div class="row">
+                      <!-- Email and Address on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" [(ngModel)]="client.email" name="email">
+                        </div>
+                      </div>
 
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="address">Adresse</label>
+                          <input type="text" class="form-control" id="address" [(ngModel)]="client.address" name="address">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <!-- CIN and Birth Date on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="cin">CIN</label>
+                          <input type="text" class="form-control" id="cin" [(ngModel)]="client.cin" name="cin">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="birthDate">Date de naissance</label>
+                          <input type="date" class="form-control" id="birthDate" [(ngModel)]="client.birthDate" name="birthDate">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <!-- Phone Number and Commercial Number on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="phoneNumber">Numéro de téléphone</label>
+                          <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="client.phoneNumber" name="phoneNumber">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="commercialRn">Numéro commercial</label>
+                          <input type="text" class="form-control" id="commercialRn" [(ngModel)]="client.commercialRn" name="commercialRn">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <!-- Patent Number and Payment Account Checkbox on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="patentNumber">Numéro de patente</label>
+                          <input type="text" class="form-control" id="patentNumber" [(ngModel)]="client.patentNumber" name="patentNumber">
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="isPaymentAccountActivated">Compte activé</label>
+                          <input type="checkbox" id="isPaymentAccountActivated" [(ngModel)]="client.isPaymentAccountActivated" name="isPaymentAccountActivated">
+                        </div>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" (click)="createClient()">Sauvegarder</button>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-block mt-2">
-                  <span class="Montserrat">Créer nouveau service</span>
-                </button>
               </div>
             </form>
           </div>
@@ -126,7 +190,5 @@
   </div>
 </div>
 
-
-</body>
 
 </html>

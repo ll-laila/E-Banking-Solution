@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
@@ -75,22 +75,13 @@ public class UserController {
     private final ClientMapper clientMapper;
 
 
-    @PostMapping("/addClient")
+    @PostMapping("/client")
     public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
-        Client client = clientMapper.toClient(clientRequest);
-        Client savedClient = agentService.createClient(client);
-
-
-        if (savedClient != null) {
-            ClientResponse clientResponse = clientMapper.fromClient(savedClient);
-            return ResponseEntity.status(HttpStatus.CREATED).body(clientResponse); // Status 201
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Si une erreur survient
-        }
+        return ResponseEntity.ok(agentService.createClient(clientRequest));
     }
 
 
-    @GetMapping("/getClients")
+    @GetMapping("/client/allClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = agentService.getAllClients();
         List<ClientResponse> clientResponses = clients.stream()
@@ -100,7 +91,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/getClient/{id}")
+    @GetMapping("/client/{id}")
     public ResponseEntity<ClientResponse> getClientById(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 
@@ -108,7 +99,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PutMapping("/updateClient/{id}")
+    @PutMapping("/client/{id}")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable String id, @RequestBody ClientRequest clientRequest) {
         Optional<Client> existingClientOpt = agentService.getClientById(id);
 
@@ -126,7 +117,7 @@ public class UserController {
         return ResponseEntity.ok(clientResponse);
     }
 
-    @DeleteMapping("/deleteClient/{id}")
+    @DeleteMapping("/client/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 

@@ -37,6 +37,9 @@ public class Client {
     private String commercialRn;
     private String patentNumber ;
     private Boolean isPaymentAccountActivated ;
+    private String typeHissab;
+
+
 
 
 

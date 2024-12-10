@@ -98,7 +98,7 @@ public class AdminService {
         var savedAgent = agentRepository.save(agent);
 
         // add wallet
-        WalletRequest wallet = new WalletRequest(null,1000D,savedAgent.getId());
+        WalletRequest wallet = new WalletRequest(null,1000D,savedAgent.getId(),"MAD");
         var idWallet = walletClient.saveWallet(wallet);
 
         //twilio

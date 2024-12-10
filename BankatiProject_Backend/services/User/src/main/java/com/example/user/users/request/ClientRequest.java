@@ -17,7 +17,8 @@ public record ClientRequest(
         Date createdDate,
         String commercialRn,
         String patentNumber,
-        Boolean isPaymentAccountActivated
+        Boolean isPaymentAccountActivated,
+        String typeHissab
 ) {
     // You can add validation methods if necessary, but it's optional
 }
