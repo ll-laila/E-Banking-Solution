@@ -3,6 +3,9 @@ package com.example.transactionservice.transaction.service;
 
 import com.example.transactionservice.kafka.TransactionConfirmation;
 import com.example.transactionservice.kafka.TransactionProducer;
+import com.example.transactionservice.servicesTiersClient.ServicesTiersClient;
+import com.example.transactionservice.servicesTiersClient.TiersClientRequest;
+import com.example.transactionservice.servicesTiersClient.TiersClientResponse;
 import com.example.transactionservice.transaction.entity.Transaction;
 import com.example.transactionservice.transaction.entity.TransactionMethod;
 import com.example.transactionservice.transaction.entity.TransactionStatus;
@@ -11,6 +14,7 @@ import com.example.transactionservice.transaction.mapper.TransactionMapper;
 import com.example.transactionservice.transaction.repository.TransactionRepository;
 import com.example.transactionservice.transaction.request.TransactionRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,10 +27,24 @@ public class TransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
     private final TransactionProducer transactionProducer;
+    private final ServicesTiersClient servicesTiersClient;
 
     public String createTransaction(TransactionRequest request) {
+        TiersClientRequest tiersClientRequest = new TiersClientRequest(
+                request.beneficiaryId(),
+                request.senderId(),
+                request.amount(),
+                request.beneficiaryCurrency(),
+                request.senderCurrency()
+        );
+        TiersClientResponse response = servicesTiersClient.doTransaction(tiersClientRequest);
+        if (response.isValid() != null && !response.isValid()) {
+            throw new IllegalStateException("Transaction invalide selon le service tiers.");
+        }
         Transaction transaction = mapper.toTransaction(request);
         transaction = repository.save(transaction);
+
+
         System.out.println("Start sendTransactionNotification for {}"+ request);
         sendTransactionNotification(request);
         System.out.println("Start sendTransactionNotification for {}"+ request);
