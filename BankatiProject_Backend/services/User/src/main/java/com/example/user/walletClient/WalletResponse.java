@@ -5,7 +5,6 @@ public record WalletResponse(
         Double balance,
         String clientId,
 
-        String devise,
 
         BankAccountResponse bankAccountResponse
 

@@ -15,5 +15,6 @@ export interface IClient {
   patentNumber: string;
   isPaymentAccountActivated: boolean;
   typeHissab : string;
+  currency : string;
 }
 

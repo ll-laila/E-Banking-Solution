@@ -5,7 +5,6 @@ public record WalletRequest(
         Double balance,
         String clientId,
 
-        String devise,
         BankAccountRequest bankAccountRequest
 ) {
 }

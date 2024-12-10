@@ -10,6 +10,7 @@ public record ClientResponse(
         String email,
         String phoneNumber,
         Date createdDate,
-        String typeHissab
+        String typeHissab,
+        String currency
 ) {
 }

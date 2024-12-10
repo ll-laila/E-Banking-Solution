@@ -38,9 +38,6 @@ public class Client {
     private String patentNumber ;
     private Boolean isPaymentAccountActivated ;
     private String typeHissab;
-
-
-
-
+    private String currency;
 
 }

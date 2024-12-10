@@ -178,6 +178,18 @@
                       </div>
                     </div>
 
+                    <div class="row">
+                      <!-- Patent Number and Payment Account Checkbox on the same line -->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="patentNumber">Numéro de patente</label>
+                          <input type="text" class="form-control" id="currency" [(ngModel)]="client.currency" name="patentNumber">
+                        </div>
+                      </div>
+
+
+                    </div>
+
                     <button type="submit" class="btn btn-primary" (click)="createClient()">Sauvegarder</button>
                   </div>
                 </div>

@@ -44,7 +44,8 @@ public class ClientMapper {
                 client.getEmail(),
                 client.getPhoneNumber(),
                 client.getCreatedDate(),
-                client.getTypeHissab()
+                client.getTypeHissab(),
+                client.getCurrency()
         );
     }
 

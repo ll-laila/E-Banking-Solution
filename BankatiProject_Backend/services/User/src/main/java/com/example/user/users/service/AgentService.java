@@ -9,6 +9,7 @@ import com.example.user.users.response.ClientResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
+import com.example.user.walletClient.BankAccountRequest;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
 import com.twilio.rest.api.v2010.account.Message;
@@ -121,7 +122,9 @@ public class AgentService {
         var savedClient = clientRepository.save(client);
 
         // add wallet
-        WalletRequest wallet = new WalletRequest(null,1000D,savedClient.getId(),"MAD");
+        BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
+
+        WalletRequest wallet = new WalletRequest(null,1000D,savedClient.getId(),bankAccountRequest);
         var idWallet = walletClient.saveWallet(wallet);
 
 
