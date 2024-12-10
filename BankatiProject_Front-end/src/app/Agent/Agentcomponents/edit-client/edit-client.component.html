@@ -1,14 +1,12 @@
-<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);
-" >
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
 </div>
 <div class="container-fluid mt--7">
-  <!-- Dark table -->
   <div class="row mt-2">
     <div class="col">
       <div class="table-responsive">
         <div class="container-fluid">
           <div class="card border-0 shadow px-1">
-            <form >
+            <form > <!-- Handle form submission -->
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                   <h2 class="card-title text-right Montserrat" style="color:#e37431; margin-bottom: 0;">Informations personnelles</h2>
@@ -20,50 +18,98 @@
                 <hr style="color:#6415FF" />
                 <div class="card-text py-2">
                   <div class="row g-2 mb-4">
+                    <!-- First Name -->
                     <div class="form-floating col-md-4">
                       <label for="firstName" class="Montserrat" style="color:#2f3a8a">Prénom *</label>
-                      <input type="text" class="form-control" [(ngModel)]="client.firstName" name="firstName" [value]="client.firstName" id="firstName" placeholder="First Name" style="border-radius:20px; background-color:#F8F8F8" />
-
+                      <input type="text" class="form-control" [(ngModel)]="client.firstName" name="firstName" id="firstName" placeholder="First Name" style="border-radius:20px; background-color:#F8F8F8" required />
                     </div>
+                    <!-- Last Name -->
                     <div class="form-floating col-md-4">
                       <label for="lastName" class="Montserrat" style="color:#2f3a8a">Nom *</label>
-                      <input type="text" class="form-control" [(ngModel)]="client.lastName" name="lastName" [value]="client.lastName" id="lastName" placeholder="Last Name" style="border-radius:20px; background-color:#F8F8F8" />
+                      <input type="text" class="form-control" [(ngModel)]="client.lastName" name="lastName" id="lastName" placeholder="Last Name" style="border-radius:20px; background-color:#F8F8F8" required />
                     </div>
                   </div>
+
                   <div class="row g-2 mb-4 mt-10">
-                    <div class="form-group">
-                      <label for="product" class="Montserrat">Sélectionner le type de compte</label>
-                      <select class="form-control" id="product" name="product">
-                        <option value="hssab1">Hssab 1 - Plafond : 200 DH</option>
-                        <option value="hssab1">Hssab 2 - Plafond : 5000 DH</option>
-                        <option value="hssab1">Hssab 3 - Plafond : 20000 DH</option>
-                      </select>
-                    </div>
-
-
+                    <!-- Email -->
                     <div class="form-floating col-md-6">
                       <label for="email" class="Montserrat" style="color:#2f3a8a">Email *</label>
-                      <input type="email" class="form-control" [(ngModel)]="client.email" name="email" [value]="client.email" id="email" placeholder="Email" style="border-radius:20px; background-color:#F8F8F8" required />
+                      <input type="email" class="form-control" [(ngModel)]="client.email" name="email" id="email" placeholder="Email" style="border-radius:20px; background-color:#F8F8F8" required />
                     </div>
-                  </div>
-                  <div class="row g-2 mb-4">
-                    <div class="form-floating col-md-4">
+                    <!-- Phone Number -->
+                    <div class="form-floating col-md-6">
                       <label for="phoneNumber" class="Montserrat" style="color:#2f3a8a">N° téléphone *</label>
-                      <input type="text" class="form-control" [(ngModel)]="client.phoneNumber" name="phoneNumber" [value]="client.phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#F8F8F8" required />
+                      <input type="text" class="form-control" [(ngModel)]="client.phoneNumber" name="phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#F8F8F8" required />
                     </div>
                   </div>
+
+                  <div class="row g-2 mb-4">
+                    <!-- Address -->
+                    <div class="form-floating col-md-6">
+                      <label for="address" class="Montserrat" style="color:#2f3a8a">Adresse *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.address" name="address" id="address" placeholder="Address" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                    <!-- CIN -->
+                    <div class="form-floating col-md-6">
+                      <label for="cin" class="Montserrat" style="color:#2f3a8a">CIN *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.cin" name="cin" id="cin" placeholder="CIN" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+
+                  <div class="row g-2 mb-4">
+                    <!-- Birth Date -->
+                    <div class="form-floating col-md-6">
+                      <label for="birthDate" class="Montserrat" style="color:#2f3a8a">Date de naissance *</label>
+                      <input type="date" class="form-control" [(ngModel)]="client.birthDate" name="birthDate" id="birthDate" placeholder="Date de naissance" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                    <div class="form-floating col-md-6">
+                      <label for="createdDate" class="Montserrat" style="color:#2f3a8a">Date de création *</label>
+                      <input type="date" class="form-control" [(ngModel)]="client.createdDate" name="createdDate" id="createdDate" placeholder="Date de création" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+
+                  <div class="row g-2 mb-4">
+                    <!-- Commercial Registration Number -->
+                    <div class="form-floating col-md-6">
+                      <label for="commercialRn" class="Montserrat" style="color:#2f3a8a">Numéro d'enregistrement commercial *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.commercialRn" name="commercialRn" id="commercialRn" placeholder="Numéro d'enregistrement commercial" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                    <!-- Patent Number -->
+                    <div class="form-floating col-md-6">
+                      <label for="patentNumber" class="Montserrat" style="color:#2f3a8a">Numéro de patente *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.patentNumber" name="patentNumber" id="patentNumber" placeholder="Numéro de patente" style="border-radius:20px; background-color:#F8F8F8" required />
+                    </div>
+                  </div>
+
+                  <div class="row g-2 mb-4">
+                    <!-- First Login -->
+                    <div class="form-floating col-md-6">
+                      <label for="isFirstLogin" class="Montserrat" style="color:#2f3a8a">Premier login *</label>
+                      <select class="form-control" [(ngModel)]="client.isFirstLogin" name="isFirstLogin" id="isFirstLogin" style="border-radius:20px; background-color:#F8F8F8" required>
+                        <option [ngValue]="true">Oui</option>
+                        <option [ngValue]="false">Non</option>
+                      </select>
+                    </div>
+                    <!-- Payment Account Activated -->
+                    <div class="form-floating col-md-6">
+                      <label for="isPaymentAccountActivated" class="Montserrat" style="color:#2f3a8a">Compte de paiement activé *</label>
+                      <select class="form-control" [(ngModel)]="client.isPaymentAccountActivated" name="isPaymentAccountActivated" id="isPaymentAccountActivated" style="border-radius:20px; background-color:#F8F8F8" required>
+                        <option [ngValue]="true">Oui</option>
+                        <option [ngValue]="false">Non</option>
+                      </select>
+                    </div>
+                  </div>
+
                 </div>
-                <button  class="btn btn-block py-2 container-fluid " type="submit"
-                         style="background-color:#e37431; color:#fff; border-radius:20px; cursor:pointer" >
-                  <span class='Montserrat' style="color:white">Modifier client</span></button>
+
+                <button class="btn btn-block py-2 container-fluid" type="submit" style="background-color:#d3f2fa; color:#fff; border-radius:20px; cursor:pointer">
+                  <span class="Montserrat" style="color:white">Modifier client</span>
+                </button>
               </div>
             </form>
-
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 </div>

@@ -3,7 +3,7 @@
     <div class="row align-items-center">
       <div class="col-md-3 col-sm-6">
         <div class="mt-3">
-          <button class="btn btn-primary" (click)="addClient()">Ajouter agent</button>
+          <button class="btn btn-primary" [routerLink]="'/add-client' ">Ajouter agent</button>
         </div>
       </div>
       <div class="col-md-9 col-sm-6 d-flex justify-content-end">
@@ -45,13 +45,17 @@
             <tbody>
             <tr *ngFor="let client of clients" class="align-middle">
               <th scope="row">{{ client.firstName }}</th>
-              <td [hidden]="true">{{ client.id }}</td>
+              <td [hidden]="true" id="id" name = "id">{{ client.id }}</td>
               <td>{{ client.lastName }}</td>
               <td>{{ client.email }}</td>
               <td>{{ client.phoneNumber }}</td>
               <td class="text-right">
                 <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-sm btn-icon-only text-light" title="supprimer" (click)="deleteClient(agent.id)">
+                  <button type="button" class="btn btn-sm btn-icon-only text-light" title="View Details" [routerLink]="['/edit-client', client.id]">
+                    <i class="fas fa-eye"></i>
+                  </button>
+
+                  <button type="button" class="btn btn-sm btn-icon-only text-light" title="supprimer" (click)="deleteClient(client.id)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>

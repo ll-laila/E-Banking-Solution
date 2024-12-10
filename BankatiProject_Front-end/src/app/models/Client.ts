@@ -1,8 +1,20 @@
 export interface IClient {
-    id?: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    agentId: number;
+  id: string;
+  agentId: string;
+  firstName: string;
+  lastName: string;
+  email: string
+  address: string;
+  cin: string;
+  birthDate: Date;
+  phoneNumber: string;
+  password?: string;  // Optional, depending on your use case
+  isFirstLogin: boolean;
+  createdDate: Date;
+  commercialRn: string;
+  patentNumber: string;
+  isPaymentAccountActivated: boolean;
+  typeHissab : string;
+  currency : string;
 }
+

@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {AgentComponentsModule} from "../Agentcomponents/AgentComponents.module";
-import {RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {AuthenticationService} from "../../service/authentication.service";
+import {IClient} from "../../models/Client";
+import {IAgent} from "../../models/Agent";
+import {ClientService} from "../../service/client.service";
+import {AgentService} from "../../service/agent.service";
+import {SharedInfosService} from "../../service/shared-infos.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-admin-layout',
@@ -13,15 +19,17 @@ import {AuthenticationService} from "../../service/authentication.service";
   ],
   styleUrls: ['./agent-dash.component.scss']
 })
-export class AgentDashComponent implements OnInit {
+export class AgentDashComponent implements OnInit{
 
-  //isAgent: boolean = false;
+  public agent: IAgent = {} as IAgent;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(private agentService: AgentService, private router: Router, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
-   /* this.isAgent = this.authService.isAgent();
-    console.log('isAgent:', this.isAgent);*/
   }
+
+
+
+
 
 }
