@@ -97,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "argon-dashboard-angular:build"
+            "browserTarget": "argon-dashboard-angular:build"
           }
         },
         "test": {
