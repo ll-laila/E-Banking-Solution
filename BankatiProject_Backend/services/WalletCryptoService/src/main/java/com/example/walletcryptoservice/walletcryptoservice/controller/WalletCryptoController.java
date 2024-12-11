@@ -1,5 +1,6 @@
 package com.example.walletcryptoservice.walletcryptoservice.controller;
 
+import com.example.walletcryptoservice.walletcryptoservice.request.WalletCryptoRequest;
 import com.example.walletcryptoservice.walletcryptoservice.response.TransactionResponse;
 import com.example.walletcryptoservice.walletcryptoservice.response.WalletCryptoResponse;
 import com.example.walletcryptoservice.walletcryptoservice.service.CryptoWalletService;
@@ -18,6 +19,11 @@ public class WalletCryptoController {
     @Autowired
     private CryptoWalletService walletService;
 
+    @PostMapping("/addWalletCrypro")
+    public ResponseEntity<String> saveWalletCrypto(@RequestBody WalletCryptoRequest wallet){
+        return ResponseEntity.ok(walletService.saveWalletCrypto(wallet));
+    }
+
 
     @GetMapping("/{userId}")
     public ResponseEntity<WalletCryptoResponse> getWalletByUserId(@PathVariable String userId) {
@@ -27,42 +33,23 @@ public class WalletCryptoController {
 
 
     @PostMapping("/buy")
-    public ResponseEntity<String> buyCrypto(@RequestParam String userBuyId,@RequestParam String userSendId, @RequestParam String cryptoName, @RequestParam double amount) {
-        walletService.buyCrypto(userBuyId,userSendId, cryptoName, amount);
-        return ResponseEntity.ok("Crypto achetée avec succès.");
-    }
-
-
-    @PostMapping("/setToSell")
-    public ResponseEntity<String> setCryptosToSell(@RequestParam String userId, @RequestBody Map<String, Double> cryptosToSell) {
-        walletService.setCryptosToSell(userId, cryptosToSell);
-        return ResponseEntity.ok("Les cryptos à vendre ont été mises à jour avec succès.");
-    }
-
-
-
-    @PostMapping("/transferCryptoToMoney")
-    public ResponseEntity<String> transferCryptoToMoney(
-            @RequestParam String userId,
-            @RequestParam String cryptoName,
-            @RequestParam double amount) {
+    public String buyCrypto(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount) {
         try {
-            walletService.transferCryptoToClassicalMoney(userId,cryptoName,amount);
-            return ResponseEntity.ok("Opération réussite");
+            return walletService.buyCrypto(userId, cryptoName, amount);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return null;
         }
     }
 
 
-
-    @GetMapping("/allCryptosToSell")
-    public ResponseEntity<Map<String, Map<String, Double>>> getCryptosToSell() {
-        Map<String, Map<String, Double>> cryptosToSell = walletService.getCryptosToSell();
-        return ResponseEntity.ok(cryptosToSell);
+    @PostMapping("/sell")
+    public String sellCrypto(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount) {
+        try {
+            return walletService.sellCrypto(userId, cryptoName, amount);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
-
-
 
 
     @GetMapping("/allTransaction/{idUser}")
@@ -70,6 +57,20 @@ public class WalletCryptoController {
         return ResponseEntity.ok(walletService.findAllUserTransactions(idUser));
     }
 
+
+
+    @PostMapping("/transferCryptoToMoney")
+    public String transferCryptoToMoney(
+            @RequestParam String userId,
+            @RequestParam String cryptoName,
+            @RequestParam double amount) {
+        try {
+            walletService.transferCryptoToClassicalMoney(userId,cryptoName,amount);
+            return "Opération réussite";
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 
 
 

@@ -14,7 +14,8 @@ public record AgentRequest (
         String image,
         String password,
         String phoneNumber,
-        boolean isFirstLogin
+        boolean isFirstLogin,
+        String currency
 ){
 }
 

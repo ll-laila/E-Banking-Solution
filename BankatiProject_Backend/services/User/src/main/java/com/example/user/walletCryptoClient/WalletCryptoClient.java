@@ -13,36 +13,32 @@ import java.util.Map;
 )
 public interface WalletCryptoClient {
 
+    @PostMapping("/addWalletCrypro")
+    public ResponseEntity<String> saveWalletCrypto(@RequestBody WalletCryptoRequest wallet);
 
     @GetMapping("/{userId}")
     public ResponseEntity<WalletCryptoResponse> getWalletByUserId(@PathVariable String userId);
 
 
     @PostMapping("/buy")
-    public ResponseEntity<String> buyCrypto(@RequestParam String userBuyId, @RequestParam String userSendId, @RequestParam String cryptoName, @RequestParam double amount);
+    public String buyCrypto(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount);
 
 
+    @PostMapping("/sell")
+    public String sellCrypto(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount);
 
-    @PostMapping("/setToSell")
-    public ResponseEntity<String> setCryptosToSell(@RequestParam String userId, @RequestBody Map<String, Double> cryptosToSell);
 
+    @GetMapping("/allTransaction/{idUser}")
+    public ResponseEntity<List<TransactionResponse>> getUserTransaction(@PathVariable("idUser") String idUser);
 
 
     @PostMapping("/transferCryptoToMoney")
-    public ResponseEntity<String> transferCryptoToMoney(
+    public String transferCryptoToMoney(
             @RequestParam String userId,
             @RequestParam String cryptoName,
             @RequestParam double amount);
 
 
 
-
-    @GetMapping("/allCryptosToSell")
-    public ResponseEntity<Map<String, Map<String, Double>>> getCryptosToSell();
-
-
-
-    @GetMapping("/allTransaction/{idUser}")
-    public ResponseEntity<List<TransactionResponse>> getUserTransaction(@PathVariable("idUser") String idUser);
 
 }

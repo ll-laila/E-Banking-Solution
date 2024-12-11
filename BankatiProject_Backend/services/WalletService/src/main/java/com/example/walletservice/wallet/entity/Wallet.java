@@ -15,7 +15,8 @@ public class Wallet {
     private String id;
     private Double balance;
     private String clientId;
+    private String bankAccountId;
 
-    @DBRef
-    private BankAccount bankAccount;
+  //  @DBRef
+  //  private BankAccount bankAccount;
 }

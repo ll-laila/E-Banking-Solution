@@ -10,12 +10,16 @@ import com.example.user.users.response.AgentResponse;
 import com.example.user.users.response.ClientResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
+import com.example.user.walletCryptoClient.TransactionResponse;
+import com.example.user.walletCryptoClient.WalletCryptoClient;
+import com.example.user.walletCryptoClient.WalletCryptoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -134,10 +138,45 @@ public class UserController {
     //--------------------------------------Client-----------------------------------//
 
     //-------------------------laila-------------------------//
-       // laila here
+    @Autowired
+    private WalletCryptoClient walletCryptoClient;
+
+    @GetMapping("/walletCrypto/{userId}")
+    public ResponseEntity<WalletCryptoResponse> getUserWalletCrypto(@PathVariable String userId){
+        return  ResponseEntity.ok(walletCryptoClient.getWalletByUserId(userId).getBody());
+    }
+
+    @PostMapping("/buyCryptos")
+    public ResponseEntity<String> buyCryptos(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount){
+        return  ResponseEntity.ok(walletCryptoClient.buyCrypto(userId,cryptoName,amount));
+    }
+
+    @PostMapping("/setCryptosToSell")
+    public ResponseEntity<String> setCryptosToSell(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount){
+        return  ResponseEntity.ok(walletCryptoClient.sellCrypto(userId,cryptoName,amount));
+    }
 
 
-    
+    @GetMapping("/allTransCrypro/{idUser}")
+    public ResponseEntity<List<TransactionResponse>> getUserTransaction(@PathVariable("idUser") String idUser){
+        return  ResponseEntity.ok(walletCryptoClient.getUserTransaction(idUser).getBody());
+    }
+
+    @PostMapping("/transferCryptosToMoney")
+    public ResponseEntity<String> transferCryptosToMoney(
+            @RequestParam String userId,
+            @RequestParam String cryptoName,
+            @RequestParam double amount){
+        return ResponseEntity.ok(walletCryptoClient.transferCryptoToMoney(userId,cryptoName,amount));
+    }
+
+
+
+
+
+
+
+
 
     //-------------------------chaima-------------------------//
         // chaima here

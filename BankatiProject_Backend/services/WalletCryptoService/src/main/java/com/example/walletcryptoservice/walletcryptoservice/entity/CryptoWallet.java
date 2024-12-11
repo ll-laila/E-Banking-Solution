@@ -18,6 +18,5 @@ public class CryptoWallet {
     @Id
     private String id;
     private String userId;
-    private Map<String, Double> cryptos = new HashMap<>(); // {cryptoName: amount}
-    private Map<String, Double> cryptosToSell = new HashMap<>(); // {cryptoName: amount}
+    private Map<String, Double> cryptos = new HashMap<>();
 }

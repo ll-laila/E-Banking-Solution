@@ -8,6 +8,5 @@ import java.util.Map;
 public record WalletCryptoResponse(
         String id,
         String userId,
-        Map<String, Double> cryptos,
-        Map<String, Double> cryptosToSell
+        Map<String, Double> cryptos
 ) {}

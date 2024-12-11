@@ -4,6 +4,6 @@ public record Wallet(
         String id,
         Double balance,
         String clientId,
-        BankAccount bankAccount
+        String bankAccountId
 ) {
 }

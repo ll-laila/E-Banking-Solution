@@ -26,6 +26,7 @@ public class AgentMapper {
                 .password(request.password())
                 .phoneNumber(request.phoneNumber())
                 .isFirstLogin(request.isFirstLogin())
+                .currency(request.currency())
                 .build();
 
     }
@@ -44,7 +45,8 @@ public class AgentMapper {
                 agent.getImage(),
                 agent.getPassword(),
                 agent.getPhoneNumber(),
-                agent.isFirstLogin()
+                agent.isFirstLogin(),
+                agent.getCurrency()
         );
 
 

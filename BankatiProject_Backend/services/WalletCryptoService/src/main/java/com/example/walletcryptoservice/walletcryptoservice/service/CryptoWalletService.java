@@ -1,5 +1,6 @@
 package com.example.walletcryptoservice.walletcryptoservice.service;
 
+import com.example.walletcryptoservice.walletClient.BankAccount;
 import com.example.walletcryptoservice.walletClient.WalletClient;
 import com.example.walletcryptoservice.walletClient.Wallet;
 import com.example.walletcryptoservice.walletcryptoservice.entity.CryptoWallet;
@@ -7,15 +8,17 @@ import com.example.walletcryptoservice.walletcryptoservice.entity.Transaction;
 import com.example.walletcryptoservice.walletcryptoservice.mapper.TransactionMapper;
 import com.example.walletcryptoservice.walletcryptoservice.repository.CryptoWalletRepository;
 import com.example.walletcryptoservice.walletcryptoservice.repository.TransactionRepository;
+import com.example.walletcryptoservice.walletcryptoservice.request.WalletCryptoRequest;
 import com.example.walletcryptoservice.walletcryptoservice.response.TransactionResponse;
 import com.example.walletcryptoservice.walletcryptoservice.response.WalletCryptoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+
+
 
 @Service
 public class CryptoWalletService {
@@ -35,65 +38,105 @@ public class CryptoWalletService {
     @Autowired
     private TransactionMapper transactionMapper;
 
-    public void buyCrypto(String userBuyId, String userSenderId, String cryptoName, double amount) {
+
+    public String saveWalletCrypto(WalletCryptoRequest walletRequest) {
+        CryptoWallet cryptoWallet = new CryptoWallet(null,walletRequest.userId(),walletRequest.cryptos());
+        var walletSaved = walletRepository.save(cryptoWallet);
+        return walletSaved.getId();
+    }
+
+    @Transactional
+    public String buyCrypto(String userId, String cryptoName, double quantity) {
         double price = cryptoService.getCryptoPrice(cryptoName);
-        CryptoWallet wallet = walletRepository.findByUserId(userBuyId);
-        CryptoWallet walletSender = walletRepository.findByUserId(userSenderId);
+        CryptoWallet wallet = walletRepository.findByUserId(userId);
 
         if (wallet == null) {
             wallet = new CryptoWallet();
-            wallet.setUserId(userBuyId);
-        }
-        if (walletSender == null) {
-            walletSender = new CryptoWallet();
-            walletSender.setUserId(userSenderId);
+            wallet.setUserId(userId);
         }
 
-        double totaClost = price * amount;
+        //from USD to DH
+        double totaClost = price * quantity * 10.00;
 
-        wallet.getCryptos().put(cryptoName, wallet.getCryptos().get(cryptoName) + amount);
+
+        wallet.getCryptos().put(cryptoName, wallet.getCryptos().getOrDefault(cryptoName,0.0) + quantity);
+
+        Wallet walletToUpdated = walletClient.getWalletByIdClient(userId).getBody();
+        Wallet walletUpdate = new Wallet(walletToUpdated.id(),walletToUpdated.balance()-totaClost,walletToUpdated.clientId(),walletToUpdated.bankAccountId());
+        walletClient.updateWallet(walletUpdate);
         walletRepository.save(wallet);
 
-        walletSender.getCryptosToSell().put(cryptoName, walletSender.getCryptosToSell().get(cryptoName) - amount);
-        walletRepository.save(walletSender);
-
         Transaction transaction = new Transaction();
-        transaction.setUserBuyId(userBuyId);
-        transaction.setUserSendId(userSenderId);
+        transaction.setUserBuyId(userId);
         transaction.setCryptoName(cryptoName);
-        transaction.setAmount(amount);
+        transaction.setAmount(quantity);
         transaction.setPrice(totaClost);
-        transaction.setTransactionType("BUY");
+        transaction.setTransactionType("ACHAT");
         transaction.setTimestamp(LocalDateTime.now());
-        transactionRepository.save(transaction);
+        return  transactionRepository.save(transaction).getId();
+
     }
 
 
 
 
-
-    public void setCryptosToSell(String userId, Map<String, Double> cryptosToSell) {
+    @Transactional
+    public String sellCrypto(String userId, String cryptoName, double quantity) {
+        double price = cryptoService.getCryptoPrice(cryptoName);
         CryptoWallet wallet = walletRepository.findByUserId(userId);
 
         if (wallet == null) {
-            throw new IllegalArgumentException("Wallet not found for user: " + userId);
+            wallet = new CryptoWallet();
+            wallet.setUserId(userId);
         }
 
-        // Validation : Vérifiez que l'utilisateur ne vend pas plus qu'il ne possède
-        for (Map.Entry<String, Double> entry : cryptosToSell.entrySet()) {
-            String cryptoName = entry.getKey();
-            double amountToSell = entry.getValue();
+        //from USD to DH
+        double totaClost = price * quantity * 10.00;
 
-            double availableAmount = wallet.getCryptos().getOrDefault(cryptoName, 0.0);
-            if (amountToSell > availableAmount) {
-                throw new IllegalArgumentException(
-                        String.format("Cannot sell %f %s. Available: %f.", amountToSell, cryptoName, availableAmount)
-                );
-            }
-        }
+        wallet.getCryptos().put(cryptoName, wallet.getCryptos().getOrDefault(cryptoName,0.0) - quantity);
 
-        wallet.setCryptosToSell(cryptosToSell);
+
+        Wallet walletToUpdated = walletClient.getWalletByIdClient(userId).getBody();
+        Wallet walletSenderUpdate = new Wallet(walletToUpdated.id(),walletToUpdated.balance()-totaClost,walletToUpdated.clientId(),walletToUpdated.bankAccountId());
+        walletClient.updateWallet(walletSenderUpdate);
         walletRepository.save(wallet);
+
+        Transaction transaction = new Transaction();
+        transaction.setUserBuyId(userId);
+        transaction.setCryptoName(cryptoName);
+        transaction.setAmount(quantity);
+        transaction.setPrice(totaClost);
+        transaction.setTransactionType("VENTE");
+        transaction.setTimestamp(LocalDateTime.now());
+        return  transactionRepository.save(transaction).getId();
+
+    }
+
+
+
+    public WalletCryptoResponse getWalletByUserId(String userId) {
+        CryptoWallet wallet = walletRepository.findByUserId(userId);
+
+        if (wallet == null) {
+            throw new RuntimeException("Wallet not found for userId: " + userId);
+        }
+
+        return WalletCryptoResponse.builder()
+                .id(wallet.getId())
+                .userId(wallet.getUserId())
+                .cryptos(wallet.getCryptos())
+                .build();
+    }
+
+
+
+
+    public List<TransactionResponse> findAllUserTransactions(String userId) {
+        return transactionRepository.findAll()
+                .stream()
+                .filter(transaction -> userId.equals(transaction.getUserBuyId()))
+                .map(transactionMapper::fromTransaction)
+                .collect(Collectors.toList());
     }
 
 
@@ -113,7 +156,7 @@ public class CryptoWalletService {
 
 
         double cryptoPrice = cryptoService.getCryptoPrice(cryptoName);
-        double valueInClassicalMoney = amount * cryptoPrice;
+        double valueInClassicalMoney = amount * cryptoPrice * 10.00;   // to DH
 
 
         Wallet classicalWallet = walletClient.getWalletByIdClient(userId).getBody();
@@ -126,12 +169,11 @@ public class CryptoWalletService {
                 classicalWallet.id(),
                 classicalWallet.balance() + valueInClassicalMoney,
                 classicalWallet.clientId(),
-                classicalWallet.bankAccount()
+                classicalWallet.bankAccountId()
         );
 
 
-        walletClient.saveWallet(updatedWallet);
-
+        walletClient.updateWallet(updatedWallet);
 
         cryptoWallet.getCryptos().put(cryptoName, availableCrypto - amount);
         walletRepository.save(cryptoWallet);
@@ -142,54 +184,13 @@ public class CryptoWalletService {
         transaction.setUserBuyId(userId);
         transaction.setCryptoName(cryptoName);
         transaction.setAmount(amount);
-        transaction.setPrice(cryptoPrice);
+        transaction.setPrice(valueInClassicalMoney);
         transaction.setTransactionType("TRANSFER DU CRYPTO À L'ARGENT");
         transaction.setTimestamp(LocalDateTime.now());
         transactionRepository.save(transaction);
 
     }
 
-
-
-    public Map<String, Map<String, Double>> getCryptosToSell() {
-        List<CryptoWallet> wallets = walletRepository.findAll();
-        Map<String, Map<String, Double>> cryptosToSell = new HashMap<>();
-
-        for (CryptoWallet wallet : wallets) {
-            if (!wallet.getCryptosToSell().isEmpty()) {
-                cryptosToSell.put(wallet.getUserId(), new HashMap<>(wallet.getCryptosToSell()));
-            }
-        }
-        return cryptosToSell;
-    }
-
-
-
-    public List<TransactionResponse> findAllUserTransactions(String userId) {
-        return transactionRepository.findAll()
-                .stream()
-                .filter(transaction -> userId.equals(transaction.getUserBuyId()) || userId.equals(transaction.getUserSendId()))
-                .map(transactionMapper::fromTransaction)
-                .collect(Collectors.toList());
-    }
-
-
-
-
-    public WalletCryptoResponse getWalletByUserId(String userId) {
-        CryptoWallet wallet = walletRepository.findByUserId(userId);
-
-        if (wallet == null) {
-            throw new RuntimeException("Wallet not found for userId: " + userId);
-        }
-
-        return WalletCryptoResponse.builder()
-                .id(wallet.getId())
-                .userId(wallet.getUserId())
-                .cryptos(wallet.getCryptos())
-                .cryptosToSell(wallet.getCryptosToSell())
-                .build();
-    }
 
 
 }

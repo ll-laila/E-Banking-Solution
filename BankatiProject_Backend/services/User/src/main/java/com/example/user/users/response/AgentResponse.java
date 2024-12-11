@@ -17,5 +17,6 @@ public record AgentResponse (
         String image,
         String password,
         String phoneNumber,
-        boolean isFirstLogin
+        boolean isFirstLogin,
+        String currency
 ){}

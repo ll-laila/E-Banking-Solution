@@ -13,7 +13,6 @@ public class TransactionMapper {
         return new TransactionResponse(
                 transaction.getId(),
                 transaction.getUserBuyId(),
-                transaction.getUserSendId(),
                 transaction.getCryptoName(),
                 transaction.getAmount(),
                 transaction.getPrice(),

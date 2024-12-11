@@ -25,4 +25,11 @@ public interface WalletClient {
     public ResponseEntity<WalletResponse> updateWallet(@RequestBody WalletRequest walletRequest);
 
 
+    @GetMapping("/getBankAccount/{bankAccountId}")
+    public ResponseEntity<BankAccountResponse> getBankAccount(@PathVariable("bankAccountId") String bankAccountId);
+
+
+    @PutMapping("/updateBankAccount")
+    public String updateBankAccount(@RequestBody BankAccountResponse bankAccountRequest);
+
 }

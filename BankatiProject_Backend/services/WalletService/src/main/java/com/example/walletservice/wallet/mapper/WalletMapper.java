@@ -16,24 +16,22 @@ public class WalletMapper {
             return null;
         }
 
-        BankAccount bankAccount = new BankAccount(request.bankAccountRequest().id(),request.bankAccountRequest().solde());
 
         return Wallet.builder()
                 .id(request.id())
                 .balance(request.balance())
                 .clientId(request.clientId())
-                .bankAccount(bankAccount)
+                .bankAccountId(request.bankAccountId())
                 .build();
     }
 
     public WalletResponse fromWallet(Wallet wallet) {
 
-        BankAccountResponse bankAccountResponse = new BankAccountResponse(wallet.getBankAccount().getId(),wallet.getBankAccount().getSolde());
         return new WalletResponse(
                 wallet.getId(),
                 wallet.getBalance(),
                 wallet.getClientId(),
-                bankAccountResponse
+                wallet.getBankAccountId()
         );
     }
 

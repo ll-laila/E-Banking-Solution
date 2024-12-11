@@ -6,7 +6,9 @@ import com.example.walletservice.wallet.mapper.BankAccountMapper;
 import com.example.walletservice.wallet.mapper.WalletMapper;
 import com.example.walletservice.wallet.repository.BankAccountRepository;
 import com.example.walletservice.wallet.repository.WalletRepository;
+import com.example.walletservice.wallet.request.BankAccountRequest;
 import com.example.walletservice.wallet.request.WalletRequest;
+import com.example.walletservice.wallet.response.BankAccountResponse;
 import com.example.walletservice.wallet.response.WalletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,15 @@ public class WalletService {
     @Autowired
     private WalletMapper walletMapper;
 
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
+
 
     public String saveWallet(WalletRequest walletRequest) {
-        BankAccount bankAccount = new BankAccount(null,walletRequest.bankAccountRequest().solde());
+        BankAccount bankAccount = new BankAccount(null,1000.00);
         var bankAccountSaved = bankAccountRepository.save(bankAccount);
 
-        Wallet wallet = new Wallet(null,walletRequest.balance(), walletRequest.clientId(),bankAccountSaved);
+        Wallet wallet = new Wallet(null,walletRequest.balance(), walletRequest.clientId(),bankAccountSaved.getId());
         var walletSaved = walletRepository.save(wallet);
         return walletSaved.getId();
     }
@@ -51,6 +56,10 @@ public class WalletService {
         return walletMapper.fromWallet(wallet);
     }
 
+    public BankAccountResponse findBankAccountById(String bankAccountId) {
+        return bankAccountMapper.fromBankAccount(bankAccountRepository.findById(bankAccountId));
+
+    }
 
 
     public WalletResponse updateWallet(WalletRequest walletRequest) {
@@ -58,11 +67,25 @@ public class WalletService {
                 .orElseThrow(() -> new RuntimeException(format("Wallet with ID %s not found", walletRequest.id())));
 
         existingWallet.setBalance(walletRequest.balance());
-        existingWallet.getBankAccount().setSolde(walletRequest.bankAccountRequest().solde());
+        existingWallet.setBankAccountId(walletRequest.bankAccountId());
 
         Wallet updatedWallet = walletRepository.save(existingWallet);
         return walletMapper.fromWallet(updatedWallet);
     }
+
+
+
+
+    public String updateBankAccount(BankAccountRequest request) {
+        BankAccount existingBankAccount = bankAccountRepository.findById(request.id())
+                .orElseThrow(() -> new RuntimeException(format("Bk with ID %s not found", request.id())));
+
+        existingBankAccount.setSolde(request.solde());
+
+        BankAccount bankAccount = bankAccountRepository.save(existingBankAccount);
+        return bankAccount.getId();
+    }
+
 
 
 

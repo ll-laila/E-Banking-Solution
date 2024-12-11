@@ -6,6 +6,8 @@ import com.example.walletservice.wallet.request.BankAccountRequest;
 import com.example.walletservice.wallet.response.BankAccountResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BankAccountMapper {
 
@@ -20,11 +22,11 @@ public class BankAccountMapper {
                 .build();
     }
 
-    public BankAccountResponse fromBankAccount(BankAccount bankAccount) {
+    public BankAccountResponse fromBankAccount(Optional<BankAccount> bankAccount) {
 
         return new BankAccountResponse(
-                bankAccount.getId(),
-                bankAccount.getSolde()
+                bankAccount.get().getId(),
+                bankAccount.get().getSolde()
         );
     }
 
