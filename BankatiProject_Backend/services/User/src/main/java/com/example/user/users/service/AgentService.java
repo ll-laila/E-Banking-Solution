@@ -115,6 +115,7 @@ public class AgentService {
                 .patentNumber(clientRequest.patentNumber())
                 .isPaymentAccountActivated(clientRequest.isPaymentAccountActivated())
                 .typeHissab(clientRequest.typeHissab())
+                .currency(clientRequest.currency())
                 .build();
 
         String formattedPhoneNumber=formatPhoneNumber(clientRequest.phoneNumber());

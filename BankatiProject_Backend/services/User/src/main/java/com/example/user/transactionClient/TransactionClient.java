@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 )
 public interface TransactionClient {
 
-    @PostMapping
+    @PostMapping("/createTransaction")
     public ResponseEntity<String> createTransaction(@RequestBody TransactionRequest request);
 }
