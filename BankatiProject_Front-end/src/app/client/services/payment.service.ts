@@ -8,6 +8,7 @@ import {FeedDetails} from "../models/feedDetails";
 import {PaymentDetails} from "../models/payment";
 import {FeedResponse} from "../models/feedResponse";
 import {PaymentResponse} from "../models/paymentResponse";
+import {Transaction} from "../models/transaction";
 
 
 @Injectable({
@@ -17,41 +18,30 @@ import {PaymentResponse} from "../models/paymentResponse";
 
 export class PaymentService {
 
-  private serverUrl: string = `http://localhost:9090/cmi/service`;
-  private authorization = this.cookieService.get('Authorization');
-
+  private serverUrl: string =  `http://localhost:8222/api/v1/users`;
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService) { }
 
 
   public getAllAgents(): Observable<any> {
-    let dataUrl: string = `${this.serverUrl}/allCreditors`;
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    return this.httpClient.get(dataUrl, { headers }).pipe(catchError(this.handleError));
+    let dataUrl: string = `${this.serverUrl}/listAgent`;
+
+    return this.httpClient.get(dataUrl).pipe(catchError(this.handleError));
   }
 
 
   public feedPaymentAccount(feedDetails : FeedDetails): Observable<FeedResponse> {
 
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
     let dataUrl: string = `${this.serverUrl}/feedAccount`;
-    return this.httpClient.put<FeedResponse>(dataUrl, feedDetails, {headers}).pipe(catchError(this.handleError));
+    return this.httpClient.put<FeedResponse>(dataUrl, feedDetails).pipe(catchError(this.handleError));
 
   }
 
 
-  public PayService(paymentDetails : PaymentDetails): Observable<PaymentResponse> {
+  public PayService(transaction: Transaction): Observable<string> {
 
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    let dataUrl: string = `${this.serverUrl}/payService`;
-    return this.httpClient.put<PaymentResponse>(dataUrl, paymentDetails, {headers}).pipe(catchError(this.handleError));
-
+    let dataUrl: string = `${this.serverUrl}/create-transaction`;
+    return ;
   }
 
 

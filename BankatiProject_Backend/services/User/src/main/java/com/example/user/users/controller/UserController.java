@@ -1,5 +1,8 @@
 package com.example.user.users.controller;
 
+import com.example.user.transactionClient.SimpleTransactionRequest;
+import com.example.user.transactionClient.TransactionClient;
+import com.example.user.transactionClient.TransactionRequest;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.Client;
 import com.example.user.users.mapper.ClientMapper;
@@ -13,6 +16,9 @@ import com.example.user.users.service.AgentService;
 import com.example.user.walletCryptoClient.TransactionResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoResponse;
+import com.example.user.users.service.ClientService;
+import feign.FeignException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -179,7 +185,38 @@ public class UserController {
 
 
     //-------------------------chaima-------------------------//
-        // chaima here
+    private final ClientService clientService;
+    private final TransactionClient transactionClient;
+    @PostMapping("/creat-transaction")
+    public ResponseEntity<String> createTransaction(@Valid @RequestBody SimpleTransactionRequest request ) {
+        TransactionRequest transaction;
+
+        switch (request.transactionType()) {
+            case PAYMENT -> transaction = clientService.createPaymentTransaction(
+                    request.senderId(),
+                    request.beneficiaryId(),
+                    request.amount()
+            );
+
+            case TRANSFER -> transaction = clientService.createTransferTransaction(
+                    request.senderId(),
+                    request.beneficiaryId(),
+                    request.amount()
+            );
+
+            default -> {
+                return ResponseEntity.badRequest().body("Transaction type not supported");
+            }
+        }
+
+        try {
+            transactionClient.createTransaction(transaction);
+        } catch (FeignException ex) {
+            return ResponseEntity.status(ex.status()).body("Failed to create transaction: " + ex.getMessage());
+        }
+
+        return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
+    }
 
 
 

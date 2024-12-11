@@ -27,7 +27,20 @@
               <div class="row">
                 <div class="col">
                   <h5 class="card-title text-uppercase mb-0">Solde</h5>
-                  <p class="h4 text-muted"><b>000</b></p>
+                  <ng-container *ngIf="walletCrypto && walletCrypto.cryptos; else noData">
+                    <div class="d-flex flex-wrap align-items-center">
+                      <div *ngFor="let crypto of walletCrypto.cryptos | keyvalue" class="me-3">
+                        <p class="h4 text-muted mb-0">
+                          <b>{{ crypto.key }}: {{ crypto.value }} {{" | "}}</b>
+                        </p>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-template #noData>
+                    <p class="h4 text-muted">
+                      <b>Vous avez aucune crypto.</b>
+                    </p>
+                  </ng-template>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -98,25 +111,28 @@
             <thead class="thead-dark">
             <tr>
               <th scope="col">Référence</th>
-              <th scope="col">Nom du client</th>
-              <th scope="col">Nom du créancier</th>
-              <th scope="col">Nom du service </th>
-              <th scope="col">Montant</th>
+              <th scope="col">Réf client</th>
+              <th scope="col">Crypto</th>
+              <th scope="col">Quantité</th>
+              <th scope="col">Prix</th>
+              <th scope="col">Type de transaction</th>
               <th scope="col">Date</th>
             </tr>
             </thead>
             <tbody>
-            <tr  class="align-middle">
-              <th scope="row">.</th>
-              <th scope="row">.</th>
-              <td scope="row">.</td>
-              <th scope="row">.</th>
-              <td scope="row">.</td>
-              <td scope="row">.</td>
+            <tr *ngFor="let transaction of transactions" class="align-middle">
+              <th scope="row">{{ transaction.id }}</th>
+              <td>{{ transaction.userBuyId }}</td>
+              <td>{{ transaction.cryptoName }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.price }}</td>
+              <td>{{ transaction.transactionType }}</td>
+              <td>{{ transaction.timestamp | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
             </tr>
             </tbody>
           </table>
         </div>
+
         <div class="card-footer bg-default py-4">
 
         </div>
@@ -147,8 +163,19 @@
                   <div class="image-container" style="height: 130px;">
                     <img ngSrc="assets/img/bitcoin.jpg" alt="" class="rounded-image" height="100" width="100"/>
                     <ul>
-                      <h3>Bitcoin</h3>
-                      <h4>50000 USD</h4>
+                      <h3>bitcoin</h3>
+                      <h4> USD</h4>
+                    </ul>
+                  </div>
+                </button>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6">
+                <button type="button" (click)="openModal()" class="btn-icon-clipboard">
+                  <div class="image-container" style="height: 130px;">
+                    <img ngSrc="assets/img/ethereum.jpg" alt="" class="rounded-image" height="100" width="100"/>
+                    <ul>
+                      <h3>ethereum</h3>
+                      <h4> USD</h4>
                     </ul>
                   </div>
                 </button>
@@ -192,13 +219,12 @@
   <div>
   </div>
   <div class="container-fluid mt--3">
-    <!-- Dark table -->
     <div class="row mt-2">
       <div class="col">
         <div class="table-responsive">
           <div class="container-fluid">
             <div class="card border-0 shadow px-1">
-              <form (submit)="vendreSubmit()">
+              <form (ngSubmit)="vendreSubmit(crypto.value, nombre.value)">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Choisir les cryptos à vendre</h2>
@@ -208,18 +234,18 @@
                     <!-- Crypto -->
                     <div class="row g-2 mb-4 mt-10">
                       <div class="form-floating col-md-12">
-                        <label for="crypto" class="Montserrat" >Crypto *</label>
-                        <select class="form-select form-control" id="crypto" style="border-radius:20px; background-color:#f1f3f6" required>
-                          <option value="Bitcoin">Bitcoin</option>
-                          <option value="Ethereum">Ethereum</option>
+                        <label for="crypto" class="Montserrat">Crypto *</label>
+                        <select #crypto class="form-select form-control" id="crypto" style="border-radius:20px; background-color:#f1f3f6" required>
+                          <option value="bitcoin">bitcoin</option>
+                          <option value="ethereum">ethereum</option>
                         </select>
                       </div>
                     </div>
                     <!-- Nombre -->
                     <div class="row g-2 mb-4">
                       <div class="form-floating col-md-4">
-                        <label for="nombre" class="Montserrat" >Nombre</label>
-                        <input type="number" class="form-control"  name="nombre" id="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
+                        <label for="nombre" class="Montserrat">Nombre</label>
+                        <input #nombre type="number" class="form-control" name="nombre" id="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
                       </div>
                     </div>
                     <!-- Submit Button -->
@@ -229,6 +255,7 @@
                   </div>
                 </div>
               </form>
+
             </div>
           </div>
         </div>
@@ -236,6 +263,7 @@
     </div>
   </div>
 </div>
+
 
 
 <div *ngIf="transferCryptos">
@@ -249,7 +277,7 @@
         <div class="table-responsive">
           <div class="container-fluid">
             <div class="card border-0 shadow px-1">
-              <form (submit)="transferSubmit()">
+              <form (submit)="transferSubmit(cryptos.value,nombr.value)">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Transfer vos cryptos en argents classique</h2>
@@ -260,9 +288,9 @@
                     <div class="row g-2 mb-4 mt-10">
                       <div class="form-floating col-md-12">
                         <label for="cryptos" class="Montserrat" >Crypto *</label>
-                        <select class="form-select form-control" id="cryptos" style="border-radius:20px; background-color:#f1f3f6" required>
-                          <option value="Bitcoin">Bitcoin</option>
-                          <option value="Ethereum">Ethereum</option>
+                        <select #cryptos class="form-select form-control" id="cryptos" style="border-radius:20px; background-color:#f1f3f6" required>
+                          <option value="bitcoin">bitcoin</option>
+                          <option value="ethereum">ethereum</option>
                         </select>
                       </div>
                     </div>
@@ -270,7 +298,7 @@
                     <div class="row g-2 mb-4">
                       <div class="form-floating col-md-4">
                         <label for="nombr" class="Montserrat" >Nombre</label>
-                        <input type="number" class="form-control"  name="nombre" id="nombr" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
+                        <input #nombr type="number" class="form-control" name="nombre" id="nombr" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
                       </div>
                     </div>
                     <!-- Submit Button -->
@@ -280,6 +308,7 @@
                   </div>
                 </div>
               </form>
+
             </div>
           </div>
         </div>

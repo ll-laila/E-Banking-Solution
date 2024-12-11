@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public record TransactionResponse(
          String id,
          String userBuyId,
-         String userSendId,
          String cryptoName,
          double amount,
          double price,

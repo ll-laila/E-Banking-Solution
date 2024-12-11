@@ -1,4 +1,4 @@
-import {PaymentAccount} from "./PaymentAccount";
+import {PaymentAccount} from './PaymentAccount';
 
 export interface Client {
   id : number;

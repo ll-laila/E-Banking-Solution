@@ -49,11 +49,23 @@ export class CreditorsListComponent implements OnInit {
 
 
   getAllAgents() {
-
+    this.paymentService.getAllAgents().subscribe(res => {
+      console.log(res);
+      this.agents = res;
+      this.getAgentsServices();
+    }, error => {
+      console.log(error);
+    })
   }
 
   getAgentsServices() {
-
+    this.agents.forEach(agent => {
+      this.clientService.getAgentServiceById(agent.id).subscribe(services => {
+        agent.services = services;
+      }, error => {
+        console.log(error);
+      });
+    });
   }
 
   redirectToPayment(agent: Agent, service: ServiceAgent) {

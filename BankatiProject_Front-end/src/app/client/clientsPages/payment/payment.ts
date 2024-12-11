@@ -10,6 +10,7 @@ import {PaymentService} from "../../services/payment.service";
 import {SharedClientService} from "../../services/shared-client.service";
 import {SharedAgentServiceService} from "../../services/shared-agent-service.service";
 import {SharedAgentService} from "../../services/shared-agent.service";
+import {Transaction} from "../../models/transaction";
 
 
 @Component({
@@ -69,24 +70,7 @@ export class Payment implements OnInit {
 
 
   validate3() {
-    const paymentDetails: PaymentDetails = {
-      refOperation: this.refOp,
-      idClient: this.client.id,
-      idCreditor: this.agent.id,
-      idService: this.service.id,
-      amount: this.donationAmount
-    };
 
-    console.log(paymentDetails);
-
-    this.paymentService.PayService(paymentDetails).subscribe(
-      response => {
-        this.router.navigate(['/client/agents'],  {queryParams: { status: response.status, responseMessage:  response.message}});
-      },
-      error => {
-        this.router.navigate(['/client/agents'], {queryParams: {  status: 0, responseMessage:  "Paiement échoué"}});
-      }
-    );
 
   }
 
