@@ -13,7 +13,7 @@ import {ProfileClientComponent} from '../../client/clientsPages/profileClient/pr
 import {ServicesAgentComponent} from '../pagesAgent/services-agent/services-agent.component';
 import {AddServiceComponent} from '../Agentcomponents/add-service/add-service.component';
 import {TrasactionAgentComponent} from '../pagesAgent/trasaction-agent/trasaction-agent.component';
-import {EditServiceComponent} from "../Agentcomponents/edit-service/edit-service.component";
+import {EditServiceComponent} from '../Agentcomponents/edit-service/edit-service.component';
 
 
 

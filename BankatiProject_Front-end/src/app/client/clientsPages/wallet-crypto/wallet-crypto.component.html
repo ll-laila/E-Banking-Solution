@@ -1,0 +1,289 @@
+<div *ngIf="isClicked">
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase  mb-0">Échanger vos cryptos en l'argent</h5>
+                  <p class="h4 text-muted mb-0">Bitcoin/Ethereum</p>
+                </div>
+                <div class="col-auto" (click)="onDivClick3()">
+                  <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase mb-0">Solde</h5>
+                  <p class="h4 text-muted"><b>000</b></p>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-lg-6 mt-4 mb-4">
+      <div class="card card-stats mb-4 mb-xl-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h4 class="card-title text-uppercase mb-0">Vendre vos cryptos</h4>
+              <p class="text-muted h4">Mettre vos cryptos disponible dans votre portefeuille à vendre.</p>
+            </div>
+            <div class="col-auto" (click)="onDivClick1()">
+              <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                <i class="fas fa-money-bill-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mt-4 mb-4">
+      <div class="card card-stats mb-4 mb-xl-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h4 class="card-title text-uppercase mb-0">Acheter des cryptos</h4>
+              <p class="text-muted h4">Découvrez les opportunités d'investissement.</p>
+            </div>
+            <div class="col-auto" (click)="onDivClick2()">
+              <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                <i class="fas fa-money-bill-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dark table -->
+  <div class="row mt-2">
+    <div class="col">
+      <div class="card bg-default shadow">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Historique des Transactions</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush text-center">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col">Référence</th>
+              <th scope="col">Nom du client</th>
+              <th scope="col">Nom du créancier</th>
+              <th scope="col">Nom du service </th>
+              <th scope="col">Montant</th>
+              <th scope="col">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  class="align-middle">
+              <th scope="row">.</th>
+              <th scope="row">.</th>
+              <td scope="row">.</td>
+              <th scope="row">.</th>
+              <td scope="row">.</td>
+              <td scope="row">.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer bg-default py-4">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div *ngIf="allCryptos">
+  <div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+  <!-- Page content -->
+  <!-- Table -->
+  <div>
+  </div>
+  <div class="container-fluid mt--3">
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header bg-transparent">
+            <h3 class="mb-0">Liste des cryptos à vendre</h3>
+          </div>
+          <div class="card-body">
+            <div class="row icon-examples">
+              <div class="col-lg-4 col-md-4 col-sm-6">
+                <button type="button" (click)="openModal()" class="btn-icon-clipboard">
+                  <div class="image-container" style="height: 130px;">
+                    <img ngSrc="assets/img/bitcoin.jpg" alt="" class="rounded-image" height="100" width="100"/>
+                    <ul>
+                      <h3>Bitcoin</h3>
+                      <h4>50000 USD</h4>
+                    </ul>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="isModalOpen" class="modal fade show" tabindex="-1" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Détails de la crypto</h5>
+          <button type="button" class="close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Voici les détails de la cryptomonnaie que vous souhaitez acheter.</p>
+          <p><b>Nom:</b> Bitcoin</p>
+          <p><b>Prix:</b> 50,000 MAD</p>
+          <p><b>Description:</b> Bitcoin est une cryptomonnaie décentralisée, une réserve de valeur numérique.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+          <button type="button" class="btn btn-primary" (click)="acheterCrypto()">Acheter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="selleCryptos">
+  <div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+  <div>
+  </div>
+  <div class="container-fluid mt--3">
+    <!-- Dark table -->
+    <div class="row mt-2">
+      <div class="col">
+        <div class="table-responsive">
+          <div class="container-fluid">
+            <div class="card border-0 shadow px-1">
+              <form (submit)="vendreSubmit()">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Choisir les cryptos à vendre</h2>
+                  </div>
+                  <hr style="color:#6415FF" />
+                  <div class="card-text py-2">
+                    <!-- Crypto -->
+                    <div class="row g-2 mb-4 mt-10">
+                      <div class="form-floating col-md-12">
+                        <label for="crypto" class="Montserrat" >Crypto *</label>
+                        <select class="form-select form-control" id="crypto" style="border-radius:20px; background-color:#f1f3f6" required>
+                          <option value="Bitcoin">Bitcoin</option>
+                          <option value="Ethereum">Ethereum</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- Nombre -->
+                    <div class="row g-2 mb-4">
+                      <div class="form-floating col-md-4">
+                        <label for="nombre" class="Montserrat" >Nombre</label>
+                        <input type="number" class="form-control"  name="nombre" id="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
+                      </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn mt-2 justify-content-center btn-block" style="background-color: #333e86; color:#fff; border-radius:20px;">
+                      <span class="Montserrat" style="color:white">Mettre à vendre</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="transferCryptos">
+  <div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+  <div>
+  </div>
+  <div class="container-fluid mt--3">
+    <!-- Dark table -->
+    <div class="row mt-2">
+      <div class="col">
+        <div class="table-responsive">
+          <div class="container-fluid">
+            <div class="card border-0 shadow px-1">
+              <form (submit)="transferSubmit()">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Transfer vos cryptos en argents classique</h2>
+                  </div>
+                  <hr style="color:#6415FF" />
+                  <div class="card-text py-2">
+                    <!-- Crypto -->
+                    <div class="row g-2 mb-4 mt-10">
+                      <div class="form-floating col-md-12">
+                        <label for="cryptos" class="Montserrat" >Crypto *</label>
+                        <select class="form-select form-control" id="cryptos" style="border-radius:20px; background-color:#f1f3f6" required>
+                          <option value="Bitcoin">Bitcoin</option>
+                          <option value="Ethereum">Ethereum</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- Nombre -->
+                    <div class="row g-2 mb-4">
+                      <div class="form-floating col-md-4">
+                        <label for="nombr" class="Montserrat" >Nombre</label>
+                        <input type="number" class="form-control"  name="nombre" id="nombr" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
+                      </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn mt-2 justify-content-center btn-block" style="background-color: #333e86; color:#fff; border-radius:20px;">
+                      <span class="Montserrat" style="color:white">Transfer en argents classique</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

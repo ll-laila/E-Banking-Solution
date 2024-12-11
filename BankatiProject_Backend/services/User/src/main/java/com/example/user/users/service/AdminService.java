@@ -99,6 +99,7 @@ public class AdminService {
         var savedAgent = agentRepository.save(agent);
 
         // add wallet
+
         BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
         WalletRequest wallet = new WalletRequest(null,0D,savedAgent.getId(),bankAccountRequest);
         var idWallet = walletClient.saveWallet(wallet);

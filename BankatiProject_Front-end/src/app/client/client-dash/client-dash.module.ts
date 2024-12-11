@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ClipboardModule } from 'ngx-clipboard';
@@ -9,11 +9,15 @@ import { ClipboardModule } from 'ngx-clipboard';
 import {ClientDashRoutes} from './client-dash.routing';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {DashboardClientComponent} from "../clientsPages/dashboardClient/dashboardClient.component";
-import {ProfileClientComponent} from "../clientsPages/profileClient/profileClient.component";
-import {HistoryComponent} from "../clientsPages/history/history.component";
-import {CreditorsListComponent} from "../clientsPages/creditorsList/creditorsList.component";
-import {Payment} from "../clientsPages/payment/payment";
+import {DashboardClientComponent} from '../clientsPages/dashboardClient/dashboardClient.component';
+import {ProfileClientComponent} from '../clientsPages/profileClient/profileClient.component';
+import {HistoryComponent} from '../clientsPages/history/history.component';
+import {CreditorsListComponent} from '../clientsPages/creditorsList/creditorsList.component';
+import {Payment} from '../clientsPages/payment/payment';
+import {WalletCryptoComponent} from '../clientsPages/wallet-crypto/wallet-crypto.component';
+import {BudgetPersonelComponent} from '../clientsPages/budget-personel/budget-personel.component';
+import {TransferToClientComponent} from '../clientsPages/transfer-to-client/transfer-to-client.component';
+import {CarteVirtuelleComponent} from '../clientsPages/carte-virtuelle/carte-virtuelle.component';
 
 
 @NgModule({
@@ -24,14 +28,19 @@ import {Payment} from "../clientsPages/payment/payment";
     HttpClientModule,
     NgbModule,
     ClipboardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgOptimizedImage
   ],
   declarations: [
     DashboardClientComponent,
     ProfileClientComponent,
     HistoryComponent,
     CreditorsListComponent,
-    Payment
+    Payment,
+    WalletCryptoComponent,
+    BudgetPersonelComponent,
+    TransferToClientComponent,
+    CarteVirtuelleComponent,
   ]
 })
 

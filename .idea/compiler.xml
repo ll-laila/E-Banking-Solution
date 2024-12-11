@@ -13,6 +13,7 @@
         <module name="discovery" />
         <module name="Gateway" />
         <module name="VirtualCardService" />
+        <module name="WalletCryptoService" />
         <module name="NotificationService" />
         <module name="WalletService" />
         <module name="ServicesTiers" />
@@ -36,6 +37,7 @@
       <module name="TransactionService" options="-parameters" />
       <module name="User" options="-parameters" />
       <module name="VirtualCardService" options="-parameters" />
+      <module name="WalletCryptoService" options="-parameters" />
       <module name="WalletService" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />

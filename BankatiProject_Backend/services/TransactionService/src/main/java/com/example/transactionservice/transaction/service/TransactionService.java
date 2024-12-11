@@ -3,6 +3,9 @@ package com.example.transactionservice.transaction.service;
 
 import com.example.transactionservice.kafka.TransactionConfirmation;
 import com.example.transactionservice.kafka.TransactionProducer;
+import com.example.transactionservice.servicesTiersClient.ServicesTiersClient;
+import com.example.transactionservice.servicesTiersClient.TiersClientRequest;
+import com.example.transactionservice.servicesTiersClient.TiersClientResponse;
 import com.example.transactionservice.transaction.entity.Transaction;
 import com.example.transactionservice.transaction.entity.TransactionMethod;
 import com.example.transactionservice.transaction.entity.TransactionStatus;
@@ -11,6 +14,7 @@ import com.example.transactionservice.transaction.mapper.TransactionMapper;
 import com.example.transactionservice.transaction.repository.TransactionRepository;
 import com.example.transactionservice.transaction.request.TransactionRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,10 +27,33 @@ public class TransactionService {
     private final TransactionRepository repository;
     private final TransactionMapper mapper;
     private final TransactionProducer transactionProducer;
+    private final ServicesTiersClient servicesTiersClient;
 
     public String createTransaction(TransactionRequest request) {
+        TiersClientRequest tiersClientRequest = new TiersClientRequest(
+                request.senderCurrency(),
+                request.beneficiaryCurrency(),
+                request.amount(),
+                request.senderId(),
+                request.beneficiaryId()
+        );
+        // Appeler le service tiers
+        ResponseEntity<TiersClientResponse> responseEntity = servicesTiersClient.doTransaction(tiersClientRequest);
+
+        // Vérifier si le service tiers a répondu correctement
+        if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
+            TiersClientResponse response = responseEntity.getBody();
+            if (response.isValid() != null && !response.isValid()) {
+                throw new IllegalStateException("Transaction invalide selon le service tiers.");
+            }
+        } else {
+            throw new IllegalStateException("Échec de l'appel au service tiers.");
+        }
+
         Transaction transaction = mapper.toTransaction(request);
         transaction = repository.save(transaction);
+
+
         System.out.println("Start sendTransactionNotification for {}"+ request);
         sendTransactionNotification(request);
         System.out.println("Start sendTransactionNotification for {}"+ request);
@@ -38,10 +65,10 @@ public class TransactionService {
             TransactionConfirmation transactionConfirmation = new TransactionConfirmation(
                     request.id(), // ID de la transaction
                     request.amount(), // Montant de la transaction
-                    request.transactionMethod(), // Méthode de transaction
                     request.transactionType(), // Type de transaction
                     request.status(), // Statut de la transaction
-                    request.currency(), // Devise
+                    request.senderCurrency(),
+                    request.beneficiaryCurrency(),// Devise
                     request.beneficiaryName(),
                     request.beneficiaryPhone(),
                     request.senderName(),
@@ -80,30 +107,7 @@ public class TransactionService {
         transaction.setStatus(TransactionStatus.CANCELLED);
         return repository.save(transaction);
     }
-    public Transaction transferMoney(String senderId, String recipientId, BigDecimal amount, String currency) {
-        // Validation du montant
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant doit être supérieur à zéro.");
-        }
 
-        // Création de la transaction pour le transfert
-        Transaction transaction = Transaction.builder()
-                .amount(amount)
-                .transactionMethod(TransactionMethod.TRANSFER)
-                .transactionType(TransactionType.TRANSFER)
-                .status(TransactionStatus.PENDING)
-                .beneficiaryId(recipientId)
-                .senderId(senderId)
-                .currency(currency)
-                .build();
-
-        // Sauvegarde dans la base
-        transaction = repository.save(transaction);
-
-        // Simuler la confirmation (peut-être remplacé par une intégration bancaire)
-        transaction.setStatus(TransactionStatus.COMPLETED);
-        return repository.save(transaction);
-    }
     public List<Transaction> getTransactionHistory(String userId, LocalDateTime startDate, LocalDateTime endDate) {
         return repository.findBySenderIdAndCreatedDateBetween(userId, startDate, endDate);
     }
@@ -115,7 +119,6 @@ public class TransactionService {
         if (!transaction.getStatus().equals(TransactionStatus.FAILED)) {
             throw new IllegalStateException("Seules les transactions échouées peuvent être réessayées.");
         }
-
         // Simuler un nouvel essai de la transaction
         transaction.setStatus(TransactionStatus.PENDING);
         transaction = repository.save(transaction);

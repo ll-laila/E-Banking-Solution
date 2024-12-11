@@ -48,9 +48,11 @@ public class Transaction {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private String currency; // Devise (EUR, USD, MAD)
+    private String senderCurrency; // Devise (EUR, USD, MAD)
 
-
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private String beneficiaryCurrency;
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdDate;

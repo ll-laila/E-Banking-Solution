@@ -17,7 +17,6 @@ import { ServicesAgentComponent } from './Agent/pagesAgent/services-agent/servic
 import { ToastrModule } from 'ngx-toastr';
 import { TrasactionAgentComponent } from './Agent/pagesAgent/trasaction-agent/trasaction-agent.component';
 
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,
