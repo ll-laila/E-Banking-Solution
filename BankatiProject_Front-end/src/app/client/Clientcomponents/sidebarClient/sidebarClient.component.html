@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" (click)="isCollapsed=!isCollapsed"
-       aria-controls="sidenav-collapse-main">
+            aria-controls="sidenav-collapse-main">
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Brand-->
@@ -13,17 +13,7 @@
     </a>
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
-      <li class="nav-item" ngbDropdown placement="bottom-right">
-        <a class="nav-link nav-link-icon" role="button" ngbDropdownToggle>
-          <i class="ni ni-bell-55"></i>
-        </a>
-        <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
-          <a class="dropdown-item" href="javascript:void(0)">Action</a>
-          <a class="dropdown-item" href="javascript:void(0)">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
-        </div>
-      </li>
+
       <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link" role="button" ngbDropdownToggle>
           <div class="media align-items-center">
@@ -33,9 +23,6 @@
           </div>
         </a>
         <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
-          <div class=" dropdown-header noti-title">
-
-          </div>
           <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
             <i class="ni ni-single-02"></i>
             <span>My profile</span>
@@ -79,14 +66,15 @@
       </form>
       <!-- Navigation -->
       <ul class="navbar-nav">
-          <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-              <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
-                  <i class="ni {{menuItem.icon}}"></i>
-                  {{menuItem.title}}
-              </a>
-          </li>
+        <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+          <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+        </li>
       </ul>
 
     </div>
   </div>
 </nav>
+

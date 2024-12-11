@@ -8,12 +8,12 @@ import {AdminDashComponent} from './Back-office/admin-dash/admin-dash.component'
 
 import {AgentDashComponent} from './Agent/agent-dash/agent-dash.component';
 import { ClientDashComponent } from './client/client-dash/client-dash.component';
-import {LoginComponent} from "./auth-layout/login/login.component";
-import {AdminGuard} from "./guards/admin.guard";
-import {AgentGuard} from "./guards/agent.guard";
-import {ClientGuard} from "./guards/client.guard";
-import {AgentchangePasswordComponent} from "./auth-layout/Agentchange-password/Agentchange-password.component";
-import {ClientChangePasswordComponent} from "./auth-layout/client-change-password/client-change-password.component";
+import {LoginComponent} from './auth-layout/login/login.component';
+import {AdminGuard} from './guards/admin.guard';
+import {AgentGuard} from './guards/agent.guard';
+import {ClientGuard} from './guards/client.guard';
+import {AgentchangePasswordComponent} from './auth-layout/Agentchange-password/Agentchange-password.component';
+import {ClientChangePasswordComponent} from './auth-layout/client-change-password/client-change-password.component';
 
 
 const routes: Routes = [

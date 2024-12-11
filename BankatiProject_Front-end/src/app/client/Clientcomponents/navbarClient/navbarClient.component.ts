@@ -2,12 +2,12 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebarClient/sidebarClient.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FeedDetails} from "../../models/feedDetails";
-import {PaymentService} from "../../services/payment.service";
-import {Client} from "../../models/client";
-import {SharedClientService} from "../../services/shared-client.service";
-import {FeedResponse} from "../../models/feedResponse";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FeedDetails} from '../../models/feedDetails';
+import {PaymentService} from '../../services/payment.service';
+import {Client} from '../../models/client';
+import {SharedClientService} from '../../services/shared-client.service';
+import {FeedResponse} from '../../models/feedResponse';
 
 @Component({
   selector: 'app-navbar-client',
@@ -29,6 +29,7 @@ export class NavbarClientComponent implements OnInit {
 
   public responseMessage: string;
   public currentStep: number;
+
 
   constructor(location: Location,
               private element: ElementRef,
