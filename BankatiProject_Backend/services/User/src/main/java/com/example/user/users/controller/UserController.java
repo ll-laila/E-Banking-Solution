@@ -1,5 +1,7 @@
 package com.example.user.users.controller;
 
+import com.example.user.transactionClient.TransactionClient;
+import com.example.user.transactionClient.TransactionRequest;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.Client;
 import com.example.user.users.mapper.ClientMapper;

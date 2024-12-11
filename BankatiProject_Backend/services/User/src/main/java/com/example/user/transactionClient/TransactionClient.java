@@ -2,6 +2,9 @@ package com.example.user.transactionClient;
 
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
         name = "transaction-service",
@@ -9,6 +12,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 )
 public interface TransactionClient {
 
-
-
+    @PostMapping
+    public ResponseEntity<String> createTransaction(@RequestBody TransactionRequest request);
 }
