@@ -218,7 +218,20 @@ public class UserController {
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
 
+    @GetMapping("/clientByPhone/{phoneNumber}")
+    public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
+        String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
+        if (clientId != null) {
+            return ResponseEntity.ok(clientId);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
+        }
+    }
 
+    @GetMapping("/clientbyid/{clientId}")
+    public ResponseEntity<Client> getClientInfo(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.getClientById(clientId));
+    }
 
     //-------------------------salwa-------------------------//
     // salwa here

@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
 import {Transaction} from "../models/transaction";
 import {Observable} from "rxjs";
+import {Client} from "../models/client";
 
 @Injectable({
   providedIn: 'root'
@@ -15,4 +16,13 @@ export class TransactionServiceService {
    createTransaction(transaction: Transaction): Observable<Transaction> {
     return this.httpClient.post<Transaction>(`${this.serverUrl}/creat-transaction`, transaction);
   }
+
+  getClientIdByPhoneNumber(phoneNumber: string): Observable<string> {
+    return this.httpClient.get<string>(`${this.serverUrl}/clientByPhone/${phoneNumber}`);
+  }
+
+  getClientInfo(clientId: string): Observable<Client> {
+    return this.httpClient.get<Client>(`${this.serverUrl}/clientbyid/${clientId}`);
+  }
+
 }
