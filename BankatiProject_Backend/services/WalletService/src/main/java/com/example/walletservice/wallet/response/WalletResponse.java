@@ -5,7 +5,8 @@ public record WalletResponse(
         String id,
         Double balance,
         String clientId,
-        BankAccountResponse bankAccountResponse
+      String bankAccountId
+      //  BankAccountResponse bankAccountResponse
 
 ){
 }

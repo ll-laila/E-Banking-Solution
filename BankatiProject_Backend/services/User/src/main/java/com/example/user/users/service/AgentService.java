@@ -1,6 +1,5 @@
 package com.example.user.users.service;
 
-import com.example.user.users.entity.Agent;
 import com.example.user.users.entity.Client;
 import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.repository.ClientRepository;
@@ -9,24 +8,20 @@ import com.example.user.users.response.ClientResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
-import com.example.user.walletClient.BankAccountRequest;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
+import com.example.user.walletCryptoClient.WalletCryptoClient;
+import com.example.user.walletCryptoClient.WalletCryptoRequest;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.user.users.service.AdminService.generatePassword;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -35,6 +30,7 @@ public class AgentService {
 
     private final ClientRepository clientRepository;
     private final WalletClient walletClient;
+    private final WalletCryptoClient walletCryptoClient;
     private final ENVConfig envConfig;
 
     @Autowired
@@ -91,6 +87,17 @@ public class AgentService {
         return "+212" + formatted;
     }
 
+    public static String generatePassword() {
+        StringBuilder password = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 6; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            password.append(CHARACTERS.charAt(index));
+        }
+
+        return password.toString();
+    }
 
     @Transactional
     public ClientResponse createClient(ClientRequest clientRequest) {
@@ -122,15 +129,20 @@ public class AgentService {
         System.out.println(formattedPhoneNumber);
         var savedClient = clientRepository.save(client);
 
-        // add wallet
-        BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
+        // add Crypto wallet
+        Map<String, Double> cryptos = new HashMap<>();
+        cryptos.put("bitcoin", 0.0);
+        cryptos.put("ethereum", 0.0);
+        WalletCryptoRequest walletCrypto = new WalletCryptoRequest(null,savedClient.getId(),cryptos);
+        var idWalletCrypto = walletCryptoClient.saveWalletCrypto(walletCrypto);
 
-        WalletRequest wallet = new WalletRequest(null,1000D,savedClient.getId(),bankAccountRequest);
+        // add wallet
+        WalletRequest wallet = new WalletRequest(null,1000D,savedClient.getId(),null);
         var idWallet = walletClient.saveWallet(wallet);
 
 
         //twilio
-        String msg =   "Bonjour "+ client.getFirstName() +" "+client.getLastName() + ", votre mot de passe est "+ client.getPassword() + ".";
+        String msg =   "Bonjour "+ client.getFirstName() +" "+client.getLastName() + ", votre mot de passe est "+ generatedPassword+ ".";
         Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
         log.info("Twilio Response : {}", twilioMessage.getStatus());
 

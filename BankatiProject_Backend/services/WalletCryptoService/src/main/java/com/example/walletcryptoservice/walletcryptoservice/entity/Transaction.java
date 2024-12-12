@@ -15,7 +15,6 @@ public class Transaction {
     @Id
     private String id;
     private String userBuyId;
-    private String userSendId;
     private String cryptoName;
     private double amount;
     private double price;

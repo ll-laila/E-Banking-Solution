@@ -1,11 +1,11 @@
-package com.example.walletcryptoservice.walletcryptoservice.response;
+package com.example.user.walletCryptoClient;
 
 import lombok.Builder;
 
 import java.util.Map;
 
 @Builder
-public record WalletCryptoResponse(
+public record WalletCryptoRequest(
         String id,
         String userId,
         Map<String, Double> cryptos

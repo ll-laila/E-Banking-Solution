@@ -18,6 +18,12 @@ spring:
           predicates:
             - Path=/api/v1/wallet/**
 
+        - id: walletcrypto-service
+          uri: lb:http://WALLETCRYPTO-SERVICE
+          predicates:
+            - Path=/api/v1/walletcrypto/**
+
+
         - id: virtualcard-service
           uri: lb:http://VIRTUALCARD-SERVICE
           predicates:

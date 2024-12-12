@@ -1,7 +1,7 @@
 package com.example.servicestiers.cmi;
 
 import com.example.servicestiers.multiDevises.DeviseService;
-import com.example.servicestiers.walletClient.BankAccountRequest;
+import com.example.servicestiers.walletClient.BankAccountResponse;
 import com.example.servicestiers.walletClient.WalletClient;
 import com.example.servicestiers.walletClient.WalletRequest;
 import com.example.servicestiers.walletClient.WalletResponse;
@@ -36,13 +36,9 @@ public class cmiService {
         }
 
 
-
         if (walletSender.balance() >= amount) {
-            BankAccountRequest bankAccountSender = new BankAccountRequest(walletSender.bankAccountResponse().id(),walletSender.bankAccountResponse().solde());
-            WalletRequest walletSenderUpdate = new WalletRequest(walletSender.id(),walletSender.balance()-amount,walletSender.clientId(),bankAccountSender);
-
-            BankAccountRequest bankAccountBeneficiary = new BankAccountRequest(walletBeneficiary.bankAccountResponse().id(),walletBeneficiary.bankAccountResponse().solde());
-            WalletRequest walletBeneficiaryUpdate = new WalletRequest(walletBeneficiary.id(),walletBeneficiary.balance()+amount,walletBeneficiary.clientId(),bankAccountBeneficiary);
+            WalletRequest walletSenderUpdate = new WalletRequest(walletSender.id(),walletSender.balance()-amount,walletSender.clientId(),walletSender.bankAccountId());
+            WalletRequest walletBeneficiaryUpdate = new WalletRequest(walletBeneficiary.id(),walletBeneficiary.balance()+amount,walletBeneficiary.clientId(),walletBeneficiary.bankAccountId());
             walletClient.updateWallet(walletSenderUpdate);
             walletClient.updateWallet(walletBeneficiaryUpdate);
 
@@ -56,9 +52,10 @@ public class cmiService {
     @GetMapping("/feedWallet")
     public ResponseEntity<Boolean> feedWallet(@RequestParam String clientId,@RequestParam double amount){
         WalletResponse wallet = walletClient.getWalletByIdClient(clientId).getBody();
-
-        BankAccountRequest bankAccountUpdate = new BankAccountRequest(wallet.bankAccountResponse().id(),wallet.bankAccountResponse().solde()-amount);
-        WalletRequest walletUpdate = new WalletRequest(wallet.id(),wallet.balance()+amount,wallet.clientId(),bankAccountUpdate);
+        BankAccountResponse bk = walletClient.getBankAccount(wallet.bankAccountId()).getBody();
+        BankAccountResponse bankAccountUpdate = new BankAccountResponse(bk.id(),bk.solde()-amount);
+        String UpdateBankAccount =  walletClient.updateBankAccount(bankAccountUpdate);
+        WalletRequest walletUpdate = new WalletRequest(wallet.id(),wallet.balance()+amount,wallet.clientId(),UpdateBankAccount);
         walletClient.updateWallet(walletUpdate);
         return ResponseEntity.ok(true);
     }

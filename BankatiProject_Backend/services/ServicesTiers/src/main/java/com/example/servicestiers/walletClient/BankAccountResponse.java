@@ -1,6 +1,6 @@
 package com.example.servicestiers.walletClient;
 
-public record BankAccountRequest(
+public record BankAccountResponse(
         String id,
         Double solde
 ) {

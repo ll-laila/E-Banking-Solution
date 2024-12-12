@@ -13,10 +13,8 @@ import com.example.user.users.response.AgentResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
-import com.example.user.walletClient.BankAccountRequest;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
-import com.twilio.exception.ApiException;
 import com.twilio.rest.api.v2010.account.Message;
 
 import com.twilio.type.PhoneNumber;
@@ -24,8 +22,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +88,7 @@ public class AdminService {
                 .image(request.image())
                 .password(passwordEncoder.encode(generatedPassword))
                 .isFirstLogin(true)
+                .currency(request.currency())
                 .build();
 
         String formattedPhoneNumber=formatPhoneNumber(request.phoneNumber());
@@ -99,9 +96,7 @@ public class AdminService {
         var savedAgent = agentRepository.save(agent);
 
         // add wallet
-
-        BankAccountRequest bankAccountRequest = new BankAccountRequest(null,10000D);
-        WalletRequest wallet = new WalletRequest(null,0D,savedAgent.getId(),bankAccountRequest);
+        WalletRequest wallet = new WalletRequest(null,0D,savedAgent.getId(),null);
         var idWallet = walletClient.saveWallet(wallet);
 
         //twilio

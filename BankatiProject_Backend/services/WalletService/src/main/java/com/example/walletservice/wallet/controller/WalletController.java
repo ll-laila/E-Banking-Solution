@@ -1,6 +1,8 @@
 package com.example.walletservice.wallet.controller;
 
+import com.example.walletservice.wallet.request.BankAccountRequest;
 import com.example.walletservice.wallet.request.WalletRequest;
+import com.example.walletservice.wallet.response.BankAccountResponse;
 import com.example.walletservice.wallet.response.WalletResponse;
 import com.example.walletservice.wallet.service.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,16 @@ public class WalletController {
         return ResponseEntity.ok(walletService.findWallet(walletId));
     }
 
+    @GetMapping("/getBankAccount/{bankAccountId}")
+    public ResponseEntity<BankAccountResponse> getBankAccount(@PathVariable("bankAccountId") String bankAccountId){
+        return ResponseEntity.ok(walletService.findBankAccountById(bankAccountId));
+    }
+
+    @PutMapping("/updateBankAccount")
+    public String updateBankAccount(@RequestBody BankAccountRequest bankAccountRequest){
+        return walletService.updateBankAccount(bankAccountRequest);
+    }
+
     @GetMapping("/IdClient/{clientId}")
     public ResponseEntity<WalletResponse> getWalletByIdClient(@PathVariable("clientId") String clientId){
         return ResponseEntity.ok(walletService.findWalletByIdClient(clientId));
@@ -39,6 +51,7 @@ public class WalletController {
     public ResponseEntity<WalletResponse> updateWallet(@RequestBody WalletRequest walletRequest){
         return ResponseEntity.ok(walletService.updateWallet(walletRequest));
     }
+
 
 
 

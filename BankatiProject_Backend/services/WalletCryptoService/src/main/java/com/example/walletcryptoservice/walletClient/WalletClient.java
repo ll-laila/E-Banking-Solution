@@ -2,10 +2,7 @@ package com.example.walletcryptoservice.walletClient;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "wallet-service",
@@ -23,4 +20,9 @@ public interface WalletClient {
     @GetMapping("/IdClient/{clientId}")
     public ResponseEntity<Wallet> getWalletByIdClient(@PathVariable("clientId") String clientId);
 
-    }
+
+    @PutMapping("/updateWallet")
+    public ResponseEntity<Wallet> updateWallet(@RequestBody Wallet walletRequest);
+
+
+}
