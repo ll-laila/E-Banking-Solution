@@ -40,5 +40,8 @@ public interface WalletCryptoClient {
 
 
 
+    @GetMapping("/getPriceCrypto/{cryptoName}")
+    public double getPriceCrypto(@PathVariable("cryptoName") String cryptoName);
+
 
 }
