@@ -1,7 +1,109 @@
-<div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
-<!-- Page content -->
-<!-- Table -->
-<div>
+<div class="header pb-5 pt-5" style="background: linear-gradient(to right, #ffc107, #2c4481);">
+  <div class="container text-center text-white">
+    <h1 class="transfer-title">Transfert d'Argent</h1>
+    <p class="transfer-subtitle">Sécurisé, rapide et facile</p>
+  </div>
 </div>
-<div class="container-fluid mt--3">
+
+<!-- Formulaire de transfert -->
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg border-0 mx-auto" style="max-width: 800px; border-radius: 10px;">
+    <div class="card-body">
+      <h3 class="text-center text-primary mb-4">Formulaire de Transfert</h3>
+      <form (ngSubmit)="submitTransfer()">
+        <div class="row">
+          <!-- Sender Email -->
+          <div class="col-md-6 mb-3">
+            <label for="senderPhone" class="form-label">Numéro de Téléphone de l'Expéditeur</label>
+            <input
+              type="text"
+              id="senderPhone"
+              class="form-control"
+              [(ngModel)]="senderPhoneNumber"
+              name="senderPhoneNumber"
+              readonly
+            />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="senderAccount" class="form-label">Numéro de Compte de l'Expéditeur</label>
+            <input
+              type="text"
+              id="senderAccount"
+              class="form-control"
+              value="wallet1"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Beneficiary Email -->
+          <div class="col-md-6 mb-3">
+            <label for="beneficiaryPhone" class="form-label">Numéro de Téléphone du Bénéficiaire**</label>
+            <input
+              type="text"
+              id="beneficiaryPhone"
+              class="form-control"
+              [(ngModel)]="beneficiaryPhoneNumber"
+              placeholder="Entrez le Numéro "
+              required
+            />
+          </div>
+
+          <!-- Beneficiary Account Number -->
+          <div class="col-md-6 mb-3">
+            <label for="beneficiaryAccount" class="form-label">Numéro de Compte du Bénéficiaire**</label>
+            <input
+              type="text"
+              id="beneficiaryAccount"
+              class="form-control"
+              placeholder="Entrez le numéro de compte"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Amount -->
+          <div class="col-md-6 mb-3">
+            <label for="transferAmount" class="form-label">Montant à Transférer**</label>
+            <div class="input-group">
+              <span class="input-group-text">{{ devise }}</span>
+              <input
+                type="number"
+                id="transferAmount"
+                class="form-control"
+                [(ngModel)]="amount"
+                placeholder="0.00"
+                step="0.01"
+                min="1"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Transfer Reason -->
+          <div class="col-md-12 mb-3">
+            <label for="transferReason" class="form-label">Motif ou Référence du Transfert</label>
+            <textarea
+              id="transferReason"
+              class="form-control"
+              placeholder="Entrez le motif du transfert"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary w-100 py-2" style="border-radius: 25px;">
+            Confirmer le Transfert
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
