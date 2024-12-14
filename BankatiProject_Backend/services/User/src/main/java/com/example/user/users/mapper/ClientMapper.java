@@ -28,6 +28,8 @@ public class ClientMapper {
                 .commercialRn(request.commercialRn())
                 .patentNumber(request.patentNumber())
                 .isPaymentAccountActivated(request.isPaymentAccountActivated())
+                .typeHissab(request.typeHissab())
+                .currency(request.currency())
                 .build();
     }
 
@@ -42,8 +44,16 @@ public class ClientMapper {
                 client.getFirstName(),
                 client.getLastName(),
                 client.getEmail(),
+                client.getAddress(),
+                client.getCin(),
+                client.getBirthDate(),
                 client.getPhoneNumber(),
+                client.getPassword(),
+                client.getIsFirstLogin(),
                 client.getCreatedDate(),
+                client.getCommercialRn(),
+                client.getPatentNumber(),
+                client.getIsPaymentAccountActivated(),
                 client.getTypeHissab(),
                 client.getCurrency()
         );

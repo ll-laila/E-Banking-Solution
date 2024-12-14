@@ -40,7 +40,7 @@ export class ClientService {
 
 
   public getPaymentAccountByClientId(clientId : number): Observable<any> {
-    let dataUrl: string = `${this.serverUrl}/PaymentAccount/${clientId}`;
+    const dataUrl: string = `${this.serverUrl}/PaymentAccount/${clientId}`;
     console.log(this.authorization);
 
     const headers = {
