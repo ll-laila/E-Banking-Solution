@@ -4,7 +4,9 @@ import com.example.user.transactionClient.SimpleTransactionRequest;
 import com.example.user.transactionClient.TransactionClient;
 import com.example.user.transactionClient.TransactionRequest;
 import com.example.user.users.entity.Admin;
+import com.example.user.users.entity.AgentServiceRequest;
 import com.example.user.users.entity.Client;
+import com.example.user.users.entity.ServiceAgentResponse;
 import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.request.AdminRequest;
 import com.example.user.users.request.AgentRequest;
@@ -25,7 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -139,6 +140,35 @@ public class UserController {
         return ResponseEntity.noContent().build(); // Retourner le statut HTTP 204 No Content
     }
 
+    @PostMapping("/service/{id}")
+    //@PreAuthorize("hasAuthority('agent:create')")
+    //@Hidden
+    public ResponseEntity<ServiceAgentResponse> createService(@PathVariable String id, @RequestBody AgentServiceRequest request) {
+        return ResponseEntity.ok(agentService.createService(request, id));
+    }
+
+
+    @PutMapping("/service/{serviceId}")
+    //@PreAuthorize("hasAuthority('agent:update')")
+    public ResponseEntity<ServiceAgentResponse> updateService(
+            @PathVariable String serviceId,
+            @RequestBody AgentServiceRequest request
+    ) {
+        return ResponseEntity.ok(agentService.updateService(serviceId, request));
+    }
+/*
+    @DeleteMapping("/service/{serviceId}")
+    //@PreAuthorize("hasAuthority('agent:delete')")
+    public RegisterAgentResponse deleteService(@PathVariable Long serviceId) {
+        return agentservice.deleteService(serviceId);
+    }
+
+ */
+    @GetMapping("/serviceByAgent/{agentId}")
+    //@PreAuthorize("hasAuthority('agent:read')")
+    public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
+        return agentService.getAllServicesByAgentId(agentId);
+    }
 
 
     //--------------------------------------Client-----------------------------------//
