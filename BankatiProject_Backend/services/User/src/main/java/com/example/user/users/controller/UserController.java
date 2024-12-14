@@ -3,6 +3,7 @@ package com.example.user.users.controller;
 import com.example.user.transactionClient.SimpleTransactionRequest;
 import com.example.user.transactionClient.TransactionClient;
 import com.example.user.transactionClient.TransactionRequest;
+import com.example.user.transactionClient.TransactionType;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.Client;
 import com.example.user.users.mapper.ClientMapper;
@@ -24,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -187,21 +190,22 @@ public class UserController {
     //-------------------------chaima-------------------------//
     private final ClientService clientService;
     private final TransactionClient transactionClient;
+
     @PostMapping("/creat-transaction")
-    public ResponseEntity<String> createTransaction(@Valid @RequestBody SimpleTransactionRequest request ) {
+    public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;
 
-        switch (request.transactionType()) {
+        switch (transactionType) {
             case PAYMENT -> transaction = clientService.createPaymentTransaction(
-                    request.senderId(),
-                    request.beneficiaryId(),
-                    request.amount()
+                   senderId,
+                    beneficiaryId,
+                    amount
             );
 
             case TRANSFER -> transaction = clientService.createTransferTransaction(
-                    request.senderId(),
-                    request.beneficiaryId(),
-                    request.amount()
+                    senderId,
+                    beneficiaryId,
+                    amount
             );
 
             default -> {

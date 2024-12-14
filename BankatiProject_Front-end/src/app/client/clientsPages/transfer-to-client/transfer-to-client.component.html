@@ -1,105 +1,61 @@
 <div class="header pb-5 pt-5" style="background: linear-gradient(to right, #ffc107, #2c4481);">
   <div class="container text-center text-white">
-    <h1 class="transfer-title">Transfert d'Argent</h1>
-    <p class="transfer-subtitle">Sécurisé, rapide et facile</p>
+    <h1 class="transfer-title Montserrat">Transfert d'Argent</h1>
+    <p class="transfer-subtitle Montserrat">Sécurisé, rapide et facile</p>
   </div>
 </div>
 
-<!-- Formulaire de transfert -->
 <div class="container-fluid mt-5">
-  <div class="card shadow-lg border-0 mx-auto" style="max-width: 800px; border-radius: 10px;">
+  <div class="card shadow-lg border-0 mx-auto" style="max-width: 800px; border-radius: 20px;">
     <div class="card-body">
-      <h3 class="text-center text-primary mb-4">Formulaire de Transfert</h3>
+      <h3 class="text-center card-title Montserrat">Formulaire de Transfert</h3>
+      <hr style="border-top: 2px solid #ffc107;" />
       <form (ngSubmit)="submitTransfer()">
         <div class="row">
-          <!-- Sender Email -->
           <div class="col-md-6 mb-3">
-            <label for="senderPhone" class="form-label">Numéro de Téléphone de l'Expéditeur</label>
-            <input
-              type="text"
-              id="senderPhone"
-              class="form-control"
-              [(ngModel)]="senderPhoneNumber"
-              name="senderPhoneNumber"
-              readonly
-            />
+            <label for="senderPhone" class="form-label Montserrat">Numéro de Téléphone de l'Expéditeur</label>
+            <input type="text" id="senderPhone" class="form-control" [(ngModel)]="senderPhoneNumber" name="senderPhoneNumber" readonly style="background-color: #F8F8F8;" />
           </div>
-
           <div class="col-md-6 mb-3">
-            <label for="senderAccount" class="form-label">Numéro de Compte de l'Expéditeur</label>
-            <input
-              type="text"
-              id="senderAccount"
-              class="form-control"
-              value="wallet1"
-              readonly
-            />
+            <label for="senderAccount" class="form-label Montserrat">Numéro de Compte de l'Expéditeur</label>
+            <input type="text" id="senderAccount" class="form-control" placeholder="Entrez le numéro de compte" required style="background-color: #F8F8F8;" />
           </div>
         </div>
 
+        <div class="section-title Montserrat">Informations du Bénéficiaire</div>
+        <hr class="section-divider" />
         <div class="row">
-          <!-- Beneficiary Email -->
           <div class="col-md-6 mb-3">
-            <label for="beneficiaryPhone" class="form-label">Numéro de Téléphone du Bénéficiaire**</label>
-            <input
-              type="text"
-              id="beneficiaryPhone"
-              class="form-control"
-              [(ngModel)]="beneficiaryPhoneNumber"
-              placeholder="Entrez le Numéro "
-              required
-            />
+            <label for="beneficiaryPhone" class="form-label Montserrat">Numéro de Téléphone</label>
+            <input type="text" id="beneficiaryPhone" class="form-control" [(ngModel)]="beneficiaryPhoneNumber" placeholder="Entrez le Numéro" required style="background-color: #F8F8F8;" />
           </div>
-
-          <!-- Beneficiary Account Number -->
           <div class="col-md-6 mb-3">
-            <label for="beneficiaryAccount" class="form-label">Numéro de Compte du Bénéficiaire**</label>
-            <input
-              type="text"
-              id="beneficiaryAccount"
-              class="form-control"
-              placeholder="Entrez le numéro de compte"
-              required
-            />
+            <label for="beneficiaryAccount" class="form-label Montserrat">Numéro de Compte</label>
+            <input type="text" id="beneficiaryAccount" class="form-control" placeholder="Entrez le numéro de compte" required style="background-color: #F8F8F8;" />
           </div>
         </div>
 
+        <div class="section-title Montserrat">Détails du Transfert</div>
+        <hr class="section-divider" />
         <div class="row">
-          <!-- Amount -->
           <div class="col-md-6 mb-3">
-            <label for="transferAmount" class="form-label">Montant à Transférer**</label>
+            <label for="transferAmount" class="form-label Montserrat">Montant à Transférer</label>
             <div class="input-group">
-              <span class="input-group-text">{{ devise }}</span>
-              <input
-                type="number"
-                id="transferAmount"
-                class="form-control"
-                [(ngModel)]="amount"
-                placeholder="0.00"
-                step="0.01"
-                min="1"
-                required
-              />
+              <span class="input-group-text" style="background-color: #ffc107; color: #fff;">{{ devise }}</span>
+              <input type="number" id="transferAmount" class="form-control" [(ngModel)]="amount" placeholder="0.00" step="0.01" min="1" required style="background-color: #F8F8F8;" />
             </div>
           </div>
         </div>
 
         <div class="row">
-          <!-- Transfer Reason -->
           <div class="col-md-12 mb-3">
-            <label for="transferReason" class="form-label">Motif ou Référence du Transfert</label>
-            <textarea
-              id="transferReason"
-              class="form-control"
-              placeholder="Entrez le motif du transfert"
-              rows="3"
-              required
-            ></textarea>
+            <label for="transferReason" class="form-label Montserrat">Motif ou Référence</label>
+            <textarea id="transferReason" class="form-control" placeholder="Entrez le motif du transfert" rows="3" required style="background-color: #F8F8F8;"></textarea>
           </div>
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-primary w-100 py-2" style="border-radius: 25px;">
+          <button type="submit" class="btn btn-warning w-100 py-2" style="border-radius: 25px; background-color: #ffc107;">
             Confirmer le Transfert
           </button>
         </div>
