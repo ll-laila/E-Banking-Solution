@@ -159,23 +159,23 @@
           <div class="card-body">
             <div class="row icon-examples">
               <div class="col-lg-4 col-md-4 col-sm-6">
-                <button type="button" (click)="openModal()" class="btn-icon-clipboard">
+                <button type="button" (click)="openModal1()" class="btn-icon-clipboard">
                   <div class="image-container" style="height: 130px;">
                     <img ngSrc="assets/img/bitcoin.jpg" alt="" class="rounded-image" height="100" width="100"/>
                     <ul>
                       <h3>bitcoin</h3>
-                      <h4> USD</h4>
+                      <h4>{{bitcoinPrice}} {{" USD"}}</h4>
                     </ul>
                   </div>
                 </button>
               </div>
               <div class="col-lg-4 col-md-4 col-sm-6">
-                <button type="button" (click)="openModal()" class="btn-icon-clipboard">
+                <button type="button" (click)="openModal2()" class="btn-icon-clipboard">
                   <div class="image-container" style="height: 130px;">
                     <img ngSrc="assets/img/ethereum.jpg" alt="" class="rounded-image" height="100" width="100"/>
                     <ul>
                       <h3>ethereum</h3>
-                      <h4> USD</h4>
+                      <h4>{{ethereumPrice}} {{" USD"}}</h4>
                     </ul>
                   </div>
                 </button>
@@ -197,11 +197,15 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" *ngIf="!trueBalance">
           <p>Voici les détails de la cryptomonnaie que vous souhaitez acheter.</p>
-          <p><b>Nom:</b> Bitcoin</p>
-          <p><b>Prix:</b> 50,000 MAD</p>
-          <p><b>Description:</b> Bitcoin est une cryptomonnaie décentralisée, une réserve de valeur numérique.</p>
+          <p><b>Nom :</b>{{cryptoName}}</p>
+          <p><b>Prix :</b>{{cryptoPrice}} {{" MAD"}}</p>
+          <p><b>Description :</b> Elle s'agit d'une cryptomonnaie décentralisée, une réserve de valeur numérique.</p>
+          <p><b>Nombre:</b>  <input [(ngModel)]="nombreAcheter" type="number" class="form-control" name="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required /></p>
+        </div>
+        <div class="modal-body text-center" *ngIf="trueBalance">
+          <p>Vous n'avez pas assez de solde.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
@@ -216,15 +220,14 @@
 
 <div *ngIf="selleCryptos">
   <div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
-  <div>
-  </div>
+  <div></div>
   <div class="container-fluid mt--3">
     <div class="row mt-2">
       <div class="col">
         <div class="table-responsive">
           <div class="container-fluid">
-            <div class="card border-0 shadow px-1">
-              <form (ngSubmit)="vendreSubmit(crypto.value, nombre.value)">
+            <div class="card border-0 shadow px-1" *ngIf="!trueCryptos && !selleCryptosTrue" >
+              <form (ngSubmit)="vendreSubmit(crypto, nombre)">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Choisir les cryptos à vendre</h2>
@@ -235,7 +238,7 @@
                     <div class="row g-2 mb-4 mt-10">
                       <div class="form-floating col-md-12">
                         <label for="crypto" class="Montserrat">Crypto *</label>
-                        <select #crypto class="form-select form-control" id="crypto" style="border-radius:20px; background-color:#f1f3f6" required>
+                        <select [(ngModel)]="crypto" name="crypto" class="form-select form-control" id="crypto" style="border-radius:20px; background-color:#f1f3f6" required>
                           <option value="bitcoin">bitcoin</option>
                           <option value="ethereum">ethereum</option>
                         </select>
@@ -245,17 +248,23 @@
                     <div class="row g-2 mb-4">
                       <div class="form-floating col-md-4">
                         <label for="nombre" class="Montserrat">Nombre</label>
-                        <input #nombre type="number" class="form-control" name="nombre" id="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
+                        <input [(ngModel)]="nombre" type="number" class="form-control" name="nombre" id="nombre" placeholder="Nombre" style="border-radius:20px; background-color:#f1f3f6" required />
                       </div>
                     </div>
                     <!-- Submit Button -->
                     <button type="submit" class="btn mt-2 justify-content-center btn-block" style="background-color: #333e86; color:#fff; border-radius:20px;">
-                      <span class="Montserrat" style="color:white">Mettre à vendre</span>
+                      <span class="Montserrat" style="color:white" >Mettre à vendre</span>
                     </button>
+
                   </div>
                 </div>
               </form>
-
+            </div>
+            <div class="card border-0 shadow px-1 " *ngIf="trueCryptos">
+              <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Vous n'avez pas assez de cryptos à vendre !</h1>
+            </div>
+            <div class="card border-0 shadow px-1 " *ngIf="selleCryptosTrue">
+              <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Opération Réussite !</h1>
             </div>
           </div>
         </div>
@@ -276,7 +285,7 @@
       <div class="col">
         <div class="table-responsive">
           <div class="container-fluid">
-            <div class="card border-0 shadow px-1">
+            <div class="card border-0 shadow px-1" *ngIf="!transferCryptosTrue">
               <form (submit)="transferSubmit(cryptos.value,nombr.value)">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
@@ -308,7 +317,9 @@
                   </div>
                 </div>
               </form>
-
+            </div>
+            <div class="card border-0 shadow px-1 " *ngIf="transferCryptosTrue">
+              <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Opération Réussite !</h1>
             </div>
           </div>
         </div>

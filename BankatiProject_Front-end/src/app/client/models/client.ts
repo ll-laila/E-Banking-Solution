@@ -7,4 +7,6 @@ export interface Client {
   email : string;
   phoneNumber : string;
   paymentAccount: PaymentAccount;
+  currency:string;
+
 }

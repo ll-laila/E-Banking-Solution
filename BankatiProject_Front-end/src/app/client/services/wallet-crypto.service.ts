@@ -17,20 +17,38 @@ export class WalletCryptoService {
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService) {}
 
+  getPriceCrypto(cryptoName: string): Observable<number> {
+    const url = `${this.serverUrl}/getActualPrice/${cryptoName}`;
+    // const headers = {
+   //   'Authorization': `${this.authorization}`
+   // };
+    return this.httpClient.get<number>(url).pipe(catchError(this.handleError));
+  }
 
+
+  getBalanceWallet(clientId: string): Observable<number> {
+    const url = `${this.serverUrl}/userWalletBalance/${clientId}`;
+    // const headers = {
+    //   'Authorization': `${this.authorization}`
+    // };
+    return this.httpClient.get<number>(url).pipe(catchError(this.handleError));
+  }
 
   // Get User Wallet Crypto
   getUserWalletCrypto(userId: string): Observable<WalletCrypto> {
     const url = `${this.serverUrl}/walletCrypto/${userId}`;
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
+   // const headers = {
+   //   'Authorization': `${this.authorization}`
+   // };
     return this.httpClient.get<WalletCrypto>(url).pipe(catchError(this.handleError));
   }
 
   // Buy Cryptos
   buyCryptos(userId: string, cryptoName: string, amount: number): Observable<string> {
     const url = `${this.serverUrl}/buyCryptos`;
+   // const headers = {
+  //    'Authorization': `${this.authorization}`
+   // };
     const params = new HttpParams()
       .set('userId', userId)
       .set('cryptoName', cryptoName)
@@ -41,6 +59,9 @@ export class WalletCryptoService {
   // Set Cryptos to Sell
   setCryptosToSell(userId: string, cryptoName: string, amount: number): Observable<string> {
     const url = `${this.serverUrl}/setCryptosToSell`;
+   // const headers = {
+   //   'Authorization': `${this.authorization}`
+   // };
     const params = new HttpParams()
       .set('userId', userId)
       .set('cryptoName', cryptoName)
@@ -52,12 +73,18 @@ export class WalletCryptoService {
   // Get All Transactions for a User
   getUserTransaction(userId: string): Observable<TransactionCrypto[]> {
     const url = `${this.serverUrl}/allTransCrypro/${userId}`;
+  //  const headers = {
+    //  'Authorization': `${this.authorization}`
+  //  };
     return this.httpClient.get<TransactionCrypto[]>(url).pipe(catchError(this.handleError));
   }
 
   // Transfer Cryptos to Money
   transferCryptosToMoney(userId: string, cryptoName: string, amount: number): Observable<string> {
     const url = `${this.serverUrl}/transferCryptosToMoney`;
+  //  const headers = {
+  //    'Authorization': `${this.authorization}`
+  //  };
     const params = new HttpParams()
       .set('userId', userId)
       .set('cryptoName', cryptoName)

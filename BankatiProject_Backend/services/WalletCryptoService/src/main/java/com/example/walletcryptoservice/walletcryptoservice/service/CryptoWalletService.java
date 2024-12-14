@@ -1,6 +1,5 @@
 package com.example.walletcryptoservice.walletcryptoservice.service;
 
-import com.example.walletcryptoservice.walletClient.BankAccount;
 import com.example.walletcryptoservice.walletClient.WalletClient;
 import com.example.walletcryptoservice.walletClient.Wallet;
 import com.example.walletcryptoservice.walletcryptoservice.entity.CryptoWallet;
@@ -97,7 +96,7 @@ public class CryptoWalletService {
 
 
         Wallet walletToUpdated = walletClient.getWalletByIdClient(userId).getBody();
-        Wallet walletSenderUpdate = new Wallet(walletToUpdated.id(),walletToUpdated.balance()-totaClost,walletToUpdated.clientId(),walletToUpdated.bankAccountId());
+        Wallet walletSenderUpdate = new Wallet(walletToUpdated.id(),walletToUpdated.balance()+totaClost,walletToUpdated.clientId(),walletToUpdated.bankAccountId());
         walletClient.updateWallet(walletSenderUpdate);
         walletRepository.save(wallet);
 

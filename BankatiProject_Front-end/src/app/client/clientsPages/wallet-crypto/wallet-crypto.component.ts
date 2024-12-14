@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {WalletCryptoService} from '../../services/wallet-crypto.service';
 import {TransactionCrypto} from '../../models/crypto/transaction-crypto';
 import {WalletCrypto} from '../../models/crypto/wallet-crypto';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wallet-crypto',
@@ -11,20 +11,38 @@ import {WalletCrypto} from '../../models/crypto/wallet-crypto';
 })
 export class WalletCryptoComponent implements OnInit {
 
-  idUser = '77597a1b0c8a5706c60d2dd0';
+  idUser = '67597a1b0c8a5706c60d2dd0';
   isClicked = true;
   allCryptos = false;
   transferCryptos = false;
+  transferCryptosTrue = false;
   selleCryptos = false;
+  selleCryptosTrue = false;
   isModalOpen = false;
+  trueBalance = false;
+  trueCryptos = false;
   walletCrypto: WalletCrypto | null = null;
   transactions: TransactionCrypto[] = [];
   errorMessage = '';
-  constructor(private walletCryptoService: WalletCryptoService) { }
+
+  crypto = '';
+  nombre = '';
+
+  bitcoinPrice = 0;
+  ethereumPrice = 0;
+  cryptoName = '';
+  cryptoPrice = 0;
+  nombreAcheter = 0;
+  balance = 0;
+
+  constructor(private walletCryptoService: WalletCryptoService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadUserWalletCrypto(this.idUser);
     this.loadUserTransactions(this.idUser);
+    this.cryptoPrice1('bitcoin');
+    this.cryptoPrice2('ethereum');
+    this.getBalanceWallet();
   }
 
 
@@ -59,29 +77,57 @@ export class WalletCryptoComponent implements OnInit {
     });
   }
 
+  acheterCrypto() {
+    if (this.balance > (this.cryptoPrice * this.nombreAcheter)) {
+      this.buyCrypto(this.idUser, this.cryptoName, this.nombreAcheter);
+      this.closeModal();
+    } else {
+      this.trueBalance = true;
+    }
+  }
+
+
+
+
+
+  testCryptoValue(cryptoName: string, nombre: number): boolean {
+    const value = this.walletCrypto.cryptos[cryptoName];
+    return value >= nombre;
+  }
+
 
 
 
 // Vendre des cryptos
   vendreSubmit(cryptoName: string, nombre: string): void {
-    const amount = parseFloat(nombre);
-    if (!cryptoName || amount <= 0) {
-      console.error('Invalid input for selling crypto');
-      return;
-    }
-    this.walletCryptoService.setCryptosToSell(this.idUser, cryptoName, amount).subscribe({
-      next: (response) => {
-        console.log('Sell Crypto Response:', response);
-        this.selleCryptos = false;
-        this.isClicked = true;
-        this.loadUserWalletCrypto(this.idUser);
-      },
-      error: (error) => {
-        this.errorMessage = error;
-        console.error('Error selling crypto:', error);
+
+      const amount = parseFloat(nombre);
+      if (!cryptoName || amount <= 0) {
+        console.error('Invalid input for selling crypto');
+        return;
       }
-    });
+    if (this.testCryptoValue(cryptoName, amount)) {
+      this.walletCryptoService.setCryptosToSell(this.idUser, cryptoName, amount).subscribe({
+        next: (response) => {
+          console.log('Sell Crypto Response:', response);
+          this.crypto = '';
+          this.nombre = '';
+          this.loadUserWalletCrypto(this.idUser);
+        },
+        error: (error) => {
+          this.errorMessage = error;
+          console.error('Error selling crypto:', error);
+        }
+      });
+      this.selleCryptosTrue = true;
+    } else {
+      this.trueCryptos = true;
+    }
   }
+
+
+
+
 
 
 
@@ -103,6 +149,10 @@ export class WalletCryptoComponent implements OnInit {
 
 
 
+
+
+
+
   // Convertir des cryptos en argent
   transferCryptoToMoney(userId: string, cryptoName: string, nombre: string): void {
     const amount = parseFloat(nombre);
@@ -116,19 +166,87 @@ export class WalletCryptoComponent implements OnInit {
         this.transferCryptos = false;
         this.isClicked = true;
         this.loadUserWalletCrypto(userId);
+        window.location.reload();
       },
       error: (error) => {
         this.errorMessage = error;
         console.error('Error transferring crypto to money:', error);
       }
     });
+    this.transferCryptosTrue = true;
   }
+
+
+
+
 
 
   transferSubmit(cryptoName: string, nombre: string): void {
     const amount = parseFloat(nombre);
     this.transferCryptoToMoney(this.idUser, cryptoName, nombre);
   }
+
+
+
+
+
+
+
+  cryptoPrice1(cryptoName: string): void {
+    this.walletCryptoService.getPriceCrypto(cryptoName).subscribe({
+      next: (data) => {
+        this.bitcoinPrice = data;
+        console.log('Prix de la crypto 1:', data);
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.error('Erreur lors du chargement du prix :', error);
+      }
+    });
+  }
+
+
+
+
+
+  cryptoPrice2(cryptoName: string): void {
+    this.walletCryptoService.getPriceCrypto(cryptoName).subscribe({
+      next: (data) => {
+        this.ethereumPrice = data;
+        console.log('Prix de la crypto 2:', data);
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.error('Erreur lors du chargement du prix :', error);
+      }
+    });
+  }
+
+
+
+
+
+
+
+  // reel money
+  getBalanceWallet(): void {
+    this.walletCryptoService.getBalanceWallet(this.idUser).subscribe({
+      next: (data) => {
+        this.balance = data;
+        console.log('Balance :', data);
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.error('Erreur  :', error);
+      }
+    });
+  }
+
+
+
+
+
+
 
 
   onDivClick1(): void {
@@ -149,17 +267,20 @@ export class WalletCryptoComponent implements OnInit {
     console.log('Div clicked, isClicked:', this.isClicked);
   }
 
-  openModal() {
+  openModal1() {
+    this.cryptoName = 'bitcoin';
+    this.cryptoPrice = this.bitcoinPrice;
+    this.isModalOpen = true;
+  }
+
+  openModal2() {
+    this.cryptoName = 'ethereum';
+    this.cryptoPrice = this.ethereumPrice;
     this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
-  }
-
-  acheterCrypto() {
-    console.log('Cryptomonnaie achetée');
-    this.closeModal();
   }
 
 

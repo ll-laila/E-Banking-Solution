@@ -3,6 +3,7 @@ package com.example.walletcryptoservice.walletcryptoservice.controller;
 import com.example.walletcryptoservice.walletcryptoservice.request.WalletCryptoRequest;
 import com.example.walletcryptoservice.walletcryptoservice.response.TransactionResponse;
 import com.example.walletcryptoservice.walletcryptoservice.response.WalletCryptoResponse;
+import com.example.walletcryptoservice.walletcryptoservice.service.CryptoService;
 import com.example.walletcryptoservice.walletcryptoservice.service.CryptoWalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class WalletCryptoController {
 
     @Autowired
     private CryptoWalletService walletService;
+
+    @Autowired
+    private CryptoService cryptoService;
 
     @PostMapping("/addWalletCrypro")
     public ResponseEntity<String> saveWalletCrypto(@RequestBody WalletCryptoRequest wallet){
@@ -70,6 +74,12 @@ public class WalletCryptoController {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+
+    @GetMapping("/getPriceCrypto/{cryptoName}")
+    public double getPriceCrypto(@PathVariable("cryptoName") String cryptoName) {
+        return cryptoService.getCryptoPrice(cryptoName);
     }
 
 

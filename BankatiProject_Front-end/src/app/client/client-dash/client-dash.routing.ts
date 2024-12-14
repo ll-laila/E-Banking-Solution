@@ -17,9 +17,9 @@ export const ClientDashRoutes: Routes = [
     { path: 'transferToClient',   component: TransferToClientComponent },
     { path: 'historique',          component: HistoryComponent  },
     { path: 'carte-virtuelle',          component: CarteVirtuelleComponent  },
-  { path: 'crypto',   component: WalletCryptoComponent },
+    { path: 'crypto',   component: WalletCryptoComponent },
     { path: 'buget-personnel',   component: BudgetPersonelComponent },
-  { path: 'mon-compte',   component: ProfileClientComponent },
-  { path: 'paiement',           component: Payment },
-  {path: '', component: DashboardClientComponent}
+    { path: 'mon-compte',   component: ProfileClientComponent },
+    { path: 'paiement',           component: Payment },
+
 ];

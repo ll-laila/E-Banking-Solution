@@ -15,6 +15,8 @@ import com.example.user.users.response.AgentResponse;
 import com.example.user.users.response.ClientResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
+import com.example.user.walletClient.WalletClient;
+import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoResponse;
@@ -176,6 +178,9 @@ public class UserController {
     //-------------------------laila-------------------------//
     @Autowired
     private WalletCryptoClient walletCryptoClient;
+    @Autowired
+    private WalletClient walletUser;
+
 
     @GetMapping("/walletCrypto/{userId}")
     public ResponseEntity<WalletCryptoResponse> getUserWalletCrypto(@PathVariable String userId){
@@ -206,10 +211,16 @@ public class UserController {
         return ResponseEntity.ok(walletCryptoClient.transferCryptoToMoney(userId,cryptoName,amount));
     }
 
+    @GetMapping("/getActualPrice/{cryptoName}")
+    public ResponseEntity<Double> getPriceCrypto(@PathVariable("cryptoName") String cryptoName){
+        return ResponseEntity.ok(walletCryptoClient.getPriceCrypto(cryptoName));
+    }
 
 
-
-
+    @GetMapping("/userWalletBalance/{clientId}")
+    public ResponseEntity<Double> getBalanceWalletByIdClient(@PathVariable("clientId") String clientId){
+        return ResponseEntity.ok(walletUser.getWalletByIdClient(clientId).getBody().balance());
+    }
 
 
 
@@ -248,7 +259,20 @@ public class UserController {
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
 
+    @GetMapping("/clientByPhone/{phoneNumber}")
+    public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
+        String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
+        if (clientId != null) {
+            return ResponseEntity.ok(clientId);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
+        }
+    }
 
+    @GetMapping("/clientbyid/{clientId}")
+    public ResponseEntity<Client> getClientInfo(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.getClientById(clientId));
+    }
 
     //-------------------------salwa-------------------------//
     // salwa here
