@@ -6,10 +6,7 @@ import com.example.transactionservice.kafka.TransactionProducer;
 import com.example.transactionservice.servicesTiersClient.ServicesTiersClient;
 import com.example.transactionservice.servicesTiersClient.TiersClientRequest;
 import com.example.transactionservice.servicesTiersClient.TiersClientResponse;
-import com.example.transactionservice.transaction.entity.Transaction;
-import com.example.transactionservice.transaction.entity.TransactionMethod;
-import com.example.transactionservice.transaction.entity.TransactionStatus;
-import com.example.transactionservice.transaction.entity.TransactionType;
+import com.example.transactionservice.transaction.entity.*;
 import com.example.transactionservice.transaction.mapper.TransactionMapper;
 import com.example.transactionservice.transaction.repository.TransactionRepository;
 import com.example.transactionservice.transaction.request.TransactionRequest;
@@ -30,6 +27,7 @@ public class TransactionService {
     private final ServicesTiersClient servicesTiersClient;
 
     public String createTransaction(TransactionRequest request) {
+
         TiersClientRequest tiersClientRequest = new TiersClientRequest(
                 request.senderCurrency(),
                 request.beneficiaryCurrency(),

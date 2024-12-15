@@ -1,7 +1,7 @@
 import {ServiceAgent} from "./serviceAgent";
 
 export interface Agent {
-  id? : number;
+  id? : string;
   firstName : string;
   lastName : string;
   email : string;

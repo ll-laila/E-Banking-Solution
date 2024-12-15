@@ -11,20 +11,15 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ClientService {
 
-  private serverUrl: string = `http://localhost:9090/client/infos`;
+  private serverUrl: string = `http://localhost:8222/api/v1/users`;
   private authorization = this.cookieService.get('Authorization');
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService) { }
 
 
-  public getAgentServiceById(agentId : number): Observable<any> {
-    let dataUrl: string = `${this.serverUrl}/services/${agentId}`;
-    console.log(this.authorization);
-
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    return this.httpClient.get(dataUrl, { headers }).pipe(catchError(this.handleError));
+  public getAgentServiceById(agentId : string): Observable<any> {
+    let dataUrl: string = `${this.serverUrl}/serviceByAgent/675d6abc98a04453154ddc30`;
+    return this.httpClient.get(dataUrl).pipe(catchError(this.handleError));
   }
 
 

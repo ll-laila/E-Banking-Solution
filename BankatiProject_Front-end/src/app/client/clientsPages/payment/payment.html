@@ -23,13 +23,13 @@
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label class="form-control-label" for="input-firstName">Prenom du donateur</label>
-                      <input type="text" id="input-firstName" class="form-control form-control-alternative" value="{{client.firstName}}" >
+                      <input type="text" id="input-firstName" class="form-control form-control-alternative" value="{{client.firstName}}">
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label class="form-control-label" for="input-lastName">Nom du donateur</label>
-                      <input type="text" id="input-lastName" class="form-control form-control-alternative" value="{{client.lastName}}" >
+                      <input type="text" id="input-lastName" class="form-control form-control-alternative" value="{{client.lastName}}">
                     </div>
                   </div>
                   <div class="col-lg-12">
@@ -39,7 +39,24 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Checkbox for Subscription -->
                 <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        id="subscription-checkbox"
+                        class="form-check-input"
+                        formControlName="subscription">
+                      <label class="form-check-label" for="subscription-checkbox">
+                        Activer l'abonnement pour un paiement automatique chaque mois
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-4">
                   <div class="col-12 text-right">
                     <button class="btn btn-sm btn-warning" type="button" (click)="onCancel()">Annuler</button>
                     <button class="btn btn-sm btn-primary" type="submit" [disabled]="paymentForm1.invalid">Valider</button>
@@ -57,6 +74,7 @@
     </div>
   </div>
 </div>
+
 
 
 

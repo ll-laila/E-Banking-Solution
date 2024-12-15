@@ -11,6 +11,8 @@ import {SharedClientService} from "../../services/shared-client.service";
 import {SharedAgentServiceService} from "../../services/shared-agent-service.service";
 import {SharedAgentService} from "../../services/shared-agent.service";
 import {Transaction} from "../../models/transaction";
+import {TransactionServiceService} from "../../services/transaction-service.service";
+import {TransactionType} from "../../models/transaction-type";
 
 
 @Component({
@@ -36,16 +38,31 @@ export class Payment implements OnInit {
               private sharedClientService: SharedClientService,
               private sharedAgentServiceService: SharedAgentServiceService,
               private sharedAgentService: SharedAgentService,
+              private transactionService: TransactionServiceService,
    ) {
 
     this.paymentForm1 = this.fb.group({
-      donationAmount: [0 , [Validators.required, Validators.min(1)]]
+      donationAmount: [0 , [Validators.required, Validators.min(1)]],
+      subscription: [false]
     });
   }
 
+  senderId: string = '675d672698a04453154ddc2e';
+
 
   ngOnInit() {
-    this.client = this.sharedClientService.getClient();
+    this.transactionService.getClientInfo(this.senderId).subscribe({
+      next: (sender: Client) => {
+        this.client=sender;
+        console.log('Infos du sender récupérées avec succès :', sender);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des infos du sender :', error);
+        alert('Impossible de récupérer les informations de l\'expéditeur.');
+      }
+    })
+
+
     this.agent = this.sharedAgentService.getAgent();
     this.service = this.sharedAgentServiceService.getServiceAgent();
   }
@@ -70,9 +87,22 @@ export class Payment implements OnInit {
 
 
   validate3() {
-
+        this.transactionService.createTransaction(this.senderId, this.agent.id, this.donationAmount, TransactionType.PAYMENT).subscribe({
+          next: (response) => {
+            console.log('Transaction créée avec succès:', response);
+            alert(response); // Affiche le message texte retourné par le backend
+            this.router.navigate(['/client/accueil']);
+          },
+          error: (error) => {
+            console.error('Erreur lors de la création de la transaction:', error);
+            alert(`Une erreur est survenue : ${error.message || 'Veuillez réessayer.'}`);
+          }
+        });
 
   }
+
+
+
 
   annuler() {
     this.router.navigate(['/client/accueil']);
@@ -86,6 +116,7 @@ export class Payment implements OnInit {
     }
     return reference;
   }
+
 
 }
 
