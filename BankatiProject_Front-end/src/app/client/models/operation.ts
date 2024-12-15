@@ -5,5 +5,5 @@ export interface Operation {
     clientName: string;
     serviceName: string;
     amount: number;
-    doItAt: string;
+    date: Date;
   }
