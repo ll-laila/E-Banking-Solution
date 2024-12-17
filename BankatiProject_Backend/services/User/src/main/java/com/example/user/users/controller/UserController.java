@@ -1,9 +1,6 @@
 package com.example.user.users.controller;
 
-import com.example.user.transactionClient.SimpleTransactionRequest;
-import com.example.user.transactionClient.TransactionClient;
-import com.example.user.transactionClient.TransactionRequest;
-import com.example.user.transactionClient.TransactionType;
+import com.example.user.transactionClient.*;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.AgentServiceRequest;
 import com.example.user.users.entity.Client;
@@ -262,6 +259,17 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
+
+    @PostMapping("/creat-subscription")
+    public ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
+        try {
+            transactionClient.createSubscription(subscriptionRequest);
+        } catch (FeignException ex) {
+            return ResponseEntity.status(ex.status()).body("Failed to create subscription: " + ex.getMessage());
+        }
+        return ResponseEntity.ok("Subscription created successfully");
+    }
+
 
     @GetMapping("/clientByPhone/{phoneNumber}")
     public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {

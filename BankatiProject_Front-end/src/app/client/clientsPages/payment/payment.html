@@ -48,6 +48,7 @@
                         type="checkbox"
                         id="subscription-checkbox"
                         class="form-check-input"
+                        (change)="onCheckboxChange($event)"
                         formControlName="subscription">
                       <label class="form-check-label" for="subscription-checkbox">
                         Activer l'abonnement pour un paiement automatique chaque mois

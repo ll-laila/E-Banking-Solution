@@ -67,6 +67,32 @@ export class Payment implements OnInit {
     this.service = this.sharedAgentServiceService.getServiceAgent();
   }
 
+  onCheckboxChange(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.activateSubscription();
+    }
+  }
+
+  activateSubscription() {
+    if (!this.donationAmount || this.donationAmount <= 0) {
+      alert('Le montant de l\'abonnement est invalide.');
+      return;
+    }
+
+    this.paymentService.createSubscriptionTransaction(this.senderId, this.agent.id, this.donationAmount).subscribe({
+      next: () => {
+        console.log('Abonnement activé avec succès.');
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création de l\'abonnement : ', err);
+        alert(`Erreur : ${err}`);
+      }
+    });
+  }
+
+
 
   validate1() {
     if (this.paymentForm1.valid) {
@@ -110,13 +136,13 @@ export class Payment implements OnInit {
 
 
   generateReferenceOperation(): string {
+    const timestamp = Date.now().toString().slice(-5); // Les 5 derniers chiffres de l'heure actuelle
     let reference = '';
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 7; i++) {
       reference += Math.floor(Math.random() * 10).toString();
     }
-    return reference;
+    return `REF${timestamp}${reference}`;
   }
-
 
 }
 

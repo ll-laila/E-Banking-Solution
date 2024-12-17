@@ -1,11 +1,13 @@
 package com.example.transactionservice.transaction.controller;
 
+import com.example.transactionservice.transaction.entity.Subscription;
 import com.example.transactionservice.transaction.entity.Transaction;
 import com.example.transactionservice.transaction.entity.TransactionStatus;
+import com.example.transactionservice.transaction.request.SubscriptionRequest;
 import com.example.transactionservice.transaction.request.TransactionRequest;
+import com.example.transactionservice.transaction.service.SubscriptionService;
 import com.example.transactionservice.transaction.service.TransactionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final SubscriptionService subscriptionService;
 
     @PostMapping("/createTransaction")
     public ResponseEntity<String> createTransaction(@RequestBody TransactionRequest request) {
@@ -80,6 +83,32 @@ public class TransactionController {
     public ResponseEntity<Transaction> retryTransaction(@PathVariable String id) {
         Transaction retriedTransaction = transactionService.retryTransaction(id);
         return ResponseEntity.ok(retriedTransaction);
+    }
+
+
+    @PostMapping("/createSubscription")
+    public ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest request) {
+        Subscription subscription = subscriptionService.createSubscription(
+                request.userId(),request.agentId(), request.price(), request.durationInMonths());
+        return ResponseEntity.ok("Subscription créée avec succès !");
+    }
+
+    @GetMapping("/subscriptions/{userId}")
+    public ResponseEntity<List<Subscription>> getUserSubscriptions(@PathVariable String userId) {
+        List<Subscription> subscriptions = subscriptionService.getUserSubscriptions(userId);
+        return ResponseEntity.ok(subscriptions);
+    }
+
+    @PutMapping("/cancel/{subscriptionId}")
+    public ResponseEntity<Subscription> cancelSubscription(@PathVariable String subscriptionId) {
+        Subscription subscription = subscriptionService.cancelSubscription(subscriptionId);
+        return ResponseEntity.ok(subscription);
+    }
+
+    @PutMapping("/deactivateExpired")
+    public ResponseEntity<Void> deactivateExpiredSubscriptions() {
+        subscriptionService.deactivateExpiredSubscriptions();
+        return ResponseEntity.ok().build();
     }
 }
 

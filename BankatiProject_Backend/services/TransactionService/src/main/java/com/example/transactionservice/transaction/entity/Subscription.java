@@ -21,8 +21,7 @@ public class Subscription {
     private String id;
 
     private String userId; // L'utilisateur lié à l'abonnement
-
-    private String planName; // Nom du plan (par exemple, Basic, Premium)
+    private String agentId;
 
     private BigDecimal price; // Prix de l'abonnement
 

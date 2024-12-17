@@ -14,10 +14,10 @@ import java.util.List;
 public class SubscriptionService {
     private final SubscriptionRepository repository;
 
-    public Subscription createSubscription(String userId, String planName, BigDecimal price, int durationInMonths) {
+    public Subscription createSubscription(String userId, String agentId ,BigDecimal price, int durationInMonths) {
         Subscription subscription = Subscription.builder()
                 .userId(userId)
-                .planName(planName)
+                .agentId(agentId)
                 .price(price)
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now().plusMonths(durationInMonths))
