@@ -20,4 +20,10 @@ public interface TransactionClient {
     ResponseEntity<String> createTransaction(@RequestBody TransactionRequest request);
     @PostMapping("/createSubscription")
     ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest request);
+
+    @GetMapping("/user/{userId}")
+    List<TransactionResponse> getTransactionsByUser(@PathVariable("userId") String userId);
+
+    @GetMapping("/user-transactions/{userId}")
+    List<TransactionResponse> getAllTransactionsByUserId(@PathVariable("userId") String userId);
 }
