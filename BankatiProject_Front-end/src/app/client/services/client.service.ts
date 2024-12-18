@@ -78,6 +78,27 @@ export class ClientService {
     }
     return throwError(errorMessage);
   }
+  
+//kaoutar
+   getClientById(clientId: string): Observable<Client> {
+    return this.http.get<Client>(`${this.apiUrl}/clientbyid/${clientId}`);
+  }
+
+  getWalletByClientId(clientId: string): Observable<Wallet> {
+    return this.http.get<Wallet>(`${this.apiUrl}/wallet/${clientId}`);
+  }
+  getTransactionsByUserId(userId: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.apiUrl}/transactions/${userId}`);
+  }
+
+  getAllTransactionsByUserId(userId: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.apiUrl}/all-transactions/${userId}`);
+  }
+
+  feedWallet(clientId: string, amount: number): Observable<boolean> {
+    const body = { clientId, amount };
+    return this.http.post<boolean>(`${this.apiUrl}/feed-wallet`, body);
+  }
 
 
 }
