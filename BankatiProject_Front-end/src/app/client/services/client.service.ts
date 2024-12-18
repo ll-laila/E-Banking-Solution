@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
 import { Operation } from '../models/operation';
+import { Client } from '../models/client';
+import { Wallet } from '../models/wallet';
+import { Transaction } from '../models/transaction';
 import { CookieService } from 'ngx-cookie-service';
 
 
