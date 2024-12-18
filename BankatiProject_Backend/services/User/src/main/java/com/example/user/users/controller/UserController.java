@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -292,4 +293,29 @@ public class UserController {
 
     //-------------------------kawtar-------------------------//
     // kawtar here
+    @GetMapping("/wallet/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.getWalletByClientId(clientId));
+    }
+
+    @GetMapping("/transactions/{userId}")
+    public ResponseEntity<List<TransactionResponse>> getUserTransactions(@PathVariable("userId") String userId) {
+        List<TransactionResponse> transactions = clientService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
+    @PostMapping("/feed-wallet")
+    public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
+        // Extraire les valeurs du JSON
+        String clientId = (String) requestBody.get("clientId");
+        double amount = ((Number) requestBody.get("amount")).doubleValue();
+
+        // Appeler le service tiers
+        boolean result = clientService.feedWallet(clientId, amount);
+        return ResponseEntity.ok(result);
+    }
+    @GetMapping("/all-transactions/{userId}")
+    public ResponseEntity<List<TransactionResponse>> getAllTransactionsByUserId(@PathVariable("userId") String userId) {
+        List<TransactionResponse> transactions = clientService.getAllTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
 }
