@@ -1,8 +1,6 @@
 package com.example.user.users.controller;
 
-import com.example.user.transactionClient.SimpleTransactionRequest;
-import com.example.user.transactionClient.TransactionClient;
-import com.example.user.transactionClient.TransactionRequest;
+import com.example.user.transactionClient.*;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.AgentServiceRequest;
 import com.example.user.users.entity.Client;
@@ -28,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -228,21 +229,22 @@ public class UserController {
     //-------------------------chaima-------------------------//
     private final ClientService clientService;
     private final TransactionClient transactionClient;
+
     @PostMapping("/creat-transaction")
-    public ResponseEntity<String> createTransaction(@Valid @RequestBody SimpleTransactionRequest request ) {
+    public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;
 
-        switch (request.transactionType()) {
+        switch (transactionType) {
             case PAYMENT -> transaction = clientService.createPaymentTransaction(
-                    request.senderId(),
-                    request.beneficiaryId(),
-                    request.amount()
+                   senderId,
+                    beneficiaryId,
+                    amount
             );
 
             case TRANSFER -> transaction = clientService.createTransferTransaction(
-                    request.senderId(),
-                    request.beneficiaryId(),
-                    request.amount()
+                    senderId,
+                    beneficiaryId,
+                    amount
             );
 
             default -> {
@@ -258,6 +260,17 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
+
+    @PostMapping("/creat-subscription")
+    public ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
+        try {
+            transactionClient.createSubscription(subscriptionRequest);
+        } catch (FeignException ex) {
+            return ResponseEntity.status(ex.status()).body("Failed to create subscription: " + ex.getMessage());
+        }
+        return ResponseEntity.ok("Subscription created successfully");
+    }
+
 
     @GetMapping("/clientByPhone/{phoneNumber}")
     public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
@@ -280,4 +293,29 @@ public class UserController {
 
     //-------------------------kawtar-------------------------//
     // kawtar here
+    @GetMapping("/wallet/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.getWalletByClientId(clientId));
+    }
+
+    @GetMapping("/transactions/{userId}")
+    public ResponseEntity<List<TransactionResponse>> getUserTransactions(@PathVariable("userId") String userId) {
+        List<TransactionResponse> transactions = clientService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
+    @PostMapping("/feed-wallet")
+    public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
+        // Extraire les valeurs du JSON
+        String clientId = (String) requestBody.get("clientId");
+        double amount = ((Number) requestBody.get("amount")).doubleValue();
+
+        // Appeler le service tiers
+        boolean result = clientService.feedWallet(clientId, amount);
+        return ResponseEntity.ok(result);
+    }
+    @GetMapping("/all-transactions/{userId}")
+    public ResponseEntity<List<TransactionResponse>> getAllTransactionsByUserId(@PathVariable("userId") String userId) {
+        List<TransactionResponse> transactions = clientService.getAllTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
 }

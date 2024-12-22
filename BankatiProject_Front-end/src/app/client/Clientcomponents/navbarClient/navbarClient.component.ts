@@ -8,6 +8,7 @@ import {PaymentService} from '../../services/payment.service';
 import {Client} from '../../models/client';
 import {SharedClientService} from '../../services/shared-client.service';
 import {FeedResponse} from '../../models/feedResponse';
+import { ClientService } from '../../services/client.service';
 
 @Component({
   selector: 'app-navbar-client',
@@ -22,10 +23,10 @@ export class NavbarClientComponent implements OnInit {
   public listTitles: any[];
   public location: Location;
 
-  public feedDetails: FeedDetails = {
+ /* public feedDetails: FeedDetails = {
     idClient : -1,
     amount: 0
-  };
+  };*/
 
   public responseMessage: string;
   public currentStep: number;
@@ -48,7 +49,7 @@ export class NavbarClientComponent implements OnInit {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
   }
 
-  submitForm() {
+  /*submitForm() {
     if (this.paymentForm.valid) {
       this.client = this.sharedClientService.getClient();
       this.feedDetails.idClient = this.client.id;
@@ -66,6 +67,39 @@ export class NavbarClientComponent implements OnInit {
 
     } else {
       console.log('Formulaire non valide');
+    }
+  }*/
+
+  feedAmount: number = 0; // Pour stocker le montant à alimenter
+  walletMessage: string | null = null; // Message de confirmation ou d'erreur
+
+  feedWallet(): void {
+    const clientId = '67596dcc2500d851f75a6f98';
+    this.feedAmount = this.paymentForm.get('montant')?.value;
+    if (this.paymentForm.valid) {
+      this.clientService.feedWallet(clientId, this.feedAmount).subscribe(
+        (result: boolean) => {
+          if (result) {
+            this.walletMessage = 'Le portefeuille a été alimenté avec succès.';
+            this.clientService.getClientById(clientId).subscribe(
+              (updatedClient: Client) => {
+                this.client = updatedClient; // Met à jour les données du client avec le nouveau solde
+              },
+              (error) => {
+                console.error('Erreur lors de la recharge des données du client:', error);
+              }
+            );
+          } else {
+            this.walletMessage = 'Échec de l\'alimentation du portefeuille.';
+          }
+        },
+        (error) => {
+          console.error('Erreur lors de l\'alimentation du portefeuille:', error);
+          this.walletMessage = 'Une erreur est survenue. Veuillez réessayer.';
+        }
+      );
+    } else {
+      this.walletMessage = 'Veuillez entrer un montant valide.';
     }
   }
 
