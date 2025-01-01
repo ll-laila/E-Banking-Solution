@@ -118,12 +118,9 @@ public class UserController {
     }
 
 
-}
 
 
-
-
-   /* //--------------------------------------Admin-----------------------------------//
+   //--------------------------------------Admin-----------------------------------//
 
     @PostMapping("/addAdmin")
     public ResponseEntity<Admin> saveAdmin(@RequestBody AdminRequest request) {
@@ -151,7 +148,7 @@ public class UserController {
 
 
 
-    @DeleteMapping("/delete/{id}")
+    /*@DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable("id") String id)  {
         service.delete(id);
     }
@@ -160,7 +157,7 @@ public class UserController {
     @GetMapping("/listAgent")
     public ResponseEntity<List<AgentResponse>> getAllAgents() {
         return ResponseEntity.ok( service.findAllAgents());
-    }
+    }*/
 
 
     //--------------------------------------Agent-----------------------------------//
@@ -173,7 +170,7 @@ public class UserController {
         return ResponseEntity.ok(agentService.createClient(clientRequest));
     }
 
-    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/client/allClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = agentService.getAllClients();
@@ -181,7 +178,7 @@ public class UserController {
                 .map(clientMapper::fromClient)
                 .toList();
         return ResponseEntity.ok(clientResponses);
-    }
+    }*/
 
 
     @GetMapping("/client/{id}")
@@ -238,14 +235,14 @@ public class UserController {
     ) {
         return ResponseEntity.ok(agentService.updateService(serviceId, request));
     }
-*//*
-    @DeleteMapping("/service/{serviceId}")
+
+   /* @DeleteMapping("/service/{serviceId}")
     //@PreAuthorize("hasAuthority('agent:delete')")
     public RegisterAgentResponse deleteService(@PathVariable Long serviceId) {
         return agentservice.deleteService(serviceId);
-    }
+    }*/
 
- *//*
+
     @GetMapping("/serviceByAgent/{agentId}")
     //@PreAuthorize("hasAuthority('agent:read')")
     public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
@@ -361,5 +358,6 @@ public class UserController {
 
     //-------------------------kawtar-------------------------//
     // kawtar here
+
+
 }
-*/
