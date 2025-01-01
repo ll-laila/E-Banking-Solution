@@ -110,5 +110,11 @@ public class TransactionController {
         subscriptionService.deactivateExpiredSubscriptions();
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/user-transactions/{userId}")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByUserId(@PathVariable String userId) {
+        List<Transaction> transactions = transactionService.getAllTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
 }
 

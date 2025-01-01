@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AgentService} from "../../../service/agent.service";
 import {IAgent} from "../../../models/Agent";
+import {AdminService} from "../../../service/admin.service";
 
 @Component({
   selector: 'app-agents',
@@ -10,7 +11,9 @@ import {IAgent} from "../../../models/Agent";
 })
 export class NewAgentComponent implements OnInit {
   agents: IAgent[] = [];
-  constructor(private router: Router, private agentService: AgentService) { }
+  errorMessage: string | null = null; // Gestion des erreurs
+  successMessage: string | null = null;
+  constructor(private router: Router, private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.getAllAgents();
@@ -18,7 +21,15 @@ export class NewAgentComponent implements OnInit {
 
 
   getAllAgents(): void {
-
+    this.adminService.getAllAgents().subscribe(
+      (agents) => {
+        this.agents = agents; // Assigner les données reçues
+      },
+      (error) => {
+        console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
+        this.errorMessage = 'Impossible de récupérer la liste des agents.';
+      }
+    );
   }
   addAgent() {
     this.router.navigate(['/add-agent']);

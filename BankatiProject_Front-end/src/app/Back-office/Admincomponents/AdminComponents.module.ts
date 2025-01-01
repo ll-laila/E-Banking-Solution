@@ -9,6 +9,7 @@ import { AddAgentComponent } from './add-agent/add-agent.component';
 import {FormsModule} from "@angular/forms";
 import { DetailsAgentComponent } from './details-agent/details-agent.component';
 import {EditAgentComponent} from "./edit-agent/edit-agent.component";
+import { AddClientComponent } from './add-client/add-client.component';
 
 
 
@@ -26,7 +27,8 @@ import {EditAgentComponent} from "./edit-agent/edit-agent.component";
     SidebarAdminComponent,
     AddAgentComponent,
     EditAgentComponent,
-    DetailsAgentComponent
+    DetailsAgentComponent,
+    AddClientComponent
   ],
   exports: [
     FooterAdminComponent,

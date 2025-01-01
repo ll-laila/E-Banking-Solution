@@ -20,6 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth-service" target="17" />
       <module name="carte-virtuelle" target="21" />
       <module name="Offre" target="17" />
       <module name="Payment" target="17" />
@@ -39,6 +40,7 @@
       <module name="VirtualCardService" options="-parameters" />
       <module name="WalletCryptoService" options="-parameters" />
       <module name="WalletService" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
     </option>

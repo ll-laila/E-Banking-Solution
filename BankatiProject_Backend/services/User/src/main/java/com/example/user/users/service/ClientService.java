@@ -79,6 +79,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     public String getClientIdByPhoneNumber(String phoneNumber) {
+        // Appeler la méthode du repository
         Client client = clientRepository.findIdByPhoneNumber(phoneNumber);
         if (client != null) {
             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String

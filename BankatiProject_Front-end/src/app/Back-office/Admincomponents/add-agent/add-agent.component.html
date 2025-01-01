@@ -13,7 +13,7 @@
 
           <div class="container-fluid">
               <div class="card border-0 shadow px-1">
-                <form (submit)="createSubmit()">
+                <form >
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <h2 class="card-title text-right Montserrat" style="color: #ffc107;}; margin-bottom: 0;">Informations personnelles</h2>
@@ -113,7 +113,7 @@
                         </div>
                       </div>-->
                       <button type="submit" class="btn mt-2 justify-content-center btn-block " style="background-color: #333e86; color:#fff; border-radius:20px;">
-                        <span class="Montserrat" style="color:white">Créer agent</span>
+                        <span class="Montserrat" style="color:white" (click)="addAgent()" >Créer agent</span>
                       </button>
                   </div>
                 </form>

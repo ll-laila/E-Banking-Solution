@@ -126,5 +126,17 @@ public class TransactionService {
         return repository.save(transaction);
     }
 
+    public List<Transaction> getAllTransactionsByUserId(String userId) {
+        // Recherche les transactions où l'utilisateur est le sender
+        List<Transaction> senderTransactions = repository.findBySenderId(userId);
+        // Recherche les transactions où l'utilisateur est le beneficiary
+        List<Transaction> beneficiaryTransactions = repository.findByBeneficiaryId(userId);
+
+        // Combinaison des deux listes de transactions
+        senderTransactions.addAll(beneficiaryTransactions);
+
+        return senderTransactions;
+    }
+
 
 }

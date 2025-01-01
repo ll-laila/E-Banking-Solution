@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ProfileAdminComponent} from "../pages/profileAdmin/profileAdmin.component";
 import {NewAgentComponent} from "../pages/new-agent/new-agent.component";
 import {AdminDashRoutes} from "./admin-dash.routing";
+import {ClientsComponent} from "../pages/clients/clients.component";
 //import {NgxPaginationModule} from "ngx-pagination";
 
 
@@ -28,6 +29,7 @@ import {AdminDashRoutes} from "./admin-dash.routing";
   declarations: [
     ProfileAdminComponent,
     NewAgentComponent,
+    ClientsComponent,
   ]
 })
 
