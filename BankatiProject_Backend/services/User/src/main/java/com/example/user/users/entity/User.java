@@ -3,15 +3,16 @@ package com.example.user.users.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +20,9 @@ import java.util.List;
 @Getter
 @Setter
 @Document
-public class Client {
+public class User  {
+
+
     @Id
     private String id;
     private String agentId;
@@ -30,15 +33,19 @@ public class Client {
     private String cin;
     private Date birthDate ;
     private String phoneNumber;
-    @JsonIgnore
+
+    private Role role ;
     private String password;
-    private Boolean isFirstLogin ;
+
+    @JsonIgnore
+    private boolean isFirstLogin ;
     private Date createdDate;
     private String commercialRn;
+    private String image;
     private String patentNumber ;
     private Boolean isPaymentAccountActivated ;
     private String typeHissab;
     private String currency;
-    private Role role ;
+
 
 }

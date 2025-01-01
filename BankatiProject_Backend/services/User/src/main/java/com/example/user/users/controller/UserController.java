@@ -1,20 +1,26 @@
 package com.example.user.users.controller;
 
-import com.example.user.transactionClient.*;
+import com.example.user.transactionClient.SimpleTransactionRequest;
+import com.example.user.transactionClient.TransactionClient;
+import com.example.user.transactionClient.TransactionRequest;
+import com.example.user.transactionClient.TransactionType;
+import com.example.user.users.config.UserAuthenticationProvider;
+import com.example.user.users.dto.CredentialsDto;
+import com.example.user.users.dto.SignUpDto;
+import com.example.user.users.dto.UserDto;
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.AgentServiceRequest;
 import com.example.user.users.entity.Client;
 import com.example.user.users.entity.ServiceAgentResponse;
 import com.example.user.users.mapper.ClientMapper;
-import com.example.user.users.request.AdminRequest;
-import com.example.user.users.request.AgentRequest;
-import com.example.user.users.request.ClientRequest;
+import com.example.user.users.request.*;
 import com.example.user.users.response.AgentResponse;
 import com.example.user.users.response.ClientResponse;
+import com.example.user.users.response.UserResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
+import com.example.user.users.service.UserService;
 import com.example.user.walletClient.WalletClient;
-import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoResponse;
@@ -25,11 +31,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +50,80 @@ public class UserController {
     @Autowired
     private AdminService service;
 
-    //--------------------------------------Admin-----------------------------------//
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserAuthenticationProvider userAuthenticationProvider;
+
+
+    //login for all users (admin, agent, client)
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto) {
+        // Authenticate user
+        UserDto userDto = userService.login(credentialsDto);
+
+        // Generate token with phone number
+        String token = userAuthenticationProvider.createToken(userDto.getPhoneNumber());
+
+        // Set token in response
+        userDto.setToken(token);
+
+        return ResponseEntity.ok(userDto);
+    }
+
+    //admin registry
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
+        UserDto createdUser = userService.register(user);
+        createdUser.setToken(userAuthenticationProvider.createToken(user.getPhoneNumber()));
+        return ResponseEntity.ok(createdUser);
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PutMapping("/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody PasswordChangeRequest request) {
+        userService.changePassword(request.phoneNumber(), request.oldPassword(), request.newPassword());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    @PostMapping("/create-client")
+    public ResponseEntity<String> createClient(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.createClient(userRequest));
+    }
+
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    @GetMapping("/clients")
+    public ResponseEntity<List<UserResponse>> getAllClients() {
+        return ResponseEntity.ok(userService.getAllClients());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/agents")
+    public ResponseEntity<List<UserResponse>> getAllAgents() {
+        return ResponseEntity.ok(userService.getAllAgents());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/create-agent")
+    public ResponseEntity<String> createAgent(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.ok(userService.createAgent(userRequest));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+}
+
+
+
+
+   /* //--------------------------------------Admin-----------------------------------//
 
     @PostMapping("/addAdmin")
     public ResponseEntity<Admin> saveAdmin(@RequestBody AdminRequest request) {
@@ -64,7 +144,7 @@ public class UserController {
 
 
     // for updating password also
-    @PutMapping("/updateAgent/{id}")
+    @PutMapping("/agent/updateAgent/{id}")
     public ResponseEntity<AgentResponse> updateUser(@RequestBody AgentRequest updatedAgent){
         return ResponseEntity.ok(service.updateAgent(updatedAgent));
     }
@@ -88,13 +168,12 @@ public class UserController {
     private final AgentService agentService;
     private final ClientMapper clientMapper;
 
-
     @PostMapping("/client")
     public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
         return ResponseEntity.ok(agentService.createClient(clientRequest));
     }
 
-
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/client/allClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
         List<Client> clients = agentService.getAllClients();
@@ -159,14 +238,14 @@ public class UserController {
     ) {
         return ResponseEntity.ok(agentService.updateService(serviceId, request));
     }
-/*
+*//*
     @DeleteMapping("/service/{serviceId}")
     //@PreAuthorize("hasAuthority('agent:delete')")
     public RegisterAgentResponse deleteService(@PathVariable Long serviceId) {
         return agentservice.deleteService(serviceId);
     }
 
- */
+ *//*
     @GetMapping("/serviceByAgent/{agentId}")
     //@PreAuthorize("hasAuthority('agent:read')")
     public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
@@ -261,17 +340,6 @@ public class UserController {
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
 
-    @PostMapping("/creat-subscription")
-    public ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
-        try {
-            transactionClient.createSubscription(subscriptionRequest);
-        } catch (FeignException ex) {
-            return ResponseEntity.status(ex.status()).body("Failed to create subscription: " + ex.getMessage());
-        }
-        return ResponseEntity.ok("Subscription created successfully");
-    }
-
-
     @GetMapping("/clientByPhone/{phoneNumber}")
     public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
         String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
@@ -293,29 +361,5 @@ public class UserController {
 
     //-------------------------kawtar-------------------------//
     // kawtar here
-    @GetMapping("/wallet/{clientId}")
-    public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
-        return ResponseEntity.ok(clientService.getWalletByClientId(clientId));
-    }
-
-    @GetMapping("/transactions/{userId}")
-    public ResponseEntity<List<TransactionResponse>> getUserTransactions(@PathVariable("userId") String userId) {
-        List<TransactionResponse> transactions = clientService.getTransactionsByUserId(userId);
-        return ResponseEntity.ok(transactions);
-    }
-    @PostMapping("/feed-wallet")
-    public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
-        // Extraire les valeurs du JSON
-        String clientId = (String) requestBody.get("clientId");
-        double amount = ((Number) requestBody.get("amount")).doubleValue();
-
-        // Appeler le service tiers
-        boolean result = clientService.feedWallet(clientId, amount);
-        return ResponseEntity.ok(result);
-    }
-    @GetMapping("/all-transactions/{userId}")
-    public ResponseEntity<List<TransactionResponse>> getAllTransactionsByUserId(@PathVariable("userId") String userId) {
-        List<TransactionResponse> transactions = clientService.getAllTransactionsByUserId(userId);
-        return ResponseEntity.ok(transactions);
-    }
 }
+*/

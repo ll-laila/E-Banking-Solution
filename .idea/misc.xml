@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="org.springframework.beans.factory.annotation.Autowired" />
+    </list>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -21,6 +26,9 @@
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/VirtualCardService/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/WalletService/pom.xml" />
         <option value="$PROJECT_DIR$/BankatiProject_Backend/services/WalletCryptoService/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/User/pom.xml" />
+        <option value="$PROJECT_DIR$/BankatiProject_Backend/services/auth-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

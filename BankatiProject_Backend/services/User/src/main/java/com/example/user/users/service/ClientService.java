@@ -4,20 +4,14 @@ package com.example.user.users.service;
 import com.example.user.transactionClient.TransactionRequest;
 import com.example.user.transactionClient.TransactionStatus;
 import com.example.user.transactionClient.TransactionType;
-import com.example.user.serviceTiersClient.ServiceTiersClient;
-import com.example.user.transactionClient.TransactionClient;
-import com.example.user.transactionClient.TransactionResponse;
 import com.example.user.users.entity.Client;
 import com.example.user.users.repository.ClientRepository;
-import com.example.user.walletClient.WalletClient;
-import com.example.user.walletClient.WalletResponse;
 import com.example.user.users.response.AgentResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -85,6 +79,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     public String getClientIdByPhoneNumber(String phoneNumber) {
+        // Appeler la méthode du repository
         Client client = clientRepository.findIdByPhoneNumber(phoneNumber);
         if (client != null) {
             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String
@@ -104,24 +99,5 @@ public class ClientService {
 
     //-------------------------kawtar-------------------------//
     // kawtar here
-
-    private final ClientRepository clientRepository;
-    private final WalletClient walletClient;
-    private final TransactionClient transactionClient;
-    private final ServiceTiersClient serviceTiersClient;
-
-    public WalletResponse getWalletByClientId(String clientId) {
-        return walletClient.getWalletByIdClient(clientId).getBody();
-    }
-    public List<TransactionResponse> getTransactionsByUserId(String userId) {
-        return transactionClient.getTransactionsByUser(userId);
-    }
-    public List<TransactionResponse> getAllTransactionsByUserId(String userId) {
-        return transactionClient.getAllTransactionsByUserId(userId);
-    }
-    public boolean feedWallet(String clientId, double amount) {
-        ResponseEntity<Boolean> response = serviceTiersClient.feedWallet(clientId, amount);
-        return response.getBody() != null && response.getBody();
-    }
 }
 
