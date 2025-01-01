@@ -47,7 +47,7 @@ export class PaymentService {
 
   createSubscriptionTransaction(clientId: string, agentId: string, amount: number): Observable<string> {
     const params = new HttpParams()
-      .set('clientId', clientId)
+      .set('userId', clientId)
       .set('agentId', agentId)
       .set('price', amount.toString())
       .set('durationInMonths', '1'); // Fixé à 1 mois

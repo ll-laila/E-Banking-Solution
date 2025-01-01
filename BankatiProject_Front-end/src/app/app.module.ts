@@ -16,6 +16,7 @@ import { LoginComponent } from './auth-layout/login/login.component';
 import { ServicesAgentComponent } from './Agent/pagesAgent/services-agent/services-agent.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TrasactionAgentComponent } from './Agent/pagesAgent/trasaction-agent/trasaction-agent.component';
+import { SubscriptionsComponent } from './client/clientsPages/subscriptions/subscriptions.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { TrasactionAgentComponent } from './Agent/pagesAgent/trasaction-agent/tr
     AdminDashComponent,
     ServicesAgentComponent,
     TrasactionAgentComponent,
+    SubscriptionsComponent,
 
 
   ],

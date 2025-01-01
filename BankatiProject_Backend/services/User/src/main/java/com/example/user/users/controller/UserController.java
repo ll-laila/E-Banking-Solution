@@ -261,7 +261,11 @@ public class UserController {
     }
 
     @PostMapping("/creat-subscription")
-    public ResponseEntity<String> createSubscription(@RequestBody SubscriptionRequest subscriptionRequest) {
+    public ResponseEntity<String> createSubscription(@RequestParam  String userId,
+                                                     @RequestParam String agentId,
+                                                     @RequestParam BigDecimal price,
+                                                     @RequestParam int durationInMonths) {
+        SubscriptionRequest subscriptionRequest= new SubscriptionRequest(userId,agentId,price,durationInMonths);
         try {
             transactionClient.createSubscription(subscriptionRequest);
         } catch (FeignException ex) {
