@@ -9,10 +9,7 @@ import com.example.user.users.config.UserAuthenticationProvider;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
-import com.example.user.users.entity.Admin;
-import com.example.user.users.entity.AgentServiceRequest;
-import com.example.user.users.entity.Client;
-import com.example.user.users.entity.ServiceAgentResponse;
+import com.example.user.users.entity.*;
 import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.request.*;
 import com.example.user.users.response.AgentResponse;
@@ -362,7 +359,7 @@ public class UserController {
     }
 
     @GetMapping("/clientbyid/{clientId}")
-    public ResponseEntity<Client> getClientInfo(@PathVariable("clientId") String clientId) {
+    public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
         return ResponseEntity.ok(clientService.getClientById(clientId));
     }
 

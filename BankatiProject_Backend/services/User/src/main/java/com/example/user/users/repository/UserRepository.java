@@ -1,9 +1,11 @@
 package com.example.user.users.repository;
 
+import com.example.user.users.entity.Client;
 import com.example.user.users.entity.Role;
 import com.example.user.users.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +21,8 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByRole(Role role);
 
+
+//-------------------------chaima------------------------------//
+@Query(value = "{ 'phoneNumber': ?0 }", fields = "{ '_id': 1 }")
+User findIdByPhoneNumber(String phoneNumber);
 }
