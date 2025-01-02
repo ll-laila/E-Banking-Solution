@@ -11,7 +11,7 @@ import {ToastrService} from "ngx-toastr";
 @Component({
   selector: 'app-add-client',
   templateUrl: './add-client.component.html',
-  styleUrls: ['./add-client.component.scss']
+  //styleUrls: ['./add-client.component.scss']
 })
 export class AddClientComponent implements OnInit {
   public client: IClient = {} as IClient;
