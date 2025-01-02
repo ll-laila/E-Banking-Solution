@@ -79,7 +79,7 @@ public class ClientService {
 
     private final UserRepository clientRepository;
 
-    public String getClientIdByPhoneNumber(String phoneNumber) {
+   /* public String getClientIdByPhoneNumber(String phoneNumber) {
         // Appeler la méthode du repository
         User client = clientRepository.findIdByPhoneNumber(phoneNumber);
         if (client != null) {
@@ -88,7 +88,7 @@ public class ClientService {
             throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
         }
     }
-
+*/
     public User getClientById(String clientId) {
         return clientRepository.findById(clientId)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found"));

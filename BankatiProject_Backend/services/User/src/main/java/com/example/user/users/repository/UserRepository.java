@@ -22,7 +22,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     List<User> findByRole(Role role);
 
 
-//-------------------------chaima------------------------------//
+/*//-------------------------chaima------------------------------//
 @Query(value = "{ 'phoneNumber': ?0 }", fields = "{ '_id': 1 }")
-User findIdByPhoneNumber(String phoneNumber);
+User findIdByPhoneNumber(String phoneNumber);*/
 }

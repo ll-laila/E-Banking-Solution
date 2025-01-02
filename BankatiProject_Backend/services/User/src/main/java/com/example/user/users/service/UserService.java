@@ -69,7 +69,6 @@ public class UserService {
     private static final String CHARACTERS = "0123456789";
 
 
-
     /*public UserDto login(CredentialsDto credentialsDto) {
         // First, try to find an Agent
         Optional<Agent> agentOptional = agentRepository.findByPhoneNumber(credentialsDto.getPhoneNumber());
@@ -124,7 +123,6 @@ public class UserService {
 
         throw new AppException("Unknown credentials", HttpStatus.NOT_FOUND);
     }
-
 
 
     public UserDto register(SignUpDto signUpDto) {
@@ -193,7 +191,7 @@ public class UserService {
         var idWallet = walletClient.saveWallet(wallet);
 
         //twilio
-        String formattedPhoneNumber=formatPhoneNumber(savedUser.getPhoneNumber());
+        String formattedPhoneNumber = formatPhoneNumber(savedUser.getPhoneNumber());
         String msg =   "Bonjour "+ savedUser.getFirstName() +" "+savedUser.getLastName() + ", votre mot de passe est "+ userRequest.password() + ".";
         Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
         log.info("Twilio Response : {}", twilioMessage.getStatus());
@@ -271,9 +269,13 @@ public class UserService {
 */
 
     public UserDto findByLogin(String login) {
-        // Find user by phone number
-        User user = userRepository.findByPhoneNumber(login)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        log.info("Searching for user with login: {}", login);
+
+        // Try to find user by phone number first
+        Optional<User> userOptional = userRepository.findByPhoneNumber(login);
+
+        // If still not found, throw an exception
+        User user = userOptional.orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         return userMapper.toUserDto(user);
     }

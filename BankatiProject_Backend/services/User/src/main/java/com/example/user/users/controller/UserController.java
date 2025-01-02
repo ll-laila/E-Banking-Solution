@@ -60,6 +60,8 @@ public class UserController {
         // Authenticate user
         UserDto userDto = userService.login(credentialsDto);
 
+        log.info("Creating token for phone number: {}", userDto.getPhoneNumber());
+
         // Generate token with phone number
         String token = userAuthenticationProvider.createToken(userDto.getPhoneNumber());
 
@@ -352,7 +354,7 @@ public class UserController {
         return ResponseEntity.ok("Subscription created successfully");
     }
 
-    @GetMapping("/clientByPhone/{phoneNumber}")
+    /*@GetMapping("/clientByPhone/{phoneNumber}")
     public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
         String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
         if (clientId != null) {
@@ -360,7 +362,7 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
         }
-    }
+    }*/
 
     @GetMapping("/clientbyid/{clientId}")
     public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
