@@ -24,5 +24,6 @@ public record UserResponse(
         Boolean isPaymentAccountActivated ,
         String typeHissab,
         String currency
+
 ) {
 }

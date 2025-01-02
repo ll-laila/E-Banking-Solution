@@ -1,4 +1,5 @@
 export enum TransactionType {
   PAYMENT = 'PAYMENT',
   TRANSFER = 'TRANSFER',
+  SUBSCRIPTION='SUBSCRIPTION',
 }

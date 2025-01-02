@@ -25,5 +25,6 @@ public record UserRequest(
          String typeHissab,
          String currency,
          String token
+
 ) {
 }

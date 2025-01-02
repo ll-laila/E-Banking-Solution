@@ -11,6 +11,7 @@
         <img src="./assets/img/icons/common/logo.jpeg" class="navbar-brand-img" alt="...">
       </div>
     </a>
+
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
 
@@ -35,6 +36,33 @@
         </div>
       </li>
     </ul>
+
+    <!-- clients -->
+    <ul class="nav align-items-center d-md-none">
+
+      <li class="nav-item" ngbDropdown placement="bottom-right">
+        <a class="nav-link" role="button" ngbDropdownToggle>
+          <div class="media align-items-center">
+            <span class="avatar avatar-sm rounded-circle">
+              <img alt="Image placeholder" src="./assets/img/user.jpg">
+            </span>
+          </div>
+        </a>
+        <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+          <a routerLinkActive="active" [routerLink]="['/clients']" class="dropdown-item">
+            <i class="ni ni-single-02"></i>
+            <span>My profile</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#!" class="dropdown-item" (click)="logout()">
+            <i class="ni ni-user-run"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+
+
     <!-- Collapse -->
     <div class="collapse navbar-collapse"  [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
       <!-- Collapse header -->

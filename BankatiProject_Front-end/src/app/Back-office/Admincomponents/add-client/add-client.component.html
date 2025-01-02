@@ -1,0 +1,129 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right,  #ffc107, #2c4481);" >
+</div>
+
+<div class="container-fluid mt--7">
+  <!-- Dark table -->
+  <div class="row mt-2">
+    <div class="col">
+      <div class="table-responsive">
+        <!-- Loading spinner -->
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+
+        <div class="container-fluid">
+          <div class="card border-0 shadow px-1">
+            <form>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="card-title text-right Montserrat" style="color: #ffc107;}; margin-bottom: 0;">Informations du client</h2>
+                  <div type="button" [routerLink]="['/admin']">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </div>
+                </div>
+                <hr style="color:#6415FF" />
+                <div class="card-text py-2">
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="firstName" class="Montserrat" style="color:#a4bacc">Prénom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.firstName" name="firstName" id="firstName" placeholder="First Name" style="border-radius:20px; background-color:#f1f3f6" />
+
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="lastName" class="Montserrat" style="color:#a4bacc">Nom *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.lastName" name="lastName" id="lastName" placeholder="Last Name" style="border-radius:20px; background-color:#f1f3f6" />
+
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="birthDate" class="Montserrat" style="color:#a4bacc">Date de Naissance *</label>
+                      <input type="date" class="form-control" [(ngModel)]="client.birthDate" name="birthDate" id="birthDate" placeholder="Date of Birth" style="border-radius:20px; background-color:#f1f3f6" />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4 mt-10">
+                    <div class="form-floating col-md-6">
+                      <label for="identityPiece" class="Montserrat" style="color:#a4bacc">Pièce d'identité *</label>
+                      <select class="form-select  form-control" id="identityPiece" style="border-radius:20px; background-color:#f1f3f6" required>
+                        <option value="Cin">Cin</option>
+                        <option value="Passport">Passport</option>
+                      </select>
+                    </div>
+                    <div class="form-floating col-md-6">
+                      <label for="cin" class="Montserrat" style="color:#a4bacc">N° pièce d'identité *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.cin" name="cin" id="cin" placeholder="N° pièce d'identité" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-12">
+                      <label for="address" class="Montserrat" style="color:#a4bacc">Adresse *</label>
+                      <input type="text" class="form-control" id="address" [(ngModel)]="client.address" name="address" placeholder="Address" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-6">
+                      <label for="email" class="Montserrat" style="color:#a4bacc">Email *</label>
+                      <input type="email" class="form-control" [(ngModel)]="client.email" name="email" id="email" placeholder="Email" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                    <div class="form-floating col-md-6">
+                      <label for="confirmEmail" class="Montserrat" style="color:#a4bacc">Confirmation Email</label>
+                      <input type="email" class="form-control" name="confirmEmail" id="confirmEmail" placeholder="Confirmation Email" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                  </div>
+                  <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="phoneNumber" class="Montserrat" style="color:#a4bacc">N° téléphone *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.phoneNumber" name="phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="commercialRn" class="Montserrat" style="color:#a4bacc">N° d'immatriculation *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.commercialRn" name="commercialRn" id="commercialRn" placeholder="Commercial Register Number" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+                    <div class="form-floating col-md-4">
+                      <label for="patentNumber" class="Montserrat" style="color:#a4bacc">N° de patente *</label>
+                      <input type="text" class="form-control" [(ngModel)]="client.patentNumber" name="patentNumber" id="patentNumber" placeholder="Patent Number" style="border-radius:20px; background-color:#f1f3f6" required />
+                    </div>
+
+                    <div class="row g-2 mb-4">
+                      <div class="form-floating col-md-12">
+                        <label for="image" class="Montserrat" style="color:#a4bacc">CIN *</label>
+                        <input type="text" class="form-control" id="image" [(ngModel)]="client.cin" name="image" placeholder="image" style="border-radius:20px; background-color:#f1f3f6" required />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <!--<h2 class="card-title text-left MontserratM" style="color:#ffdf35">Pièces jointes</h2>
+
+                <h2 class="card-title text-left MontserratM" style="color:#e37431">Pièces jointes</h2>
+                <hr style="color:#6415FF" />
+                <div class="row g-2 mb-4">
+                    <div class="form-floating col-md-4">
+                      <label for="description" class="Montserrat" style="color:#a4bacc">Description *</label>
+                      <input type="text" class="form-control" id="description" placeholder="Description" style="border-radius:20px; background-color:#dfe7f5" required />
+                    </div>
+                    <div class="form-floating col-md-4 mt--1">
+                      <label for="description" class="Montserrat" style="color:#a4bacc">Fichier*</label>
+                      <div class="input-group mb-3 px-2 " style="border-radius:20px; background-color:#dfe7f5; height: 58px; border: 1px solid #CBC8D0">
+                        <input id="upload" type="file" accept="image/*" class="form-control border-0 mt-1" style="background-color:#dfe7f5;" />
+                      </div>
+                    </div>
+                    <div class="form-floating col-md-4 mt-4" >
+                      <label htmlFor="upload" class="btn btn-light rounded-pill " style="background-color:#6415FF; color: #fff;">
+                        <small class="text-uppercase font-weight-bold ">Ajouter la piéce</small>
+                      </label>
+                    </div>
+                  </div>-->
+                <button type="submit" class="btn mt-2 justify-content-center btn-block " style="background-color: #333e86; color:#fff; border-radius:20px;">
+                  <span class="Montserrat" style="color:white" (click)="createClient()">Créer client</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

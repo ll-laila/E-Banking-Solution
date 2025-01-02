@@ -8,7 +8,7 @@ export interface IClient {
   cin: string;
   birthDate: Date;
   phoneNumber: string;
-  password?: string;  // Optional, depending on your use case
+  password?: string;
   isFirstLogin: boolean;
   createdDate: Date;
   commercialRn: string;

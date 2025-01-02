@@ -3,11 +3,13 @@ package com.example.user.users.mapper;
 
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
-import com.example.user.users.entity.*;
+import com.example.user.users.entity.Admin;
+import com.example.user.users.entity.Agent;
+import com.example.user.users.entity.Client;
+import com.example.user.users.entity.User;
 import com.example.user.users.request.UserRequest;
 import com.example.user.users.response.UserResponse;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.Date;
 
@@ -45,6 +47,7 @@ public class UserMapper {
         if (user == null) {
             return null;
         }
+
           return new UserResponse(
                 user.getId(),
                 user.getAgentId(),
@@ -76,13 +79,6 @@ public class UserMapper {
         UserDto userDto = new UserDto();
 
         if (user instanceof User u) {
-            userDto.setId(u.getId());
-            userDto.setEmail(u.getEmail());
-            userDto.setFirstName(u.getFirstName());
-            userDto.setLastName(u.getLastName());
-            userDto.setPhoneNumber(u.getPhoneNumber());
-            userDto.setRole(u.getRole());
-            userDto.setPassword(u.getPassword());
             userDto.setId(u.getId());
             userDto.setAgentId(u.getAgentId());
             userDto.setFirstName(u.getFirstName());

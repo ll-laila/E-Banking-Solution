@@ -1,4 +1,4 @@
-import {TransactionType} from "./transaction-type.enum";
+import {TransactionType} from "./transaction-type";
 
 export interface Transaction {
   senderId: string; // Identifiant de l'envoyeur

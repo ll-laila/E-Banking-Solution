@@ -81,8 +81,8 @@
                 <hr style="color:#6415FF" />
                 <div class="card-text py-2">
                   <div class="form-group">
-                    <label for="product" class="Montserrat">Sélectionner le type de compte</label>
-                    <select class="form-control" id="product" name="product" [(ngModel)]="client.typeHissab">
+                    <label for="typeHissab" class="Montserrat">Sélectionner le type de compte</label>
+                    <select class="form-control" id="typeHissab" name="typeHissab" [(ngModel)]="client.typeHissab">
                       <option value="hssab1">Hssab 1 - Plafond : 200 DH</option>
                       <option value="hssab2">Hssab 2 - Plafond : 5000 DH</option>
                       <option value="hssab3">Hssab 3 - Plafond : 20000 DH</option>
@@ -170,23 +170,22 @@
                         </div>
                       </div>
 
-                      <div class="col-md-6">
+                      <!--div class="col-md-6">
                         <div class="form-group">
                           <label for="isPaymentAccountActivated">Compte activé</label>
                           <input type="checkbox" id="isPaymentAccountActivated" [(ngModel)]="client.isPaymentAccountActivated" name="isPaymentAccountActivated">
                         </div>
-                      </div>
-                    </div>
+                      </div-->
 
-                    <div class="row">
-                      <!-- Patent Number and Payment Account Checkbox on the same line -->
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="patentNumber">Numéro de patente</label>
-                          <input type="text" class="form-control" id="currency" [(ngModel)]="client.currency" name="patentNumber">
+                          <select class="form-control" id="currency" [(ngModel)]="client.currency" name="currency">
+                            <option value="mad">MAD - Dirhams Marocains</option>
+                            <option value="usd">USD - Dollars Américains</option>
+                            <option value="eur">EUR - Euros</option>
+                          </select>
                         </div>
                       </div>
-
 
                     </div>
 

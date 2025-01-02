@@ -3,6 +3,10 @@ package com.example.user.users.service;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
+import com.example.user.users.dto.CredentialsDto;
+import com.example.user.users.dto.SignUpDto;
+import com.example.user.users.dto.UserDto;
+import com.example.user.users.entity.Agent;
 import com.example.user.users.entity.Role;
 import com.example.user.users.entity.User;
 import com.example.user.users.exceptions.AppException;
@@ -49,6 +53,7 @@ public class UserService {
     @Autowired
     private AgentRepository agentRepository;
 
+
     @Autowired
     private WalletClient walletClient;
 
@@ -62,6 +67,7 @@ public class UserService {
     private TwilioConfiguration twilioConfiguration;
 
     private static final String CHARACTERS = "0123456789";
+
 
 
     /*public UserDto login(CredentialsDto credentialsDto) {
@@ -140,6 +146,7 @@ public class UserService {
         user.setRole(role);
 
         User savedUser = userRepository.save(user);
+
         return userMapper.toUserDto(savedUser);
     }
 
@@ -159,7 +166,6 @@ public class UserService {
     }
 
 
-
     public String createClient(UserRequest userRequest) {
         // Ensure the role is CLIENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
@@ -173,6 +179,7 @@ public class UserService {
         user.setFirstLogin(true);
 
         User savedUser = userRepository.save(user);
+
 
         // add Crypto wallet
         Map<String, Double> cryptos = new HashMap<>();
@@ -195,7 +202,6 @@ public class UserService {
     }
 
 
-
     public List<UserResponse> getAllClients() {
         return userRepository.findByRole(Role.CLIENT)
                 .stream()
@@ -203,15 +209,13 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-
     public List<UserResponse> getAllAgents() {
             return userRepository.findByRole(Role.AGENT)
                     .stream()
                     .map(userMapper::fromUser)
                     .collect(Collectors.toList());
-    }
 
-
+        }
 
 
     public String createAgent(UserRequest userRequest) {
@@ -226,6 +230,7 @@ public class UserService {
         user.setRole(role);
 
         User savedUser = userRepository.save(user);
+
 
         // add wallet
         WalletRequest wallet = new WalletRequest(null,1000D,savedUser.getId(),null);
@@ -345,6 +350,7 @@ public class UserService {
 
 
 
+
     public Object sendSms(String phoneNumber, String message) {
 
         if (phoneNumber!=null) {
@@ -363,6 +369,7 @@ public class UserService {
         String formatted = phoneNumber.substring(1);
         return "+212" + formatted;
     }
+
 
 
 }

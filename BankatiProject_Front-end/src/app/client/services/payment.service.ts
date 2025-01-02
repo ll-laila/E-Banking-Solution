@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs/operators';
 import {catchError, Observable, throwError} from 'rxjs';
@@ -45,6 +45,18 @@ export class PaymentService {
   }
 
 
+  createSubscriptionTransaction(clientId: string, agentId: string, amount: number): Observable<string> {
+    const params = new HttpParams()
+      .set('userId', clientId)
+      .set('agentId', agentId)
+      .set('price', amount.toString())
+      .set('durationInMonths', '1'); // Fixé à 1 mois
+
+    return this.httpClient.post(`${this.serverUrl}/creat-subscription`, null, {
+      params,
+      responseType: 'text'  // Attend une réponse texte brute
+    });
+  }
 
 
 

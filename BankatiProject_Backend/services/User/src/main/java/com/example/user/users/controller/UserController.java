@@ -116,9 +116,7 @@ public class UserController {
     }
 
 
-
-
-   //--------------------------------------Admin-----------------------------------//
+    //--------------------------------------Admin-----------------------------------//
 
     @PostMapping("/addAdmin")
     public ResponseEntity<Admin> saveAdmin(@RequestBody AdminRequest request) {
@@ -127,7 +125,7 @@ public class UserController {
 
 
     @PostMapping("/addAgent")
-    public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request){
+    public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request) {
         return ResponseEntity.ok(service.addAgent(request));
     }
 
@@ -140,7 +138,7 @@ public class UserController {
 
     // for updating password also
     @PutMapping("/agent/updateAgent/{id}")
-    public ResponseEntity<AgentResponse> updateUser(@RequestBody AgentRequest updatedAgent){
+    public ResponseEntity<AgentResponse> updateUser(@RequestBody AgentRequest updatedAgent) {
         return ResponseEntity.ok(service.updateAgent(updatedAgent));
     }
 
@@ -259,27 +257,27 @@ public class UserController {
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/walletCrypto/{userId}")
-    public ResponseEntity<WalletCryptoResponse> getUserWalletCrypto(@PathVariable String userId){
-        return  ResponseEntity.ok(walletCryptoClient.getWalletByUserId(userId).getBody());
+    public ResponseEntity<WalletCryptoResponse> getUserWalletCrypto(@PathVariable String userId) {
+        return ResponseEntity.ok(walletCryptoClient.getWalletByUserId(userId).getBody());
     }
 
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/buyCryptos")
-    public ResponseEntity<String> buyCryptos(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount){
-        return  ResponseEntity.ok(walletCryptoClient.buyCrypto(userId,cryptoName,amount));
+    public ResponseEntity<String> buyCryptos(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount) {
+        return ResponseEntity.ok(walletCryptoClient.buyCrypto(userId, cryptoName, amount));
     }
 
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/setCryptosToSell")
-    public ResponseEntity<String> setCryptosToSell(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount){
-        return  ResponseEntity.ok(walletCryptoClient.sellCrypto(userId,cryptoName,amount));
+    public ResponseEntity<String> setCryptosToSell(@RequestParam String userId, @RequestParam String cryptoName, @RequestParam double amount) {
+        return ResponseEntity.ok(walletCryptoClient.sellCrypto(userId, cryptoName, amount));
     }
 
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/allTransCrypro/{idUser}")
-    public ResponseEntity<List<TransactionResponse>> getUserTransaction(@PathVariable("idUser") String idUser){
-        return  ResponseEntity.ok(walletCryptoClient.getUserTransaction(idUser).getBody());
+    public ResponseEntity<List<TransactionResponse>> getUserTransaction(@PathVariable("idUser") String idUser) {
+        return ResponseEntity.ok(walletCryptoClient.getUserTransaction(idUser).getBody());
     }
 
     @PreAuthorize("hasRole('CLIENT')")
@@ -287,24 +285,22 @@ public class UserController {
     public ResponseEntity<String> transferCryptosToMoney(
             @RequestParam String userId,
             @RequestParam String cryptoName,
-            @RequestParam double amount){
-        return ResponseEntity.ok(walletCryptoClient.transferCryptoToMoney(userId,cryptoName,amount));
+            @RequestParam double amount) {
+        return ResponseEntity.ok(walletCryptoClient.transferCryptoToMoney(userId, cryptoName, amount));
     }
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/getActualPrice/{cryptoName}")
-    public ResponseEntity<Double> getPriceCrypto(@PathVariable("cryptoName") String cryptoName){
+    public ResponseEntity<Double> getPriceCrypto(@PathVariable("cryptoName") String cryptoName) {
         return ResponseEntity.ok(walletCryptoClient.getPriceCrypto(cryptoName));
     }
 
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/userWalletBalance/{clientId}")
-    public ResponseEntity<Double> getBalanceWalletByIdClient(@PathVariable("clientId") String clientId){
+    public ResponseEntity<Double> getBalanceWalletByIdClient(@PathVariable("clientId") String clientId) {
         return ResponseEntity.ok(walletUser.getWalletByIdClient(clientId).getBody().balance());
     }
-
-
 
 
     //-------------------------chaima-------------------------//
@@ -317,7 +313,7 @@ public class UserController {
 
         switch (transactionType) {
             case PAYMENT -> transaction = clientService.createPaymentTransaction(
-                   senderId,
+                    senderId,
                     beneficiaryId,
                     amount
             );
@@ -341,12 +337,13 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
+
     @PostMapping("/creat-subscription")
-    public ResponseEntity<String> createSubscription(@RequestParam  String userId,
+    public ResponseEntity<String> createSubscription(@RequestParam String userId,
                                                      @RequestParam String agentId,
                                                      @RequestParam BigDecimal price,
                                                      @RequestParam int durationInMonths) {
-        SubscriptionRequest subscriptionRequest= new SubscriptionRequest(userId,agentId,price,durationInMonths);
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest(userId, agentId, price, durationInMonths);
         try {
             transactionClient.createSubscription(subscriptionRequest);
         } catch (FeignException ex) {

@@ -6,6 +6,7 @@ import {AgentservicesService} from '../../../service/agentservices.service';
 import {IAgentServices} from '../../../models/AgentServices';
 import {IAgent} from '../../../models/Agent';
 import {SharedAgentService} from '../../../service/shared-agent.service';
+import {AgentService} from "../../../service/agent.service";
 
 @Component({
   selector: 'app-services-agent',
@@ -14,7 +15,7 @@ import {SharedAgentService} from '../../../service/shared-agent.service';
 })
 export class ServicesAgentComponent implements OnInit {
 
-  constructor(private router: Router, private agentservices: AgentservicesService, private sharedAgentService: SharedAgentService) { }
+  constructor(private router: Router, private agentservices: AgentService, private sharedAgentService: SharedAgentService) { }
 
   services: IAgentServices[] = [];
   agent: IAgent ;
@@ -22,7 +23,7 @@ export class ServicesAgentComponent implements OnInit {
 
   ngOnInit(): void {
     this.agent = this.sharedAgentService.getAgent();
-    this.getAllServicesByAgent(this.agent.id);
+    this.getAllServicesByAgent();
   }
 
   addService() {
@@ -30,8 +31,15 @@ export class ServicesAgentComponent implements OnInit {
   }
 
 
-  getAllServicesByAgent(idAgent: number): void {
-
+  getAllServicesByAgent(): void {
+    this.agentservices.getAllAgentServices().subscribe(
+      (services: IAgentServices[]) => {
+        this.services = services;
+      },
+      (error) => {
+        console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
+      }
+    );
 
   }
 
