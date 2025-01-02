@@ -38,7 +38,7 @@ public class Transaction {
     private String beneficiaryPhone;
     @CreatedDate
     @Column(updatable = false, nullable = false)
-     private String beneficiaryRole;
+     private Role beneficiaryRole;
 
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType; // Paiement, Transfert, etc.
@@ -70,7 +70,7 @@ public class Transaction {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private String senderRole;
+    private Role senderRole;
 
     @LastModifiedDate
     @Column(insertable = false)

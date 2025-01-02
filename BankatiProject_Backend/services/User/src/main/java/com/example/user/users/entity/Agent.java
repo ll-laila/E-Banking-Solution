@@ -27,4 +27,6 @@ public class Agent {
     private String phoneNumber;
     private boolean isFirstLogin;
     private String currency;
+    private Role role;
+
 }

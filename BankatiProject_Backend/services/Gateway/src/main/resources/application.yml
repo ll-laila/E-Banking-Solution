@@ -4,4 +4,10 @@ spring:
   application:
     name: gateway-service
 
-
+application:
+  security:
+    jwt:
+      secret-key: kWktcIr7a6IBjoG0bL6kDN1T/T1qDCBMXhWKMZipw/OIOWuFv3KxfQNvMww7SAkL2RhFlcPJQAB/Y+Zrd+v4ppHnvC9Eo3jzoI23+RXYpwHzfb9X212LI4JE/QrSgfggo9jeHgI2pqL4wvH+Qo0DV3syvk7cpBCvcK0bz/J2VKwnq3lDedTbyjFgGxLm9b/F
+      expiration: 31536000000
+      refresh-token:
+        expiration: 31536000000

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AdminMapper {
 
 
-    public Admin toAdmin(AdminRequest request) {
+    public static Admin toAdmin(AdminRequest request) {
         if (request == null) {
             return null;
         }

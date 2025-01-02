@@ -1,8 +1,13 @@
 package com.example.user.users.service;
 
+import com.example.user.users.entity.AgentServiceRequest;
 import com.example.user.users.entity.Client;
+import com.example.user.users.entity.ServiceAgentResponse;
+import com.example.user.users.mapper.AgentServiceMapper;
 import com.example.user.users.mapper.ClientMapper;
+import com.example.user.users.repository.AgentRepository;
 import com.example.user.users.repository.ClientRepository;
+import com.example.user.users.repository.ServiceRepository;
 import com.example.user.users.request.ClientRequest;
 import com.example.user.users.response.ClientResponse;
 import com.example.user.users.twilio.Const;
@@ -22,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,10 +35,11 @@ import java.util.*;
 public class AgentService {
 
     private final ClientRepository clientRepository;
+    private final ServiceRepository serviceRepository;
     private final WalletClient walletClient;
     private final WalletCryptoClient walletCryptoClient;
     private final ENVConfig envConfig;
-
+    private final AgentRepository agentRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -116,11 +123,11 @@ public class AgentService {
                 .birthDate(clientRequest.birthDate())
                 .phoneNumber(clientRequest.phoneNumber())
                 .password(passwordEncoder.encode(generatedPassword))
-                .isFirstLogin(clientRequest.isFirstLogin())
-                .createdDate(clientRequest.createdDate())
+                .isFirstLogin(true)
+                .createdDate(new Date())
                 .commercialRn(clientRequest.commercialRn())
                 .patentNumber(clientRequest.patentNumber())
-                .isPaymentAccountActivated(clientRequest.isPaymentAccountActivated())
+                .isPaymentAccountActivated(true)
                 .typeHissab(clientRequest.typeHissab())
                 .currency(clientRequest.currency())
                 .build();
@@ -147,6 +154,62 @@ public class AgentService {
         log.info("Twilio Response : {}", twilioMessage.getStatus());
 
         return clientMapper.fromClient(savedClient);
+    }
+
+    public ServiceAgentResponse createService(AgentServiceRequest request, String id ) {
+        // Trouver l'agent par son numéro de téléphone
+//
+//        Agent agent = agentRepository.findAgentByClientId(id);
+//
+//
+//        // Vérifier si l'agent existe
+//        if (agent == null) {
+//            // Gérer le cas où l'agent n'est pas trouvé
+//            throw new RuntimeException("Agent not found");
+//        }
+//
+//        // Créer le service avec l'agent trouvé
+//        AgentServiceRequest agentService = request;
+
+        // Enregistrer le service
+        serviceRepository.save(request);
+
+        // Retourner la réponse
+        return ServiceAgentResponse.builder().message("Service created successfully").build();
+    }
+
+    public List<AgentServiceRequest> getAllServicesByAgentId(String agentId) {
+        List<AgentServiceRequest> servicesAgent = serviceRepository.findAllByAgentId(agentId);
+        return servicesAgent.stream()
+                .map(AgentServiceMapper::ConvertToDto)
+                .collect(Collectors.toList());
+    }
+
+//    public AgentServiceResponse getServiceById(Long id) {
+//        return serviceRepository.findById(id)
+//                .map(AgentServiceMapper::ConvertToDto)
+//                .orElse(null);
+//    }
+
+    public ServiceAgentResponse updateService(String serviceId, AgentServiceRequest request) {
+        AgentServiceRequest agentService = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        agentService.setName(request.getName());
+        agentService.setType(request.getType());
+
+        serviceRepository.save(agentService);
+
+        return ServiceAgentResponse.builder().message("Service updated successfully").build();
+    }
+
+    public ServiceAgentResponse deleteService(String serviceId) {
+        AgentServiceRequest agentService = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        serviceRepository.delete(agentService);
+
+        return ServiceAgentResponse.builder().message("Service deleted successfully").build();
     }
 
 
