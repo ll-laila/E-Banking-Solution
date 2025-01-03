@@ -30,54 +30,6 @@ public class ClientService {
 
 
     //-------------------------chaima-------------------------//
-    private final AgentService agentService;
-    private final AdminService adminService;
-    public TransactionRequest createPaymentTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
-        User beneficiary = getClientById(beneficiaryId);
-        User sender = getClientById(senderId);
-
-        return new TransactionRequest(
-                null, // ID généré ultérieurement
-                amount,
-                beneficiary.getId(),
-                beneficiary.getFirstName()+" "+beneficiary.getLastName(),
-                beneficiary.getPhoneNumber(),
-                AGENT,
-                TransactionType.PAYMENT,
-                TransactionStatus.COMPLETED, // Statut initial
-                beneficiary.getCurrency(),
-                null, // Pas de date de validation au début
-                sender.getId(),
-                sender.getFirstName()+" "+sender.getLastName(),
-                sender.getPhoneNumber(),
-                CLIENT,
-                sender.getCurrency()
-        );
-    }
-
-    public TransactionRequest createTransferTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
-        User beneficiary =getClientById(beneficiaryId);
-        User sender =getClientById(senderId);
-        return new TransactionRequest(
-                null, // ID généré ultérieurement
-                amount,
-                beneficiary.getId(),
-                beneficiary.getFirstName()+" "+beneficiary.getLastName(),
-                beneficiary.getPhoneNumber(),
-                CLIENT,
-                TransactionType.TRANSFER,
-                TransactionStatus.COMPLETED, // Statut initial
-                beneficiary.getCurrency(),
-                null, // Pas de date de validation au début
-                sender.getId(),
-                sender.getFirstName()+" "+sender.getLastName(),
-                sender.getPhoneNumber(),
-                CLIENT,
-                sender.getCurrency()
-        );
-    }
-
-    private final UserRepository clientRepository;
 
    /* public String getClientIdByPhoneNumber(String phoneNumber) {
         // Appeler la méthode du repository
@@ -89,10 +41,7 @@ public class ClientService {
         }
     }
 */
-    public User getClientById(String clientId) {
-        return clientRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Client not found"));
-    }
+
 
     //-------------------------salwa-------------------------//
     // salwa here

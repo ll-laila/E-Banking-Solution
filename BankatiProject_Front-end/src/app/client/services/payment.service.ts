@@ -9,6 +9,7 @@ import {PaymentDetails} from "../models/payment";
 import {FeedResponse} from "../models/feedResponse";
 import {PaymentResponse} from "../models/paymentResponse";
 import {Transaction} from "../models/transaction";
+import {SharedInfosService} from "../../service/shared-infos.service";
 
 
 @Injectable({
@@ -20,7 +21,7 @@ export class PaymentService {
 
   private serverUrl: string =  `http://localhost:8222/api/v1/users`;
 
-  constructor(private httpClient: HttpClient, private cookieService: CookieService) { }
+  constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) { }
 
 
   public getAllAgents(): Observable<any> {
@@ -51,9 +52,10 @@ export class PaymentService {
       .set('agentId', agentId)
       .set('price', amount.toString())
       .set('durationInMonths', '1'); // Fixé à 1 mois
-
+    const headers = this.sharedInfosService.getAuthHeaders();
     return this.httpClient.post(`${this.serverUrl}/creat-subscription`, null, {
       params,
+      headers,
       responseType: 'text'  // Attend une réponse texte brute
     });
   }

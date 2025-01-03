@@ -13,6 +13,8 @@ import {SharedAgentService} from "../../services/shared-agent.service";
 import {Transaction} from "../../models/transaction";
 import {TransactionServiceService} from "../../services/transaction-service.service";
 import {TransactionType} from "../../models/transaction-type";
+import {UserResponse} from "../../../models/UserResponse";
+import {SharedInfosService} from "../../../service/shared-infos.service";
 
 
 @Component({
@@ -25,7 +27,7 @@ export class Payment implements OnInit {
   currentStep = 1;
   public paymentForm1: FormGroup;
 
-  public client: Client;
+  public client: UserResponse;
   public agent: Agent;
   public service: ServiceAgent;
   public donationAmount: number;
@@ -39,6 +41,7 @@ export class Payment implements OnInit {
               private sharedAgentServiceService: SharedAgentServiceService,
               private sharedAgentService: SharedAgentService,
               private transactionService: TransactionServiceService,
+              private sharedInfosService: SharedInfosService // Add the service here
    ) {
 
     this.paymentForm1 = this.fb.group({
@@ -47,12 +50,14 @@ export class Payment implements OnInit {
     });
   }
 
-  senderId: string = '675d672698a04453154ddc2e';
+  senderId: string;
 
 
   ngOnInit() {
+    // Retrieve the ID from SharedInfosService
+    this.senderId = this.sharedInfosService.getId();
     this.transactionService.getClientInfo(this.senderId).subscribe({
-      next: (sender: Client) => {
+      next: (sender: UserResponse) => {
         this.client=sender;
         console.log('Infos du sender récupérées avec succès :', sender);
       },
