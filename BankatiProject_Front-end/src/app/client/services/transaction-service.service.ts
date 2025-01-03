@@ -20,7 +20,6 @@ export class TransactionServiceService {
       .set('beneficiaryId', beneficiaryId)
       .set('amount', amount.toString())
       .set('transactionType', transactionType.toString());
-
     return this.httpClient.post(`${this.serverUrl}/creat-transaction`, null, {
       params,
       responseType: 'text'  // Accepte une réponse texte brute

@@ -3,6 +3,7 @@ package com.example.user.users.service;
 
 import com.example.user.users.entity.Admin;
 import com.example.user.users.entity.Agent;
+import com.example.user.users.entity.Role;
 import com.example.user.users.mapper.AdminMapper;
 import com.example.user.users.mapper.AgentMapper;
 import com.example.user.users.repository.AdminRepository;
@@ -22,6 +23,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +64,26 @@ public class AdminService {
     private final ENVConfig envConfig;
 
 
+    public Admin register(AdminRequest adminRequest) {
+        Admin admin = AdminMapper.toAdmin(adminRequest);
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setRole(Role.ADMIN);// Encode password
+        adminRepository.save(admin);
+        return admin;
+    }
+
+    public Admin authenticate(String phoneNumber, String password) {
+        Admin admin = adminRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
+
+        if (!passwordEncoder.matches(password, admin.getPassword())) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+
+        return admin;
+    }
+
+
     //--------------------------------------Admin-----------------------------------//
 
     public Admin saveAdmin(AdminRequest request) {
@@ -89,10 +112,12 @@ public class AdminService {
                 .password(passwordEncoder.encode(generatedPassword))
                 .isFirstLogin(true)
                 .currency(request.currency())
+                .role(Role.AGENT)
                 .build();
 
         String formattedPhoneNumber=formatPhoneNumber(request.phoneNumber());
         System.out.println(formattedPhoneNumber);
+        System.out.println("generatedPassword" + generatedPassword);
         var savedAgent = agentRepository.save(agent);
 
         // add wallet
@@ -146,7 +171,8 @@ public class AdminService {
 
     public AgentResponse updateAgent(AgentRequest request) {
         Optional<Agent> agent = agentRepository.findById(request.id());
-        if(agent!=null) {
+        if(agent.isPresent()) {
+
            Agent agentUp =  Agent.builder()
                     .id(request.id())
                     .firstName(request.firstName())
@@ -157,9 +183,10 @@ public class AdminService {
                     .birthDate(request.birthDate())
                     .commercialRn(request.commercialRn())
                     .image(request.image())
-                    .password(request.password())
+                    .password(passwordEncoder.encode(request.password())) //encode pwd after update !
                     .phoneNumber(request.phoneNumber())
                     .isFirstLogin(false)
+                    .role(Role.AGENT)
                     .build();
             return agentMapper.fromAgent(agentRepository.save(agentUp));
 
@@ -189,6 +216,8 @@ public class AdminService {
                 .map(agentMapper :: fromAgent)
                 .collect(Collectors.toList());
     }
+
+
 
 
 }

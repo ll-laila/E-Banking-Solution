@@ -1,0 +1,98 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right,  #ffc107, #2c4481);">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-3 col-sm-6">
+        <div class="mt-3">
+          <button class="btn btn-primary" (click)="addClient()">Ajouter client</button>
+        </div>
+      </div>
+      <div class="col-md-9 col-sm-6 d-flex justify-content-end">
+        <form class="mt-3 w-md-100" style="max-width: 350px; width: 100%;">
+          <div class="input-group input-group-rounded input-group-merge">
+            <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="chercher" aria-label="Search">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span class="fa fa-search"></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--7">
+  <!-- Dark table -->
+  <div class="row mt-2">
+    <div class="col">
+      <div class="card bg-default shadow">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Liste des clients</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush text-center">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col">Prénom</th>
+              <th scope="col">Nom</th>
+              <th scope="col">Email</th>
+              <th scope="col">N° téléphone</th>
+              <th scope="col">CIN</th>
+              <th scope="col">Addresse</th>
+              <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let client of clients" class="align-middle">
+              <th scope="row">{{ client.firstName }}</th>
+              <td>{{ client.lastName }}</td>
+              <td>{{ client.email }}</td>
+              <td>{{ client.phoneNumber }}</td>
+              <td>{{ client.address }}</td>
+              <td>{{ client.cin}}</td>
+              <td class="text-right">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-sm btn-icon-only text-light" title="supprimer" (click)="deleteClient(client.id)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-icon-only text-light" title="details" (click)="viewClientDetails(client.id)">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </td>
+
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer bg-default py-4">
+          <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                  <i class="fas fa-angle-left"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">
+                  <i class="fas fa-angle-right"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

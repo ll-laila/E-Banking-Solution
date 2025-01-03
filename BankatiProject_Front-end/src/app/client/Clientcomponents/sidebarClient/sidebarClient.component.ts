@@ -12,6 +12,7 @@ export const ROUTES: RouteInfo[] = [
   { path: 'agents', title: 'Payer un service',  icon: 'fas fa-users text-red', class: '' },
   { path: 'transferToClient', title: 'Transfer d\'argent ',  icon: 'fas fa-users text-red', class: '' },
   { path: 'historique', title: 'Historique',  icon: 'fas fa-chart-bar text-blue', class: '' },
+  { path: 'My-Subscriptions', title: 'My Subscriptions',  icon: 'fas fa-chart-bar text-blue', class: '' },
   { path: 'carte-virtuelle', title: 'Carte virtuelle',  icon: 'ni-single-02 text-yellow', class: '' },
   { path: 'crypto', title: 'Portefeuille cryptos',  icon: 'ni-single-02 text-yellow', class: '' },
   { path: 'buget-personnel', title: 'Gestion des dépenses',  icon: 'ni-single-02 text-yellow', class: '' },

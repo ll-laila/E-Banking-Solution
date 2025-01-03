@@ -3,13 +3,16 @@
     <div class="header-body">
       <!-- Card stats -->
       <div class="row">
-        <div class="col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
+        <!-- Card: Utilisateur -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
             <div class="card-body">
-              <div class="row">
+              <div class="row align-items-center">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Utilisateur</h5>
-                  <p class="h4 font-weight-bold mb-0">{{client.firstName}}{{" "}}{{client.lastName}}</p>
+                  <h5 class="card-title text-uppercase text-muted mb-1">Utilisateur</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                    {{ client.firstName }} {{ client.lastName }}
+                  </p>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -20,15 +23,17 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-0">Solde</h5>
-                  <p class="h4"><b>000</b></p>
 
-                  <p class="h4"><b>{{client.paymentAccount.balance}}</b></p>
+        <!-- Card: Solde -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-1">Solde</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                    {{ wallet.balance }}
+                  </p>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -43,6 +48,7 @@
     </div>
   </div>
 </div>
+
 <div class="container-fluid mt--7">
   <!-- Dark table -->
   <div class="row mt-2">
@@ -55,30 +61,35 @@
           <table class="table align-items-center table-dark table-flush text-center">
             <thead class="thead-dark">
             <tr>
-              <th scope="col">Référence</th>
-              <th scope="col">Nom du client</th>
-              <th scope="col">Nom du créancier</th>
-              <th scope="col">Nom du service </th>
-              <th scope="col">Montant</th>
-              <th scope="col">Date</th>
+              <th>Référence</th>
+              <th>Montant</th>
+              <th>Bénéficiaire</th>
+              <th>Expéditeur</th>
+              <th>Type</th>
+              <th>Statut</th>
+              <th>Date Création</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let operation of operations.slice(0, 5)" class="align-middle">
-              <th scope="row">{{ operation.ref}}</th>
-              <th scope="row">{{ operation.creditorName}}</th>
-              <td scope="row">{{ operation.clientName }}</td>
-              <th scope="row">{{operation.serviceName }}</th>
-              <td scope="row">{{ operation.amount }}</td>
-              <td scope="row">{{ operation.doItAt}}</td>
+            <tr *ngFor="let transaction of transactions"
+                [ngClass]="{'text-danger': transaction.senderId === client.id, 'text-success': transaction.senderId !== client.id}">
+              <td>{{ transaction.id }}</td>
+              <td>{{ transaction.amount }} {{ transaction.senderCurrency }}</td>
+              <td>
+                {{ transaction.beneficiaryName }} ({{ transaction.beneficiaryPhone }})
+              </td>
+              <td>
+                {{ transaction.senderName }} ({{ transaction.senderPhoneNumber }})
+              </td>
+              <td>{{ transaction.transactionType }}</td>
+              <td>{{ transaction.status }}</td>
+              <td>{{ transaction.createdDate || 'N/A' }}</td>
             </tr>
             </tbody>
           </table>
-        </div>
-        <div class="card-footer bg-default py-4">
-
         </div>
       </div>
     </div>
   </div>
 </div>
+

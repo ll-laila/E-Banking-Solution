@@ -1,5 +1,6 @@
 package com.example.transactionservice.transaction.request;
 
+import com.example.transactionservice.transaction.entity.Role;
 import com.example.transactionservice.transaction.entity.TransactionMethod;
 import com.example.transactionservice.transaction.entity.TransactionStatus;
 import com.example.transactionservice.transaction.entity.TransactionType;
@@ -14,7 +15,7 @@ public record TransactionRequest(
         String beneficiaryId,
         String beneficiaryName,
         String beneficiaryPhone,
-        String beneficiaryRole,
+        Role beneficiaryRole,
         TransactionType transactionType, // Type de transaction (ex : PAYMENT, TRANSFER)
         TransactionStatus status, // Statut initial de la transaction
         String beneficiaryCurrency, // Devise (EUR, USD, MAD)
@@ -22,7 +23,7 @@ public record TransactionRequest(
         String senderId,
         String senderName,
         String senderPhoneNumber,
-        String senderRole,
+        Role senderRole,
         String senderCurrency
 ){
 }

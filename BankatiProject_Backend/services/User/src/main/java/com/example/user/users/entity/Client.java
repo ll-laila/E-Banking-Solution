@@ -39,5 +39,6 @@ public class Client {
     private Boolean isPaymentAccountActivated ;
     private String typeHissab;
     private String currency;
+    private Role role ;
 
 }

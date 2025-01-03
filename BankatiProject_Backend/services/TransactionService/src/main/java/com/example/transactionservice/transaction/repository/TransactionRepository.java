@@ -14,4 +14,5 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
     List<Transaction> findBySenderId(String senderId);
     List<Transaction> findBySenderIdAndCreatedDateBetween(String userId, LocalDateTime startDate, LocalDateTime endDate);
     List<Transaction> findByStatus(TransactionStatus status);
+    List<Transaction> findByBeneficiaryId(String beneficiaryId);
 }
