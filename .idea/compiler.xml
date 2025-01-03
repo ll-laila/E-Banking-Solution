@@ -10,8 +10,8 @@
         <module name="config-server" />
         <module name="User" />
         <module name="TransactionService" />
-        <module name="discovery" />
         <module name="Gateway" />
+        <module name="discovery" />
         <module name="VirtualCardService" />
         <module name="WalletCryptoService" />
         <module name="NotificationService" />
