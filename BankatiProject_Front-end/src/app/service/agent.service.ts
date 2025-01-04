@@ -9,6 +9,10 @@ import {IAgent} from "../models/Agent";
 import {Operation} from "../client/models/operation";
 import {IClient} from "../models/Client";
 import {IAgentServices} from "../models/AgentServices";
+import {UserRequest} from "../models/UserRequest";
+import {SharedInfosService} from "./shared-infos.service";
+import {UserResponse} from "../models/UserResponse";
+
 
 
 @Injectable({
@@ -21,13 +25,14 @@ export class AgentService {
 
   private authorization = this.cookieService.get('Authorization');
 
-  constructor(private httpClient: HttpClient, private cookieService: CookieService) {
+  constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) {
   }
 
-  public createClient(clientRegisterRequest: IClient): Observable<IClient> {
-
+  public createClient(clientRegisterRequest: UserRequest): Observable<string> {
     const dataUrl = `${this.serverUrl}/client`;
-    return this.httpClient.post<IClient>(dataUrl, clientRegisterRequest)
+    const headers = this.sharedInfosService.getAuthHeaders();
+    return this.httpClient
+      .post<string>(dataUrl, clientRegisterRequest, { headers }) // Les en-têtes doivent être placés dans l'objet des options
       .pipe(catchError(this.handleError));
   }
 
@@ -38,6 +43,16 @@ export class AgentService {
 
     return this.httpClient.get<IClient[]>(dataUrl, ).pipe(catchError(this.handleError));
   }
+
+  public getClientsByAgentId(agentId: string): Observable<UserResponse[]> {
+    const url = `${this.serverUrl}/clientsByAgent/${agentId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+
+    return this.httpClient
+      .get<UserResponse[]>(url, { headers })
+      .pipe(catchError(this.handleError));
+  }
+
   //const dataUrl = `${this.serverUrl}/listByAgent/${idAgent}`;
   //console.log(this.authorization);
 /*
