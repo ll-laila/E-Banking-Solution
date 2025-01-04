@@ -9,6 +9,7 @@
     <file url="file://$PROJECT_DIR$/services/VirtualCardService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/WalletCryptoService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/WalletService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/services/batchService/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/config-server/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services/discovery/src/main/java" charset="UTF-8" />
   </component>
