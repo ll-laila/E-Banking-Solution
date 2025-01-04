@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface ServiceRepository extends MongoRepository<AgentServiceRequest, String> {
-    Optional<AgentServiceRequest> findById(String id);
+    Optional<AgentServiceRequest> findServiceById(String id);
     List<AgentServiceRequest> findAllByAgentId(String id);
 }
