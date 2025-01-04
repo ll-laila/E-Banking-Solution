@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AgentService} from "../../../service/agent.service";
 import {IAgent} from "../../../models/Agent";
+import {AgentRequest} from "../../../models/AgentRequest";
 import {AdminService} from "../../../service/admin.service";
 
 @Component({
@@ -10,7 +11,7 @@ import {AdminService} from "../../../service/admin.service";
   styleUrls: ['./new-agent.component.scss']
 })
 export class NewAgentComponent implements OnInit {
-  agents: IAgent[] = [];
+  agents: AgentRequest[] = [];
   errorMessage: string | null = null; // Gestion des erreurs
   successMessage: string | null = null;
   constructor(private router: Router, private adminService: AdminService) { }

@@ -10,7 +10,6 @@ import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
 import com.example.user.users.entity.*;
-import com.example.user.users.exceptions.AppException;
 import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.request.*;
 import com.example.user.users.response.AgentResponse;
@@ -126,11 +125,6 @@ public class UserController {
         return ResponseEntity.ok(service.saveAdmin(request));
     }
 
-
-    @PostMapping("/addAgent")
-    public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request) {
-        return ResponseEntity.ok(service.addAgent(request));
-    }
 
 
     @GetMapping("/getAgent/{id}")
@@ -312,22 +306,21 @@ public class UserController {
 
 
     //-------------------------chaima-------------------------//
-
+    private final ClientService clientService;
     private final TransactionClient transactionClient;
 
-    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;
 
         switch (transactionType) {
-            case PAYMENT -> transaction = userService.createPaymentTransaction(
+            case PAYMENT -> transaction = clientService.createPaymentTransaction(
                     senderId,
                     beneficiaryId,
                     amount
             );
 
-            case TRANSFER -> transaction = userService.createTransferTransaction(
+            case TRANSFER -> transaction = clientService.createTransferTransaction(
                     senderId,
                     beneficiaryId,
                     amount
@@ -346,7 +339,7 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
-    @PreAuthorize("hasRole('CLIENT')")
+
     @PostMapping("/creat-subscription")
     public ResponseEntity<String> createSubscription(@RequestParam String userId,
                                                      @RequestParam String agentId,
@@ -360,17 +353,20 @@ public class UserController {
         }
         return ResponseEntity.ok("Subscription created successfully");
     }
-    @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/clientByPhone/{phoneNumber}")
-    public ResponseEntity<UserDto> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
-            UserDto client = userService.findByLogin(phoneNumber);
-            return ResponseEntity.ok(client);
-    }
 
-    @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/clientById/{clientId}")
-    public ResponseEntity<UserResponse> getClientInfo(@PathVariable("clientId") String clientId) {
-        return ResponseEntity.ok(userService.findById(clientId));
+    /*@GetMapping("/clientByPhone/{phoneNumber}")
+    public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
+        String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
+        if (clientId != null) {
+            return ResponseEntity.ok(clientId);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
+        }
+    }*/
+
+    @GetMapping("/clientbyid/{clientId}")
+    public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
+        return ResponseEntity.ok(clientService.getClientById(clientId));
     }
 
     //-------------------------salwa-------------------------//
