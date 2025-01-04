@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {IAgent} from '../../../models/Agent';
+import {AgentRequest} from '../../../models/AgentRequest';
 import {AgentService} from '../../../service/agent.service';
 import {Router} from '@angular/router';
 import {catchError, throwError} from 'rxjs';
@@ -14,7 +14,7 @@ import {AdminService} from "../../../service/admin.service";
   providers: [DatePipe]
 })
 export class AddAgentComponent implements OnInit {
-  public agent: IAgent = {} as IAgent;
+  public agent: AgentRequest = {} as AgentRequest;
 
   constructor(private adminService: AdminService, private router: Router, private toastr: ToastrService) {}
 
@@ -29,6 +29,7 @@ export class AddAgentComponent implements OnInit {
 
   addAgent(): void {
     if (this.agent.firstName && this.agent.lastName && this.agent.email) {
+      this.agent.role = "AGENT";
       this.adminService.addAgent(this.agent).subscribe(
         (data: any) => {
           this.toastr.success('Agent ajouté avec succès', 'Succès');

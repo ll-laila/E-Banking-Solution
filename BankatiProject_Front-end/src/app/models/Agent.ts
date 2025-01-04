@@ -14,3 +14,4 @@ export interface IAgent {
   newPassword : string;
   image: string
 }
+

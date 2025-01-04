@@ -16,7 +16,7 @@
                 <form >
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                      <h2 class="card-title text-right Montserrat" style="color: #ffc107;}; margin-bottom: 0;">Informations personnelles</h2>
+                      <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Informations personnelles</h2>
                       <div type="button" [routerLink]="['/admin']">
                         <i class="fas fa-sign-out-alt"></i>
                       </div>
@@ -59,20 +59,20 @@
                         </div>
                       </div>
                       <div class="row g-2 mb-4">
-                        <div class="form-floating col-md-6">
-                          <label for="email" class="Montserrat" style="color:#a4bacc">Email *</label>
-                          <input type="email" class="form-control" [(ngModel)]="agent.email" name="email" id="email" placeholder="Email" style="border-radius:20px; background-color:#f1f3f6" required />
-                        </div>
-                        <div class="form-floating col-md-6">
-                          <label for="confirmEmail" class="Montserrat" style="color:#a4bacc">Confirmation Email</label>
-                          <input type="email" class="form-control" name="confirmEmail" id="confirmEmail" placeholder="Confirmation Email" style="border-radius:20px; background-color:#f1f3f6" required />
-                        </div>
-                      </div>
-                      <div class="row g-2 mb-4">
                         <div class="form-floating col-md-4">
                           <label for="phoneNumber" class="Montserrat" style="color:#a4bacc">N° téléphone *</label>
                           <input type="text" class="form-control" [(ngModel)]="agent.phoneNumber" name="phoneNumber" id="phoneNumber" placeholder="Phone number" style="border-radius:20px; background-color:#f1f3f6" required />
                         </div>
+                        <div class="form-floating col-md-4">
+                          <label for="email" class="Montserrat" style="color:#a4bacc">Email *</label>
+                          <input type="email" class="form-control" [(ngModel)]="agent.email" name="email" id="email" placeholder="Email" style="border-radius:20px; background-color:#f1f3f6" required />
+                        </div>
+                        <div class="form-floating col-md-4">
+                          <label for="currency" class="Montserrat" style="color:#a4bacc">Currency *</label>
+                          <input type="text" class="form-control" [(ngModel)]="agent.currency" name="currency" id="currency" placeholder="Currency" style="border-radius:20px; background-color:#f1f3f6" required />
+                        </div>
+                      </div>
+                      <div class="row g-2 mb-4">
                         <div class="form-floating col-md-4">
                           <label for="commercialRn" class="Montserrat" style="color:#a4bacc">N° d'immatriculation *</label>
                           <input type="text" class="form-control" [(ngModel)]="agent.commercialRn" name="commercialRn" id="commercialRn" placeholder="Commercial Register Number" style="border-radius:20px; background-color:#f1f3f6" required />
@@ -81,8 +81,7 @@
                           <label for="patentNumber" class="Montserrat" style="color:#a4bacc">N° de patente *</label>
                           <input type="text" class="form-control" [(ngModel)]="agent.patentNumber" name="patentNumber" id="patentNumber" placeholder="Patent Number" style="border-radius:20px; background-color:#f1f3f6" required />
                         </div>
-
-                        <div class="row g-2 mb-4">
+                        <div class="form-floating col-md-4">
                           <div class="form-floating col-md-12">
                             <label for="image" class="Montserrat" style="color:#a4bacc">Image *</label>
                             <input type="text" class="form-control" id="image" [(ngModel)]="agent.image" name="image" placeholder="image" style="border-radius:20px; background-color:#f1f3f6" required />

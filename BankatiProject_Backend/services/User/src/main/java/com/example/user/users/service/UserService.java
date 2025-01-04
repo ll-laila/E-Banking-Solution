@@ -1,5 +1,8 @@
 package com.example.user.users.service;
 
+import com.example.user.transactionClient.TransactionRequest;
+import com.example.user.transactionClient.TransactionStatus;
+import com.example.user.transactionClient.TransactionType;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
@@ -32,8 +35,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.user.users.entity.Role.AGENT;
+import static com.example.user.users.entity.Role.CLIENT;
 import static java.lang.String.format;
 
 
@@ -114,7 +122,7 @@ public class UserService {
             UserDto userDto = userMapper.toUserDto(user);
 
             // Enforce first login password change for clients
-            if (user.getRole() == Role.CLIENT && user.isFirstLogin()) {
+            if (user.getRole() == CLIENT && user.isFirstLogin()) {
                 userDto.setMessage("Please change your password.");
             }
 
@@ -167,7 +175,7 @@ public class UserService {
     public String createClient(UserRequest userRequest) {
         // Ensure the role is CLIENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.CLIENT) {
+        if (role != CLIENT) {
             throw new AppException("Only CLIENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -201,14 +209,14 @@ public class UserService {
 
 
     public List<UserResponse> getAllClients() {
-        return userRepository.findByRole(Role.CLIENT)
+        return userRepository.findByRole(CLIENT)
                 .stream()
                 .map(userMapper::fromUser)
                 .collect(Collectors.toList());
     }
 
     public List<UserResponse> getAllAgents() {
-            return userRepository.findByRole(Role.AGENT)
+            return userRepository.findByRole(AGENT)
                     .stream()
                     .map(userMapper::fromUser)
                     .collect(Collectors.toList());
@@ -219,7 +227,7 @@ public class UserService {
     public String createAgent(UserRequest userRequest) {
         // Ensure the role is AGENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.AGENT) {
+        if (role != AGENT) {
             throw new AppException("Only AGENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -350,9 +358,6 @@ public class UserService {
 
 
 
-
-
-
     public Object sendSms(String phoneNumber, String message) {
 
         if (phoneNumber!=null) {
@@ -371,6 +376,86 @@ public class UserService {
         String formatted = phoneNumber.substring(1);
         return "+212" + formatted;
     }
+
+
+
+
+    //--------------------------------------BackOffice-----------------------------------//
+
+
+
+
+
+
+
+
+    //--------------------------------------Agent-----------------------------------//
+
+
+
+
+
+
+
+    
+    //--------------------------------------client-----------------------------------//
+
+
+public TransactionRequest createPaymentTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
+    UserResponse beneficiary = findById(beneficiaryId);
+    UserResponse sender = findById(senderId);
+
+    return new TransactionRequest(
+            null, // ID généré ultérieurement
+            amount,
+            beneficiary.id(),
+            beneficiary.firstName()+" "+beneficiary.lastName(),
+            beneficiary.phoneNumber(),
+            AGENT,
+            TransactionType.PAYMENT,
+            TransactionStatus.COMPLETED, // Statut initial
+            beneficiary.currency(),
+            null, // Pas de date de validation au début
+            sender.id(),
+            sender.firstName()+" "+sender.lastName(),
+            sender.phoneNumber(),
+            CLIENT,
+            sender.currency()
+    );
+}
+
+    public TransactionRequest createTransferTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
+        UserResponse beneficiary =findById(beneficiaryId);
+        UserResponse sender =findById(senderId);
+        return new TransactionRequest(
+                null, // ID généré ultérieurement
+                amount,
+                beneficiary.id(),
+                beneficiary.firstName()+" "+beneficiary.lastName(),
+                beneficiary.phoneNumber(),
+                CLIENT,
+                TransactionType.TRANSFER,
+                TransactionStatus.COMPLETED, // Statut initial
+                beneficiary.currency(),
+                null, // Pas de date de validation au début
+                sender.id(),
+                sender.firstName()+" "+sender.lastName(),
+                sender.phoneNumber(),
+                CLIENT,
+                sender.currency()
+        );
+    }
+
+    /* public String getClientIdByPhoneNumber(String phoneNumber) {
+         // Appeler la méthode du repository
+         User client = clientRepository.findIdByPhoneNumber(phoneNumber);
+         if (client != null) {
+             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String
+         } else {
+             throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
+         }
+     }
+ */
 
 
 
