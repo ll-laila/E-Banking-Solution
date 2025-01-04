@@ -118,6 +118,12 @@ public class UserController {
     }
 
 
+    @GetMapping("/getUser/{userId}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok(userService.findById(userId));
+    }
+
+
     //--------------------------------------Admin-----------------------------------//
 
     @PostMapping("/addAdmin")

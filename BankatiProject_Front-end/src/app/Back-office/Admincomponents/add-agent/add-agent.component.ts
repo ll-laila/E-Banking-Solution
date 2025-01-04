@@ -16,7 +16,7 @@ import {AdminService} from "../../../service/admin.service";
 export class AddAgentComponent implements OnInit {
  // public agent: AgentRequest = {} as AgentRequest;
  public agent: AgentRequest = {
-  id: '',
+  id: null,
   agentId: '',
   firstName: '',
   lastName: '',

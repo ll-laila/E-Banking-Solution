@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {IAgent} from "../../../models/Agent";
 import {ActivatedRoute} from "@angular/router";
-import {AgentService} from "../../../service/agent.service";
+import {AdminService} from "../../../service/admin.service";
 import { DatePipe } from '@angular/common';
+import {AgentRequest} from '../../../models/AgentRequest';
+
 
 @Component({
   selector: 'app-details-agent',
@@ -10,12 +12,36 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./details-agent.component.scss']
 })
 export class DetailsAgentComponent implements OnInit {
-  agent: IAgent;
 
-  constructor(private route: ActivatedRoute, private agentService: AgentService,private datePipe: DatePipe) { }
+  public agent: AgentRequest = {
+    id: '',
+    agentId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    cin: '',
+    birthDate: new Date(),
+    phoneNumber: '',
+    role: '',
+    password: '',
+    isFirstLogin: false,
+    commercialRn: '',
+    image: '',
+    patentNumber: '',
+    isPaymentAccountActivated: false,
+    typeHissab: '',
+    currency: '',
+    token: ''
+  };
+
+  constructor(private route: ActivatedRoute, private adminService: AdminService,private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-
+    const id = this.route.snapshot.paramMap.get('id');
+    this.adminService.getUserById(id).subscribe((agent) => {
+      this.agent = agent;
+    });
   }
 
   formatDate(date: string | Date) {
