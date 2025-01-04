@@ -9,13 +9,13 @@ import com.example.user.users.dto.UserDto;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
-import com.example.user.users.entity.Agent;
-import com.example.user.users.entity.Role;
-import com.example.user.users.entity.User;
+import com.example.user.users.entity.*;
 import com.example.user.users.exceptions.AppException;
 import com.example.user.users.exceptions.UserNotFoundException;
+import com.example.user.users.mapper.AgentServiceMapper;
 import com.example.user.users.mapper.UserMapper;
 import com.example.user.users.repository.AgentRepository;
+import com.example.user.users.repository.ServiceRepository;
 import com.example.user.users.repository.UserRepository;
 import com.example.user.users.request.UserRequest;
 import com.example.user.users.response.UserResponse;
@@ -172,7 +172,7 @@ public class UserService {
     }
 
 
-    public String createClient(UserRequest userRequest) {
+   public String createClient(UserRequest userRequest) {
         // Ensure the role is CLIENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
         if (role != Role.CLIENT) {
@@ -394,12 +394,82 @@ public class UserService {
     //--------------------------------------Agent-----------------------------------//
 
 
+    ServiceRepository serviceRepository;
+    public ServiceAgentResponse createService(AgentServiceRequest request, String id) {
+        // Vérifier si l'agent existe
+        User agent = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Agent not found"));
+
+        request.setAgentId(id);
+
+        // Ajouter des validations si nécessaire sur l'objet `request`
+        if (request.getName() == null || request.getType() == null) {
+            throw new IllegalArgumentException("Service request is invalid");
+        }
+
+        // Enregistrer le service
+        serviceRepository.save(request);
+
+        // Retourner la réponse
+        return ServiceAgentResponse.builder()
+                .message("Service created successfully for agent: " + agent.getFirstName())
+                .build();
+    }
+
+    public List<AgentServiceRequest> getAllServicesByAgentId(String agentId) {
+        List<AgentServiceRequest> servicesAgent = serviceRepository.findAllByAgentId(agentId);
+        return servicesAgent.stream()
+                .map(AgentServiceMapper::ConvertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ServiceAgentResponse updateService(String serviceId, AgentServiceRequest request) {
+        AgentServiceRequest agentService = serviceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        agentService.setName(request.getName());
+        agentService.setType(request.getType());
+
+        serviceRepository.save(agentService);
+
+        return ServiceAgentResponse.builder().message("Service updated successfully").build();
+    }
+
+    public List<UserResponse> getAllClientsByAgentId(String agentId) {
+        // Vérifier que l'agentId n'est pas nul ou vide
+        if (agentId == null || agentId.isEmpty()) {
+            throw new IllegalArgumentException("Agent ID cannot be null or empty");
+        }
+
+        // Récupérer tous les utilisateurs associés à cet agentId
+        List<User> clients = userRepository.findAllByAgentId(agentId);
+
+        // Mapper les résultats en objets UserRequest
+        return clients.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getAgentId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getAddress(),
+                        user.getCin(),
+                        user.getBirthDate(),
+                        user.getPhoneNumber(),
+                        user.getRole(),
+                        user.getPassword(),
+                        user.isFirstLogin(),
+                        user.getCommercialRn(),
+                        user.getImage(),
+                        user.getPatentNumber(),
+                        user.getIsPaymentAccountActivated(),
+                        user.getTypeHissab(),
+                        user.getCurrency()
+                ))
+                .collect(Collectors.toList());
+    }
 
 
-
-
-
-    
     //--------------------------------------client-----------------------------------//
 
 

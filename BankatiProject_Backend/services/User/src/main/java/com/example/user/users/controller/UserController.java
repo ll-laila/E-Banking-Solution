@@ -161,14 +161,13 @@ public class UserController {
 
     //--------------------------------------Agent-----------------------------------//
 
-    private final AgentService agentService;
-    private final ClientMapper clientMapper;
 
-    @PostMapping("/client")
+
+   /* @PostMapping("/client")
     public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
         return ResponseEntity.ok(agentService.createClient(clientRequest));
     }
-
+*/
     /*@PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/client/allClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
@@ -180,15 +179,23 @@ public class UserController {
     }*/
 
 
-    @GetMapping("/client/{id}")
+  /*  @GetMapping("/client/{id}")
     public ResponseEntity<ClientResponse> getClientById(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 
         return clientOpt.map(client -> ResponseEntity.ok(clientMapper.fromClient(client)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+*/
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    @GetMapping("/client/{id}")
+    public ResponseEntity<UserResponse> getClientById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.findById(id));
 
-    @PutMapping("/client/{id}")
+    }
+
+
+   /* @PutMapping("/client/{id}")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable String id, @RequestBody ClientRequest clientRequest) {
         Optional<Client> existingClientOpt = agentService.getClientById(id);
 
@@ -206,7 +213,9 @@ public class UserController {
         return ResponseEntity.ok(clientResponse);
     }
 
-    @DeleteMapping("/client/{id}")
+    */
+
+   /* @DeleteMapping("/client/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 
@@ -218,37 +227,33 @@ public class UserController {
         return ResponseEntity.noContent().build(); // Retourner le statut HTTP 204 No Content
     }
 
+    */
+    @PreAuthorize("hasRole('AGENT')")
     @PostMapping("/service/{id}")
-    //@PreAuthorize("hasAuthority('agent:create')")
-    //@Hidden
-    public ResponseEntity<ServiceAgentResponse> createService(@PathVariable String id, @RequestBody AgentServiceRequest request) {
-        return ResponseEntity.ok(agentService.createService(request, id));
+    public ResponseEntity<ServiceAgentResponse> createService(@RequestBody AgentServiceRequest request,@PathVariable String id) {
+        return ResponseEntity.ok(userService.createService(request, id));
     }
 
-
+    @PreAuthorize("hasRole('AGENT')")
     @PutMapping("/service/{serviceId}")
-    //@PreAuthorize("hasAuthority('agent:update')")
     public ResponseEntity<ServiceAgentResponse> updateService(
             @PathVariable String serviceId,
             @RequestBody AgentServiceRequest request
     ) {
-        return ResponseEntity.ok(agentService.updateService(serviceId, request));
+        return ResponseEntity.ok(userService.updateService(serviceId, request));
     }
 
-   /* @DeleteMapping("/service/{serviceId}")
-    //@PreAuthorize("hasAuthority('agent:delete')")
-    public RegisterAgentResponse deleteService(@PathVariable Long serviceId) {
-        return agentservice.deleteService(serviceId);
-    }*/
-
-
+    @PreAuthorize("hasRole('AGENT') ")
     @GetMapping("/serviceByAgent/{agentId}")
-    //@PreAuthorize("hasAuthority('agent:read')")
     public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
-        return agentService.getAllServicesByAgentId(agentId);
+        return userService.getAllServicesByAgentId(agentId);
     }
 
-
+    @PreAuthorize("hasRole('AGENT') ")
+    @GetMapping("/clientsByAgent/{agentId}")
+    public List<UserResponse> getClientsByAgentId(@RequestParam String agentId) {
+        return userService.getAllClientsByAgentId(agentId);
+    }
     //--------------------------------------Client-----------------------------------//
 
     //-------------------------laila-------------------------//

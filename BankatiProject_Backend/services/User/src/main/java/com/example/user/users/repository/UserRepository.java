@@ -25,4 +25,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 /*//-------------------------chaima------------------------------//
 @Query(value = "{ 'phoneNumber': ?0 }", fields = "{ '_id': 1 }")
 User findIdByPhoneNumber(String phoneNumber);*/
+List<User> findAllByAgentId(String agentId);
 }
