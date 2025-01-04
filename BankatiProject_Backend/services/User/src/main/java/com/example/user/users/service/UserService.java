@@ -122,7 +122,7 @@ public class UserService {
             UserDto userDto = userMapper.toUserDto(user);
 
             // Enforce first login password change for clients
-            if (user.getRole() == Role.CLIENT && user.isFirstLogin()) {
+            if (user.getRole() == CLIENT && user.isFirstLogin()) {
                 userDto.setMessage("Please change your password.");
             }
 
@@ -175,7 +175,7 @@ public class UserService {
     public String createClient(UserRequest userRequest) {
         // Ensure the role is CLIENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.CLIENT) {
+        if (role != CLIENT) {
             throw new AppException("Only CLIENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -209,14 +209,14 @@ public class UserService {
 
 
     public List<UserResponse> getAllClients() {
-        return userRepository.findByRole(Role.CLIENT)
+        return userRepository.findByRole(CLIENT)
                 .stream()
                 .map(userMapper::fromUser)
                 .collect(Collectors.toList());
     }
 
     public List<UserResponse> getAllAgents() {
-            return userRepository.findByRole(Role.AGENT)
+            return userRepository.findByRole(AGENT)
                     .stream()
                     .map(userMapper::fromUser)
                     .collect(Collectors.toList());
@@ -227,7 +227,7 @@ public class UserService {
     public String createAgent(UserRequest userRequest) {
         // Ensure the role is AGENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.AGENT) {
+        if (role != AGENT) {
             throw new AppException("Only AGENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -354,9 +354,6 @@ public class UserService {
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
-
-
-
 
 
 
