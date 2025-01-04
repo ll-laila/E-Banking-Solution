@@ -72,6 +72,7 @@ export class SharedInfosService {
     this.typeHissab = response.typeHissab;
 
     localStorage.setItem('token', this.token);
+    localStorage.setItem('id',response.id);
   }
 
   // Getters

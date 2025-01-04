@@ -48,10 +48,10 @@ export class DashboardClientComponent implements OnInit {
   } 
 
   loadClientData(): void {
-    this.clientService.getUserById(this.sharedInfosService.getId()).subscribe((client) => {
+    this.clientService.getUserById(localStorage.getItem('id')).subscribe((client) => {
       this.client = client;
     });
-    this.clientService.getWalletByClientId(this.sharedInfosService.getId()).subscribe((wallet) => {
+    this.clientService.getWalletByClientId(localStorage.getItem('id')).subscribe((wallet) => {
       this.wallet = wallet;
     },
     (error) => {

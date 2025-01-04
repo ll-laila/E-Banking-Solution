@@ -82,17 +82,18 @@ export class NavbarClientComponent implements OnInit {
   walletMessage: string | null = null; // Message de confirmation ou d'erreur
 
   feedWallet(): void {
-    const clientId = '67596dcc2500d851f75a6f98';
     this.feedAmount = this.paymentForm.get('montant')?.value;
     if (this.paymentForm.valid) {
-      this.clientService.feedWallet(clientId, this.feedAmount).subscribe(
+      this.clientService.feedWallet(localStorage.getItem('id'), this.feedAmount).subscribe(
         (result: boolean) => {
           if (result) {
             this.walletMessage = 'Le portefeuille a été alimenté avec succès.';
-            this.clientService.getUserById(clientId).subscribe(
+            this.clientService.getUserById(localStorage.getItem('id')).subscribe(
               (updatedClient: ClientRequest) => {
                 this.client = updatedClient; // Met à jour les données du client avec le nouveau solde
+                window.location.reload();
               },
+
               (error) => {
                 console.error('Erreur lors de la recharge des données du client:', error);
               }
