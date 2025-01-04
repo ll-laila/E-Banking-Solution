@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {CookieService} from "ngx-cookie-service";
 import {SharedInfosService} from "./shared-infos.service";
-import { HttpHeaders } from "@angular/common/http";
 import { catchError } from 'rxjs/operators';
 import { IAgent } from '../models/Agent';
 import { AgentRequest } from '../models/AgentRequest';
 import { IAdmin } from '../models/Admin';
 import {IClient} from "../models/Client";
+
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',
@@ -27,16 +28,16 @@ export class AdminService {
   }
 
   // Ajouter un agent
+
   public addAgent(agentRequest: AgentRequest): Observable<AgentRequest> {
     const url = `${this.serverUrl}/create-agent`;
-  //  const headers = this.sharedInfosService.getAuthHeaders();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
-    return this.httpClient.post<AgentRequest>(url, agentRequest, {
-      headers
-    });
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    console.log('Agent Request:', agentRequest);
+
+    return this.httpClient.post<AgentRequest>(url, agentRequest, { headers });
   }
+
 
   // Récupérer un agent par son ID
   public getAgentById(id: string): Observable<AgentRequest> {
@@ -58,8 +59,10 @@ export class AdminService {
 
   // Lister tous les agents
   public getAllAgents(): Observable<AgentRequest[]> {
-    const url = `${this.serverUrl}/listAgent`;
-    return this.httpClient.get<AgentRequest[]>(url).pipe(catchError(this.handleError));
+    const url = `${this.serverUrl}/agents`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<AgentRequest[]>(url,{headers});
   }
 
   // Gestion des erreurs

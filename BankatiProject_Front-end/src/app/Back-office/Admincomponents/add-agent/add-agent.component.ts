@@ -14,7 +14,29 @@ import {AdminService} from "../../../service/admin.service";
   providers: [DatePipe]
 })
 export class AddAgentComponent implements OnInit {
-  public agent: AgentRequest = {} as AgentRequest;
+ // public agent: AgentRequest = {} as AgentRequest;
+ public agent: AgentRequest = {
+  id: '',
+  agentId: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  address: '',
+  cin: '',
+  birthDate: new Date(),
+  phoneNumber: '',
+  role: '',
+  password: '',
+  isFirstLogin: false,
+  commercialRn: '',
+  image: '',
+  patentNumber: '',
+  isPaymentAccountActivated: false,
+  typeHissab: '',
+  currency: '',
+  token: ''
+};
+
 
   constructor(private adminService: AdminService, private router: Router, private toastr: ToastrService) {}
 
@@ -27,9 +49,22 @@ export class AddAgentComponent implements OnInit {
 
   }
 
+
+  generatePassword(): string {
+    let password = '';
+    for (let i = 0; i < 6; i++) {
+      password += Math.floor(Math.random() * 10).toString();
+    }
+    return password;
+  }
+
   addAgent(): void {
     if (this.agent.firstName && this.agent.lastName && this.agent.email) {
+
       this.agent.role = "AGENT";
+      this.agent.isFirstLogin = true;
+      this.agent.password = this.generatePassword();
+
       this.adminService.addAgent(this.agent).subscribe(
         (data: any) => {
           this.toastr.success('Agent ajouté avec succès', 'Succès');
