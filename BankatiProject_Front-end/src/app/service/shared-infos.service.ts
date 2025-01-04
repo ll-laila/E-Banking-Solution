@@ -43,7 +43,7 @@ export class SharedInfosService {
   private createdDate: string | null;
   private commercialRn: string | null;
   private currency: string | null;
-  private firstLogin: string;
+  private firstLogin: boolean;
   private isPaymentAccountActivated: string | null;
   private patentNumber: string | null;
   private typeHissab: string | null;
@@ -66,12 +66,14 @@ export class SharedInfosService {
     this.createdDate = response.createdDate;
     this.commercialRn = response.commercialRn;
     this.currency = response.currency;
-    this.firstLogin = response.firstLogin;
+    this.firstLogin = Boolean(response.firstLogin);
     this.isPaymentAccountActivated = response.isPaymentAccountActivated;
     this.patentNumber = response.patentNumber;
     this.typeHissab = response.typeHissab;
 
-    localStorage.setItem('token', this.token);
+    if (this.token) {
+      localStorage.setItem('token', this.token);
+    }
   }
 
   // Getters
@@ -107,10 +109,38 @@ export class SharedInfosService {
     return this.token || localStorage.getItem('token');
   }
 
+  getFirstLogin(): boolean {
+    return this.firstLogin;
+  }
+
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
+  }
+
+  // Clear all stored information (used for logout)
+  clear(): void {
+    this.id = '';
+    this.agentId = null;
+    this.firstName = '';
+    this.lastName = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.role = '';
+    this.token = null;
+    this.address = null;
+    this.birthDate = null;
+    this.cin = null;
+    this.createdDate = null;
+    this.commercialRn = null;
+    this.currency = null;
+    this.firstLogin = true;
+    this.isPaymentAccountActivated = null;
+    this.patentNumber = null;
+    this.typeHissab = null;
+
+    localStorage.removeItem('token');
   }
 }
