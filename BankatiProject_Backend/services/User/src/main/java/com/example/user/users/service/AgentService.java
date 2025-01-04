@@ -106,7 +106,7 @@ public class AgentService {
         return password.toString();
     }
 
-    @Transactional
+    /*@Transactional
     public ClientResponse createClient(ClientRequest clientRequest) {
         if (clientRepository.existsByPhoneNumber(clientRequest.phoneNumber()) && clientRepository.existsByEmail(clientRequest.email())) {
             throw new RuntimeException("Phone num already exists Or Email");
@@ -156,7 +156,9 @@ public class AgentService {
         return clientMapper.fromClient(savedClient);
     }
 
-    public ServiceAgentResponse createService(AgentServiceRequest request, String id ) {
+     */
+
+   /* public ServiceAgentResponse createService(AgentServiceRequest request, String id ) {
         // Trouver l'agent par son numéro de téléphone
 //
 //        Agent agent = agentRepository.findAgentByClientId(id);
@@ -185,13 +187,15 @@ public class AgentService {
                 .collect(Collectors.toList());
     }
 
+    */
+
 //    public AgentServiceResponse getServiceById(Long id) {
 //        return serviceRepository.findById(id)
 //                .map(AgentServiceMapper::ConvertToDto)
 //                .orElse(null);
 //    }
 
-    public ServiceAgentResponse updateService(String serviceId, AgentServiceRequest request) {
+   /* public ServiceAgentResponse updateService(String serviceId, AgentServiceRequest request) {
         AgentServiceRequest agentService = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new RuntimeException("Service not found"));
 
@@ -203,7 +207,9 @@ public class AgentService {
         return ServiceAgentResponse.builder().message("Service updated successfully").build();
     }
 
-    public ServiceAgentResponse deleteService(String serviceId) {
+    */
+
+    /*public ServiceAgentResponse deleteService(String serviceId) {
         AgentServiceRequest agentService = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new RuntimeException("Service not found"));
 
@@ -211,6 +217,8 @@ public class AgentService {
 
         return ServiceAgentResponse.builder().message("Service deleted successfully").build();
     }
+
+     */
 
 
 }
