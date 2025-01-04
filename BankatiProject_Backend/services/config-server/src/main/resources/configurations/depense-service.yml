@@ -1,5 +1,5 @@
 server:
-  port: 8010
+  port: 8081
 spring:
   data:
     mongodb:
@@ -7,14 +7,12 @@ spring:
       password: bankatidb
       host: localhost
       port: 27018
-      database: user
+      database: depense
       authentication-database: admin
 
 application:
   config:
-    virtualCard-url: http://localhost:8222/api/v1/virtualcard
-    wallet-url: http://localhost:8222/api/v1/wallet
-    walletcrypto-url: http://localhost:8222/api/v1/walletcrypto
+    users-url: http://localhost:8222/api/v1/users
     transactions-url: http://localhost:8222/api/v1/transactions
-    servicestiers-url: http://localhost:8222/api/v1/servicestiers
     depense-url: http://localhost:8222/api/v1/depenses
+

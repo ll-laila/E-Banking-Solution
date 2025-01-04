@@ -1,5 +1,8 @@
 package com.example.user.users.controller;
 
+import com.example.user.depenseClient.DepenseClient;
+import com.example.user.depenseClient.DepenseRequest;
+import com.example.user.depenseClient.DepenseResponse;
 import com.example.user.transactionClient.SimpleTransactionRequest;
 import com.example.user.transactionClient.SubscriptionRequest;
 import com.example.user.transactionClient.TransactionClient;
@@ -19,6 +22,7 @@ import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
 import com.example.user.users.service.UserService;
 import com.example.user.walletClient.WalletClient;
+import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoResponse;
@@ -35,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -374,5 +379,75 @@ public class UserController {
     //-------------------------kawtar-------------------------//
     // kawtar here
 
+    @GetMapping("/wallet/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
+        WalletResponse wallet = userService.getWalletByUserId(clientId);
+        return ResponseEntity.ok(wallet);
+    }
 
+    @GetMapping("/transactions/{userId}")
+    public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getUserTransactions(
+            @PathVariable("userId") String userId) {
+        List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
+
+    @PostMapping("/feed-wallet")
+    public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
+        String clientId = (String) requestBody.get("clientId");
+        double amount = ((Number) requestBody.get("amount")).doubleValue();
+
+        boolean result = userService.feedWallet(clientId, amount);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/all-transactions/{userId}")
+    public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getAllTransactionsByUserId(
+            @PathVariable("userId") String userId) {
+        List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getAllTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
+
+    @Autowired
+    private DepenseClient depenseClient;
+    /**
+            * Endpoint pour créer une nouvelle dépense.
+            */
+    @PostMapping("/create-depense")
+    public ResponseEntity<DepenseResponse> createDepense(@RequestBody DepenseRequest depenseRequest) {
+        return depenseClient.createDepense(depenseRequest);
+    }
+
+    /**
+     * Endpoint pour mettre à jour une dépense existante.
+     */
+    @PutMapping("/update-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> updateDepense(@PathVariable String depenseId,
+                                                         @RequestParam Double nouveauMontant) {
+        return depenseClient.updateDepense(depenseId, nouveauMontant);
+    }
+
+    /**
+     * Endpoint pour annuler une dépense.
+     */
+    @DeleteMapping("/cancel-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> cancelDepense(@PathVariable String depenseId) {
+        return depenseClient.cancelDepense(depenseId);
+    }
+
+    /**
+     * Endpoint pour récupérer une dépense par son ID.
+     */
+    @GetMapping("/get-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> getDepenseById(@PathVariable String depenseId) {
+        return depenseClient.getDepenseById(depenseId);
+    }
+
+    /**
+     * Endpoint pour récupérer toutes les dépenses d'un utilisateur par son ID.
+     */
+    @GetMapping("/list-depense")
+    public ResponseEntity<List<DepenseResponse>> getAllDepensesByUser(@RequestParam String userId) {
+        return depenseClient.getAllDepensesByUser(userId);
+    }
 }

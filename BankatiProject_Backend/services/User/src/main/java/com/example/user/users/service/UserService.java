@@ -1,5 +1,8 @@
 package com.example.user.users.service;
 
+import com.example.user.serviceTiersClient.ServiceTiersClient;
+import com.example.user.transactionClient.TransactionClient;
+import com.example.user.transactionClient.TransactionResponse;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
@@ -7,12 +10,14 @@ import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
 import com.example.user.users.entity.Agent;
+import com.example.user.users.entity.Client;
 import com.example.user.users.entity.Role;
 import com.example.user.users.entity.User;
 import com.example.user.users.exceptions.AppException;
 import com.example.user.users.exceptions.UserNotFoundException;
 import com.example.user.users.mapper.UserMapper;
 import com.example.user.users.repository.AgentRepository;
+import com.example.user.users.repository.ClientRepository;
 import com.example.user.users.repository.UserRepository;
 import com.example.user.users.request.UserRequest;
 import com.example.user.users.response.UserResponse;
@@ -21,6 +26,7 @@ import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
+import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoRequest;
 import com.twilio.rest.api.v2010.account.Message;
@@ -30,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -368,6 +375,31 @@ public class UserService {
 
         String formatted = phoneNumber.substring(1);
         return "+212" + formatted;
+    }
+
+    /*kaoutar*/
+    @Autowired
+    private  TransactionClient transactionClient;
+    @Autowired
+    private  ServiceTiersClient serviceTiersClient;
+
+    public User getUserById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    public WalletResponse getWalletByUserId(String userId) {
+        return walletClient.getWalletByIdClient(userId).getBody();
+    }
+    public List<TransactionResponse> getTransactionsByUserId(String userId) {
+        return transactionClient.getTransactionsByUser(userId);
+    }
+    public List<TransactionResponse> getAllTransactionsByUserId(String userId) {
+        return transactionClient.getAllTransactionsByUserId(userId);
+    }
+    public boolean feedWallet(String userId, double amount) {
+        ResponseEntity<Boolean> response = serviceTiersClient.feedWallet(userId, amount);
+        return response.getBody() != null && response.getBody();
     }
 
 

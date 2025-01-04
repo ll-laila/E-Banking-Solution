@@ -39,4 +39,7 @@ spring:
           predicates:
             - Path=/api/v1/servicestiers/**
 
-
+        - id: depense-service
+          uri: lb:http://DEPENSE-SERVICE
+          predicates:
+            - Path=/api/v1/depenses/**
