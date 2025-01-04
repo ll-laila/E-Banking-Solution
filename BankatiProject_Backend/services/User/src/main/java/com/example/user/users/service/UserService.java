@@ -1,8 +1,7 @@
 package com.example.user.users.service;
 
-import com.example.user.transactionClient.TransactionRequest;
-import com.example.user.transactionClient.TransactionStatus;
-import com.example.user.transactionClient.TransactionType;
+import com.example.user.serviceTiersClient.ServiceTiersClient;
+import com.example.user.transactionClient.*;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
@@ -24,6 +23,7 @@ import com.example.user.users.twilio.ENVConfig;
 import com.example.user.users.twilio.TwilioConfiguration;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletRequest;
+import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoRequest;
 import com.twilio.rest.api.v2010.account.Message;
@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +76,8 @@ public class UserService {
     private TwilioConfiguration twilioConfiguration;
 
     private static final String CHARACTERS = "0123456789";
+
+
 
 
     /*public UserDto login(CredentialsDto credentialsDto) {
@@ -526,6 +529,28 @@ public TransactionRequest createPaymentTransaction(String senderId, String benef
          }
      }
  */
+
+
+
+    @Autowired
+    private TransactionClient transactionClient;
+    @Autowired
+    private ServiceTiersClient serviceTiersClient;
+
+
+    public WalletResponse getWalletByUserId(String userId) {
+        return walletClient.getWalletByIdClient(userId).getBody();
+    }
+    public List<TransactionResponse> getTransactionsByUserId(String userId) {
+        return transactionClient.getTransactionsByUser(userId);
+    }
+    public List<TransactionResponse> getAllTransactionsByUserId(String userId) {
+        return transactionClient.getAllTransactionsByUserId(userId);
+    }
+    public boolean feedWallet(String userId, double amount) {
+        ResponseEntity<Boolean> response = serviceTiersClient.feedWallet(userId, amount);
+        return response.getBody() != null && response.getBody();
+    }
 
 
 
