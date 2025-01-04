@@ -127,11 +127,6 @@ public class UserController {
     }
 
 
-    @PostMapping("/addAgent")
-    public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request) {
-        return ResponseEntity.ok(service.addAgent(request));
-    }
-
 
     @GetMapping("/getAgent/{id}")
     public ResponseEntity<AgentResponse> getAgentById(@PathVariable("id") String id) {

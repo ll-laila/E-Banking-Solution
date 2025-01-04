@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import {CookieService} from "ngx-cookie-service";
+import {SharedInfosService} from "./shared-infos.service";
+import { HttpHeaders } from "@angular/common/http";
 import { catchError } from 'rxjs/operators';
 import { IAgent } from '../models/Agent';
+import { AgentRequest } from '../models/AgentRequest';
 import { IAdmin } from '../models/Admin';
 import {IClient} from "../models/Client";
 
@@ -10,9 +14,11 @@ import {IClient} from "../models/Client";
   providedIn: 'root',
 })
 export class AdminService {
-  private serverUrl = 'http://localhost:8010/api/v1/users';
+  private serverUrl = 'http://localhost:8222/api/v1/users';
 
-  constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) { }
+
+
 
   // Ajouter un administrateur
   public addAdmin(adminRequest: IAdmin): Observable<IAdmin> {
@@ -21,21 +27,27 @@ export class AdminService {
   }
 
   // Ajouter un agent
-  public addAgent(agentRequest: IAgent): Observable<IAgent> {
-    const url = `${this.serverUrl}/addAgent`;
-    return this.httpClient.post<IAgent>(url, agentRequest).pipe(catchError(this.handleError));
+  public addAgent(agentRequest: AgentRequest): Observable<AgentRequest> {
+    const url = `${this.serverUrl}/create-agent`;
+  //  const headers = this.sharedInfosService.getAuthHeaders();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.httpClient.post<AgentRequest>(url, agentRequest, {
+      headers
+    });
   }
 
   // Récupérer un agent par son ID
-  public getAgentById(id: string): Observable<IAgent> {
+  public getAgentById(id: string): Observable<AgentRequest> {
     const url = `${this.serverUrl}/getAgent/${id}`;
-    return this.httpClient.get<IAgent>(url).pipe(catchError(this.handleError));
+    return this.httpClient.get<AgentRequest>(url).pipe(catchError(this.handleError));
   }
 
   // Mettre à jour un agent
-  public updateAgent(id: string, agentRequest: IAgent): Observable<IAgent> {
+  public updateAgent(id: string, agentRequest: AgentRequest): Observable<AgentRequest> {
     const url = `${this.serverUrl}/updateAgent/${id}`;
-    return this.httpClient.put<IAgent>(url, agentRequest).pipe(catchError(this.handleError));
+    return this.httpClient.put<AgentRequest>(url, agentRequest).pipe(catchError(this.handleError));
   }
 
   // Supprimer un utilisateur (administrateur ou agent)
@@ -45,9 +57,9 @@ export class AdminService {
   }
 
   // Lister tous les agents
-  public getAllAgents(): Observable<IAgent[]> {
+  public getAllAgents(): Observable<AgentRequest[]> {
     const url = `${this.serverUrl}/listAgent`;
-    return this.httpClient.get<IAgent[]>(url).pipe(catchError(this.handleError));
+    return this.httpClient.get<AgentRequest[]>(url).pipe(catchError(this.handleError));
   }
 
   // Gestion des erreurs
