@@ -3,7 +3,7 @@ import {WalletCryptoService} from '../../services/wallet-crypto.service';
 import {TransactionCrypto} from '../../models/crypto/transaction-crypto';
 import {WalletCrypto} from '../../models/crypto/wallet-crypto';
 import { Router } from '@angular/router';
-
+ 
 @Component({
   selector: 'app-wallet-crypto',
   templateUrl: './wallet-crypto.component.html',

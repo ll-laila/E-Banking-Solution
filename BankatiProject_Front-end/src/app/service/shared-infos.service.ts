@@ -71,9 +71,8 @@ export class SharedInfosService {
     this.patentNumber = response.patentNumber;
     this.typeHissab = response.typeHissab;
 
-    if (this.token) {
-      localStorage.setItem('token', this.token);
-    }
+    localStorage.setItem('token', this.token);
+    localStorage.setItem('id',response.id);
   }
 
   // Getters
