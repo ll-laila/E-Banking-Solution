@@ -146,10 +146,10 @@ public class TransactionService {
         return repository.findByStatus(TransactionStatus.PENDING);
     }
 
-    public void updateTransactionAfterReconciliation(Transaction transaction, boolean isReconciled) {
-        transaction.setStatus(isReconciled ? TransactionStatus.RECONCILED : TransactionStatus.FAILED);
-        repository.save(transaction);
-    }
+//    public void updateTransactionAfterReconciliation(Transaction transaction, boolean isReconciled) {
+//        transaction.setStatus(isReconciled ? TransactionStatus.RECONCILED : TransactionStatus.FAILED);
+//        repository.save(transaction);
+//    }
 
     public boolean validateWithProvider(Transaction transaction) {
         TiersClientRequest tiersClientRequest = new TiersClientRequest(

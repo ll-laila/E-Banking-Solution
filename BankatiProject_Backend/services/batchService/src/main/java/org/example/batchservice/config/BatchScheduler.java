@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class BatchScheduler {
 
-    @Autowired
-    private JobLauncher jobLauncher;
-
-    @Autowired
-    private Job reconciliationJob;
-
-    @Scheduled(cron = "0 0 2 * * ?") // Exécution quotidienne à 2h
-    public void runReconciliationJob() throws Exception {
-        JobParameters params = new JobParametersBuilder()
-                .addLong("time", System.currentTimeMillis())
-                .toJobParameters();
-        jobLauncher.run(reconciliationJob, params);
-    }
+//    @Autowired
+//    private JobLauncher jobLauncher;
+//
+//    @Autowired
+//    private Job reconciliationJob;
+//
+//    @Scheduled(cron = "0 0 2 * * ?") // Exécution quotidienne à 2h
+//    public void runReconciliationJob() throws Exception {
+//        JobParameters params = new JobParametersBuilder()
+//                .addLong("time", System.currentTimeMillis())
+//                .toJobParameters();
+//        jobLauncher.run(reconciliationJob, params);
+//    }
 }
 
