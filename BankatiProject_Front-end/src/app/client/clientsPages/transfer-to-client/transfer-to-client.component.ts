@@ -4,8 +4,6 @@ import {Transaction} from "../../models/transaction";
 import {TransactionType} from "../../models/transaction-type";
 import {Client} from "../../models/client";
 import {Router} from "@angular/router";
-import {UserResponse} from "../../../models/UserResponse";
-import {UserDto} from "../../../models/UserDto";
 
 @Component({
   selector: 'app-transfer-to-client',
@@ -25,7 +23,7 @@ export class TransferToClientComponent implements OnInit {
   ngOnInit(): void {
     // Récupérer les informations du sender via son ID
     this.transactionService.getClientInfo(this.senderId).subscribe({
-      next: (sender: UserResponse) => {
+      next: (sender: Client) => {
         this.senderPhoneNumber = sender.phoneNumber;
         this.devise = sender.currency;
         console.log('Infos du sender récupérées avec succès :', sender);
@@ -45,15 +43,11 @@ export class TransferToClientComponent implements OnInit {
     }
 
     this.transactionService.getClientIdByPhoneNumber(this.beneficiaryPhoneNumber).subscribe({
-      next: (userDto: UserDto) => {
-        if (!userDto || !userDto.id) {
+      next: (beneficiaryId) => {
+        if (!beneficiaryId) {
           alert('Le numéro de téléphone ne correspond à aucun bénéficiaire.');
           return;
         }
-
-        // Si le client est trouvé, vous pouvez accéder à l'ID du bénéficiaire
-        const beneficiaryId = userDto.id;
-        console.log('ID du bénéficiaire :', beneficiaryId);
 
         this.transactionService.createTransaction(this.senderId, beneficiaryId, this.amount, TransactionType.TRANSFER).subscribe({
           next: (response) => {

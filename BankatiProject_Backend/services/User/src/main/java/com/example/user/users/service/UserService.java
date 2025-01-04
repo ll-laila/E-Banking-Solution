@@ -1,8 +1,5 @@
 package com.example.user.users.service;
 
-import com.example.user.transactionClient.TransactionRequest;
-import com.example.user.transactionClient.TransactionStatus;
-import com.example.user.transactionClient.TransactionType;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
@@ -35,13 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.example.user.users.entity.Role.AGENT;
-import static com.example.user.users.entity.Role.CLIENT;
 import static java.lang.String.format;
 
 
@@ -187,7 +179,7 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
 
-        // add Crypto wallet
+       /* // add Crypto wallet
         Map<String, Double> cryptos = new HashMap<>();
         cryptos.put("bitcoin", 0.0);
         cryptos.put("ethereum", 0.0);
@@ -202,7 +194,7 @@ public class UserService {
         String formattedPhoneNumber = formatPhoneNumber(savedUser.getPhoneNumber());
         String msg =   "Bonjour "+ savedUser.getFirstName() +" "+savedUser.getLastName() + ", votre mot de passe est "+ userRequest.password() + ".";
         Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
-        log.info("Twilio Response : {}", twilioMessage.getStatus());
+        log.info("Twilio Response : {}", twilioMessage.getStatus());*/
 
         return savedUser.getId();
     }
@@ -242,12 +234,12 @@ public class UserService {
         WalletRequest wallet = new WalletRequest(null,1000D,savedUser.getId(),null);
         var idWallet = walletClient.saveWallet(wallet);
 
-        //twilio
+        /*//twilio
         String formattedPhoneNumber=formatPhoneNumber(savedUser.getPhoneNumber());
         String msg =   "Bonjour "+ savedUser.getFirstName() +" "+savedUser.getLastName() + ", votre mot de passe est "+ userRequest.password() + ".";
         Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
         log.info("Twilio Response : {}", twilioMessage.getStatus());
-
+*/
         return savedUser.getId();
     }
 
@@ -358,9 +350,6 @@ public class UserService {
 
 
 
-
-
-
     public Object sendSms(String phoneNumber, String message) {
 
         if (phoneNumber!=null) {
@@ -379,85 +368,6 @@ public class UserService {
         String formatted = phoneNumber.substring(1);
         return "+212" + formatted;
     }
-
-
-    
-    //--------------------------------------BackOffice-----------------------------------//
-
-
-
-
-
-
-
-
-    //--------------------------------------Agent-----------------------------------//
-
-
-
-
-
-
-
-    
-    //--------------------------------------client-----------------------------------//
-
-
-public TransactionRequest createPaymentTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
-    UserResponse beneficiary = findById(beneficiaryId);
-    UserResponse sender = findById(senderId);
-
-    return new TransactionRequest(
-            null, // ID généré ultérieurement
-            amount,
-            beneficiary.id(),
-            beneficiary.firstName()+" "+beneficiary.lastName(),
-            beneficiary.phoneNumber(),
-            AGENT,
-            TransactionType.PAYMENT,
-            TransactionStatus.COMPLETED, // Statut initial
-            beneficiary.currency(),
-            null, // Pas de date de validation au début
-            sender.id(),
-            sender.firstName()+" "+sender.lastName(),
-            sender.phoneNumber(),
-            CLIENT,
-            sender.currency()
-    );
-}
-
-    public TransactionRequest createTransferTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
-        UserResponse beneficiary =findById(beneficiaryId);
-        UserResponse sender =findById(senderId);
-        return new TransactionRequest(
-                null, // ID généré ultérieurement
-                amount,
-                beneficiary.id(),
-                beneficiary.firstName()+" "+beneficiary.lastName(),
-                beneficiary.phoneNumber(),
-                CLIENT,
-                TransactionType.TRANSFER,
-                TransactionStatus.COMPLETED, // Statut initial
-                beneficiary.currency(),
-                null, // Pas de date de validation au début
-                sender.id(),
-                sender.firstName()+" "+sender.lastName(),
-                sender.phoneNumber(),
-                CLIENT,
-                sender.currency()
-        );
-    }
-
-    /* public String getClientIdByPhoneNumber(String phoneNumber) {
-         // Appeler la méthode du repository
-         User client = clientRepository.findIdByPhoneNumber(phoneNumber);
-         if (client != null) {
-             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String
-         } else {
-             throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
-         }
-     }
- */
 
 
 
