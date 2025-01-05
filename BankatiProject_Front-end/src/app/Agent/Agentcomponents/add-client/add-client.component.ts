@@ -56,6 +56,22 @@ export class AddClientComponent implements OnInit {
     return password;
   }
 
+
+  createClient() {
+   /* this.agentService.createClient(this.client)
+      .subscribe((data: any) => {
+          this.toastr.success('Client created successfully', 'Success');
+          this.router.navigate([`/agent`]).then();
+        },
+        (error) => {
+          this.toastr.error('Error creating client', 'Error');
+          setTimeout(() => {
+            this.router.navigate([`/agent`]).then();
+          }, 300); // Délai de 3 secondes avant la redirection
+        });*/
+
+  }
+
   addClient(): void {
     if (this.client.firstName && this.client.lastName && this.client.email) {
 

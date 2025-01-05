@@ -20,6 +20,7 @@ import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
 import com.example.user.users.service.UserService;
 import com.example.user.walletClient.WalletClient;
+import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
 import com.example.user.walletCryptoClient.WalletCryptoClient;
 import com.example.user.walletCryptoClient.WalletCryptoResponse;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -118,6 +120,16 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @GetMapping("/getUser/{userId}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok(userService.findById(userId));
+    }
+
+    @GetMapping("/getUserByPhone/{phone}")
+    public ResponseEntity<String> getUserIdByPhone(@PathVariable("phone") String phone) {
+        return ResponseEntity.ok(userService.getClientIdByPhoneNumber(phone));
+    }
 
     //--------------------------------------Admin-----------------------------------//
 
@@ -344,6 +356,7 @@ public class UserController {
     private final ClientService clientService;
     private final TransactionClient transactionClient;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;
@@ -411,5 +424,40 @@ public class UserController {
     //-------------------------kawtar-------------------------//
     // kawtar here
 
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/wallet/{clientId}")
+    public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
+        WalletResponse wallet = userService.getWalletByUserId(clientId);
+        return ResponseEntity.ok(wallet);
+    }
+
+
+
+    @GetMapping("/transactions/{userId}")
+    public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getUserTransactions(
+            @PathVariable("userId") String userId) {
+        List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
+
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/feed-wallet")
+    public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
+        String clientId = (String) requestBody.get("clientId");
+        double amount = ((Number) requestBody.get("amount")).doubleValue();
+
+        boolean result = userService.feedWallet(clientId, amount);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/all-transactions/{userId}")
+    public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getAllTransactionsByUserId(
+            @PathVariable("userId") String userId) {
+        List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getAllTransactionsByUserId(userId);
+        return ResponseEntity.ok(transactions);
+    }
 
 }

@@ -1,7 +1,7 @@
 <div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
   <div class="container-fluid">
     <div class="header-body">
-      <!-- Card stats -->
+      <!-- Card stats --> 
       <div class="row">
         <!-- Card: Utilisateur -->
         <div class="col-lg-6 mb-4">
@@ -63,8 +63,8 @@
             <tr>
               <th>Référence</th>
               <th>Montant</th>
+              <th>Expéditeur</th>  
               <th>Bénéficiaire</th>
-              <th>Expéditeur</th>
               <th>Type</th>
               <th>Statut</th>
               <th>Date Création</th>
@@ -76,11 +76,12 @@
               <td>{{ transaction.id }}</td>
               <td>{{ transaction.amount }} {{ transaction.senderCurrency }}</td>
               <td>
-                {{ transaction.beneficiaryName }} ({{ transaction.beneficiaryPhone }})
-              </td>
-              <td>
                 {{ transaction.senderName }} ({{ transaction.senderPhoneNumber }})
               </td>
+              <td>
+                {{ transaction.beneficiaryName }} ({{ transaction.beneficiaryPhone }})
+              </td>
+              
               <td>{{ transaction.transactionType }}</td>
               <td>{{ transaction.status }}</td>
               <td>{{ transaction.createdDate || 'N/A' }}</td>

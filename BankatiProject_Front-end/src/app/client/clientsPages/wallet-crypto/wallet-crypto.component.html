@@ -155,6 +155,9 @@
         <div class="card shadow">
           <div class="card-header bg-transparent">
             <h3 class="mb-0">Liste des cryptos à vendre</h3>
+            <div  (click)="goBack()" align="right">
+              <i class="fas fa-sign-out-alt"></i>
+            </div>
           </div>
           <div class="card-body">
             <div class="row icon-examples">
@@ -231,6 +234,9 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Choisir les cryptos à vendre</h2>
+                    <div  (click)="goBack()" align="right">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
                   </div>
                   <hr style="color:#6415FF" />
                   <div class="card-text py-2">
@@ -262,9 +268,15 @@
             </div>
             <div class="card border-0 shadow px-1 " *ngIf="trueCryptos">
               <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Vous n'avez pas assez de cryptos à vendre !</h1>
+              <div  (click)="goBack()" align="right">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
             </div>
             <div class="card border-0 shadow px-1 " *ngIf="selleCryptosTrue">
               <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Opération Réussite !</h1>
+              <div  (click)="goBack()" align="right">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -290,6 +302,9 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h2 class="card-title text-right Montserrat" style="color: #ffc107; margin-bottom: 0;">Transfer vos cryptos en argents classique</h2>
+                    <div  (click)="goBack()" align="right">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
                   </div>
                   <hr style="color:#6415FF" />
                   <div class="card-text py-2">
@@ -320,6 +335,9 @@
             </div>
             <div class="card border-0 shadow px-1 " *ngIf="transferCryptosTrue">
               <h1 class="card-title text-center Montserrat" style="color: #19244d; margin-bottom: 0;">Opération Réussite !</h1>
+              <div  (click)="goBack()" align="right">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
             </div>
           </div>
         </div>

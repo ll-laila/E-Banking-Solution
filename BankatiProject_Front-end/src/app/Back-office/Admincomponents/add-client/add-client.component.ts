@@ -24,7 +24,7 @@ export class AddClientComponent implements OnInit {
 
 
   createClient() {
-    this.agentService.createClient(this.client)
+    /*this.agentService.createClient(this.client)
       .subscribe((data: any) => {
           this.toastr.success('Client created successfully', 'Success');
           this.router.navigate([`/agent`]).then();
@@ -34,6 +34,6 @@ export class AddClientComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate([`/agent`]).then();
           }, 300); // Délai de 3 secondes avant la redirection
-        });
+        });*/
   }
 }

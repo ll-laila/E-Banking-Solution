@@ -6,9 +6,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FeedDetails} from '../../models/feedDetails';
 import {PaymentService} from '../../services/payment.service';
 import {Client} from '../../models/client';
+import {ClientRequest} from '../../models/clientRequest';
 import {SharedClientService} from '../../services/shared-client.service';
 import {FeedResponse} from '../../models/feedResponse';
 import { ClientService } from '../../services/client.service';
+import {SharedInfosService} from '../../../service/shared-infos.service'
 
 @Component({
   selector: 'app-navbar-client',
@@ -17,7 +19,7 @@ import { ClientService } from '../../services/client.service';
 })
 export class NavbarClientComponent implements OnInit {
 
-  public client: Client;
+  public client: ClientRequest;
   public paymentForm: FormGroup;
   public focus;
   public listTitles: any[];
@@ -42,7 +44,8 @@ export class NavbarClientComponent implements OnInit {
               private fb: FormBuilder,
               private paymentService: PaymentService,
               private sharedClientService: SharedClientService,
-              private clientService: ClientService
+              private clientService: ClientService,
+              private sharedInfosService: SharedInfosService
   ) {
     this.location = location;
     this.paymentForm = this.fb.group({
@@ -79,17 +82,18 @@ export class NavbarClientComponent implements OnInit {
   walletMessage: string | null = null; // Message de confirmation ou d'erreur
 
   feedWallet(): void {
-    const clientId = '67596dcc2500d851f75a6f98';
     this.feedAmount = this.paymentForm.get('montant')?.value;
     if (this.paymentForm.valid) {
-      this.clientService.feedWallet(clientId, this.feedAmount).subscribe(
+      this.clientService.feedWallet(localStorage.getItem('id'), this.feedAmount).subscribe(
         (result: boolean) => {
           if (result) {
             this.walletMessage = 'Le portefeuille a été alimenté avec succès.';
-            this.clientService.getClientById(clientId).subscribe(
-              (updatedClient: Client) => {
+            this.clientService.getUserById(localStorage.getItem('id')).subscribe(
+              (updatedClient: ClientRequest) => {
                 this.client = updatedClient; // Met à jour les données du client avec le nouveau solde
+                window.location.reload();
               },
+
               (error) => {
                 console.error('Erreur lors de la recharge des données du client:', error);
               }

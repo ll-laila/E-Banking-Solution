@@ -30,8 +30,13 @@ export class AgentService {
   constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) {
   }
 
+
   /*public createClient(clientRegisterRequest: UserRequest): Observable<string> {
     const dataUrl = `${this.serverUrl}/create-client`;
+
+  public createClient(clientRegisterRequest: IClient): Observable<string> {
+    const dataUrl = `${this.serverUrl}/client`;
+
     const headers = this.sharedInfosService.getAuthHeaders();
     return this.httpClient
       .post<string>(dataUrl, clientRegisterRequest, { headers }) // Les en-têtes doivent être placés dans l'objet des options

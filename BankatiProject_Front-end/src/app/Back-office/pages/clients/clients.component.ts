@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AdminService} from "../../../service/admin.service";
-
+import {AgentRequest} from "../../../models/AgentRequest";
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
   //styleUrls: ['./clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
-  clients: any[] = [];
+  clients: AgentRequest[] = [];
   constructor(private router: Router, private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.getAllClients()
   }
 
+
   getAllClients(): void {
     this.adminService.getAllClients().subscribe(
-
       (clients) => {
-        this.clients = clients; // Assigner les données reçues à this.clients
+        this.clients = clients; // Assigner les données reçues
       },
       (error) => {
-        console.error('Une erreur s\'est produite lors de la récupération des clients :', error);
+        console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
       }
     );
   }
@@ -37,7 +37,6 @@ export class ClientsComponent implements OnInit {
       () => {
         console.log('Client deleted successfully.');
         this.getAllClients();
-        //this.getAllClientByAgentId();
       },
       (error) => {
         console.error('An error occurred while deleting the client:', error);
