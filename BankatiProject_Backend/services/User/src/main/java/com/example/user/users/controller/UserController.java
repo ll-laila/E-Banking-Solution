@@ -92,6 +92,18 @@ public class UserController {
         return ResponseEntity.ok(userService.createClient(userRequest));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
+    @PutMapping("/deactivate-account/{id}")
+    public ResponseEntity<String> deactivateAccount(@PathVariable String id) {
+        boolean isDeactivated = userService.deactivateAccount(id);
+        if (isDeactivated) {
+            return ResponseEntity.ok("Compte désactivé avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Échec de la désactivation du compte.");
+        }
+    }
+
+
     @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/clients")
     public ResponseEntity<List<UserResponse>> getAllClients() {

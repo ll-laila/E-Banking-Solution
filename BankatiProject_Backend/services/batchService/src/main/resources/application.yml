@@ -4,3 +4,10 @@ spring:
   application:
     name: batch-service
 
+  data:
+    mongodb:
+      uri: mongodb://bankatidb:bankatidb@mongodb:27017/batch?authSource=admin
+
+
+  profiles:
+    active: dev  # ou le profil que vous souhaitez activer

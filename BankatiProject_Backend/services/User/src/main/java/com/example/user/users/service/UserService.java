@@ -207,6 +207,17 @@ public class UserService {
         return savedUser.getId();
     }
 
+    public boolean deactivateAccount(String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setIsPaymentAccountActivated(false);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
 
     public List<UserResponse> getAllClients() {
         return userRepository.findByRole(CLIENT)
