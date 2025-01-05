@@ -7,6 +7,7 @@ import {AdminService} from "../../../service/admin.service";
 import {IPaymentAccount} from "../../../models/paymentAccount";
 import {IClientRegistrationRequest} from "../../../models/ClientRegistrationRequest";
 import {ToastrService} from "ngx-toastr";
+import {UserRequest} from "../../../models/UserRequest";
 
 @Component({
   selector: 'app-add-client',
@@ -14,7 +15,7 @@ import {ToastrService} from "ngx-toastr";
   //styleUrls: ['./add-client.component.scss']
 })
 export class AddClientComponent implements OnInit {
-  public client: IClient = {} as IClient;
+  public client: UserRequest = {} as UserRequest;
 
   constructor(private agentService: AgentService, private router: Router , private toastr: ToastrService) {}
 

@@ -8,7 +8,7 @@ export interface UserResponse {
   cin: string;
   birthDate: Date;
   phoneNumber: string;
-  role: Role;
+  role: string;
   password: string;
   isFirstLogin: boolean;
   commercialRn: string;
@@ -17,12 +17,7 @@ export interface UserResponse {
   isPaymentAccountActivated: boolean;
   typeHissab: string;
   currency: string;
-  token: string;
 }
 
 
-export enum Role {
-  ADMIN = 'ADMIN',
-  CLIENT = 'CLIENT',
-  AGENT = 'AGENT',
-}
+

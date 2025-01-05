@@ -7,6 +7,7 @@ import {IAgentServices} from '../../../models/AgentServices';
 import {IAgent} from '../../../models/Agent';
 import {SharedAgentService} from '../../../service/shared-agent.service';
 import {AgentService} from "../../../service/agent.service";
+import {SharedInfosService} from "../../../service/shared-infos.service";
 
 @Component({
   selector: 'app-services-agent',
@@ -15,15 +16,20 @@ import {AgentService} from "../../../service/agent.service";
 })
 export class ServicesAgentComponent implements OnInit {
 
-  constructor(private router: Router, private agentservices: AgentService, private sharedAgentService: SharedAgentService) { }
+  constructor(private router: Router, private agentservices: AgentService, private sharedInfosService: SharedInfosService) { }
 
   services: IAgentServices[] = [];
-  agent: IAgent ;
+  agentId: string;
 
 
   ngOnInit(): void {
-    this.agent = this.sharedAgentService.getAgent();
-    this.getAllServicesByAgent();
+    this.agentId = this.sharedInfosService.getId(); // Récupérer l'agentId
+    if (this.agentId) {
+      this.getAllServicesByAgent(this.agentId);
+    } else {
+      console.error('Aucun agentId trouvé.');
+    }
+
   }
 
   addService() {
@@ -31,8 +37,8 @@ export class ServicesAgentComponent implements OnInit {
   }
 
 
-  getAllServicesByAgent(): void {
-    this.agentservices.getAllAgentServices().subscribe(
+  getAllServicesByAgent(agentId:string): void {
+    this.agentservices.getAllAgentServices(agentId).subscribe(
       (services: IAgentServices[]) => {
         this.services = services;
       },
@@ -40,20 +46,24 @@ export class ServicesAgentComponent implements OnInit {
         console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
       }
     );
-
   }
 
 
 
-  deleteService(id: number) {
-    console.log(id);
+  deleteService(id: string): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
+      this.agentservices.deleteService(id).subscribe({
+        next: (response) => {
+          console.log('Service supprimé avec succès:', response.message);
+          alert('Service supprimé avec succès.');
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression du service:', error);
+          alert('Une erreur est survenue lors de la suppression du service.');
+        }
+      });
+    }
   }
 
-
-
-
-  updateService(id: number) {
-    this.router.navigate(['/edit-agent'], { queryParams: { id: id } });
-  }
 
 }

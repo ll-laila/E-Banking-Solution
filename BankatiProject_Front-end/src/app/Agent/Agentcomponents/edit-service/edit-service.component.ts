@@ -11,24 +11,25 @@ import {AgentService} from "../../../service/agent.service";
 })
 export class EditServiceComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private agentservice: AgentService, private router: Router) {
-
-  }
-
   public loading = false;
   public id: string | null = null;
   public agentServices: IAgentServices = {} as IAgentServices;
+  constructor(private activatedRoute: ActivatedRoute, private agentService: AgentService, private router: Router) {
 
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.id = params['id'];
-    });
+    this.loadClientData();
+  }
 
+  loadClientData(){
+    this.activatedRoute.paramMap.subscribe((param) => {
+      this.id = param.get('id');
+    });
     if (this.id) {
       this.loading = true;
       // tslint:disable-next-line:radix
-      this.agentservice.getService(parseInt(this.id)).subscribe((data) => {
+      this.agentService.getService(this.id).subscribe((data) => {
         this.agentServices = data;
         this.loading = false;
       }, (error) => {
@@ -39,8 +40,7 @@ export class EditServiceComponent implements OnInit {
 
   public update() {
     if (this.id) {
-      // tslint:disable-next-line:radix
-      this.agentservice.updateService(this.agentServices, parseInt(this.id)).subscribe((data) => {
+      this.agentService.updateService(this.agentServices,this.id).subscribe((data) => {
         this.router.navigate([`/agent`]).then();
       }, (error) => {
         this.router.navigate(['/edit-client/:id']).then();
@@ -48,6 +48,8 @@ export class EditServiceComponent implements OnInit {
     }
 
   }
+
+
 
 
 }

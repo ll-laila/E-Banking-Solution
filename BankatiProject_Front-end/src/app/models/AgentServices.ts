@@ -1,7 +1,6 @@
 export interface IAgentServices {
-    id?: number;
-  agentId: number;
-  name: string;
-    type: string;
-
+  id: string | null;
+   agentId: string;
+   name: string;
+   type: string;
 }

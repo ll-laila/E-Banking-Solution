@@ -21,8 +21,8 @@ import {EditServiceComponent} from '../Agentcomponents/edit-service/edit-service
 export const AgentDashRoutes: Routes = [
   { path: 'agent',      component: DashboardAgentComponent },
   { path: 'agent-profile',   component: ProfileAgentComponent },
-  {path: 'add-client',       component: AddClientComponent},
-  {path: 'edit-service',       component: EditServiceComponent},
+  {path: 'add-clientt',       component: AddClientComponent},
+  {path: 'edit-service/:id',       component: EditServiceComponent},
   { path: 'edit-agent/:id', component: EditClientComponent },
   { path: 'details-agent/:id', component: DetailsClientComponent },
   {path: 'agent-service', component: ServicesAgentComponent},
