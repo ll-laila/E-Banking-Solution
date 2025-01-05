@@ -10,8 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./wallet-crypto.component.scss']
 })
 export class WalletCryptoComponent implements OnInit {
-
-  idUser = '67597a1b0c8a5706c60d2dd0';
   isClicked = true;
   allCryptos = false;
   transferCryptos = false;
@@ -38,8 +36,8 @@ export class WalletCryptoComponent implements OnInit {
   constructor(private walletCryptoService: WalletCryptoService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadUserWalletCrypto(this.idUser);
-    this.loadUserTransactions(this.idUser);
+    this.loadUserWalletCrypto(localStorage.getItem('id'));
+    this.loadUserTransactions(localStorage.getItem('id'));
     this.cryptoPrice1('bitcoin');
     this.cryptoPrice2('ethereum');
     this.getBalanceWallet();
@@ -79,7 +77,7 @@ export class WalletCryptoComponent implements OnInit {
 
   acheterCrypto() {
     if (this.balance > (this.cryptoPrice * this.nombreAcheter)) {
-      this.buyCrypto(this.idUser, this.cryptoName, this.nombreAcheter);
+      this.buyCrypto(localStorage.getItem('id'), this.cryptoName, this.nombreAcheter);
       this.closeModal();
     } else {
       this.trueBalance = true;
@@ -107,12 +105,12 @@ export class WalletCryptoComponent implements OnInit {
         return;
       }
     if (this.testCryptoValue(cryptoName, amount)) {
-      this.walletCryptoService.setCryptosToSell(this.idUser, cryptoName, amount).subscribe({
+      this.walletCryptoService.setCryptosToSell(localStorage.getItem('id'), cryptoName, amount).subscribe({
         next: (response) => {
           console.log('Sell Crypto Response:', response);
           this.crypto = '';
           this.nombre = '';
-          this.loadUserWalletCrypto(this.idUser);
+          this.loadUserWalletCrypto(localStorage.getItem('id'));
         },
         error: (error) => {
           this.errorMessage = error;
@@ -183,7 +181,7 @@ export class WalletCryptoComponent implements OnInit {
 
   transferSubmit(cryptoName: string, nombre: string): void {
     const amount = parseFloat(nombre);
-    this.transferCryptoToMoney(this.idUser, cryptoName, nombre);
+    this.transferCryptoToMoney(localStorage.getItem('id'), cryptoName, nombre);
   }
 
 
@@ -230,7 +228,7 @@ export class WalletCryptoComponent implements OnInit {
 
   // reel money
   getBalanceWallet(): void {
-    this.walletCryptoService.getBalanceWallet(this.idUser).subscribe({
+    this.walletCryptoService.getBalanceWallet(localStorage.getItem('id')).subscribe({
       next: (data) => {
         this.balance = data;
         console.log('Balance :', data);
@@ -283,6 +281,8 @@ export class WalletCryptoComponent implements OnInit {
     this.isModalOpen = false;
   }
 
-
+  goBack(){
+    window.location.reload();
+  }
 
 }

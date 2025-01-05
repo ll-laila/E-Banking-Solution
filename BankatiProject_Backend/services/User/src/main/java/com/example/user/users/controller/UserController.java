@@ -125,6 +125,10 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(userId));
     }
 
+    @GetMapping("/getUserByPhone/{phone}")
+    public ResponseEntity<String> getUserIdByPhone(@PathVariable("phone") String phone) {
+        return ResponseEntity.ok(userService.getClientIdByPhoneNumber(phone));
+    }
 
     //--------------------------------------Admin-----------------------------------//
 
@@ -317,6 +321,7 @@ public class UserController {
     private final ClientService clientService;
     private final TransactionClient transactionClient;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;

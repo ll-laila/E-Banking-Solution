@@ -354,6 +354,7 @@ public class UserService {
     }
 
 
+
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
@@ -519,16 +520,15 @@ public TransactionRequest createPaymentTransaction(String senderId, String benef
         );
     }
 
-    /* public String getClientIdByPhoneNumber(String phoneNumber) {
-         // Appeler la méthode du repository
-         User client = clientRepository.findIdByPhoneNumber(phoneNumber);
-         if (client != null) {
-             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String
+     public String getClientIdByPhoneNumber(String phoneNumber) {
+         Optional<User> client = userRepository.findUserByPhoneNumber(phoneNumber);
+         if (client.isPresent()) {
+             return client.get().getId();
          } else {
              throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
          }
      }
- */
+
 
 
 
