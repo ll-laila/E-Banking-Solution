@@ -36,11 +36,18 @@ export class NewAgentComponent implements OnInit {
     this.router.navigate(['/add-agent']);
   }
 
-  deleteAgent(id: number) {
-
+  deleteAgent(id: string): void {
+    this.adminService.deleteUser(id).subscribe(
+      () => {
+        this.getAllAgents();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'agent :', error);
+      }
+    );
   }
 
-  viewAgentDetails(id: number) {
+  viewAgentDetails(id: string) {
     this.router.navigate(['/details-agent', id]);
   }
 }

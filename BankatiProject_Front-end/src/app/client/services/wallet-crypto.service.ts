@@ -7,7 +7,7 @@ import { TransactionCrypto } from '../models/crypto/transaction-crypto';
 import { CookieService } from 'ngx-cookie-service';
 
 
-
+ 
 @Injectable({
   providedIn: 'root'
 })
