@@ -28,7 +28,7 @@ export class AgentService {
   constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) {
   }
 
-  public createClient(clientRegisterRequest: UserRequest): Observable<string> {
+  public createClient(clientRegisterRequest: IClient): Observable<string> {
     const dataUrl = `${this.serverUrl}/client`;
     const headers = this.sharedInfosService.getAuthHeaders();
     return this.httpClient

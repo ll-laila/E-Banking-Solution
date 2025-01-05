@@ -57,18 +57,25 @@ export class LoginComponent implements OnInit {
           console.log("sharedinfo : ",this.sharedInfosService);
 
           // Redirect based on role
-          const role = response.role; // Get the role from the response
+          //const role = response.role; // Get the role from the response
+          const role = this.sharedInfosService.getRole();
+          const firstLogin = this.sharedInfosService.getFirstLogin();
+
           if (role === 'CLIENT') {
-            this.router.navigate(['/client']);
+            if (firstLogin === true) {
+              this.router.navigate(['/client-change-password']);
+            } else {
+              this.router.navigate(['/client']);
+            }
           } else if (role === 'AGENT') {
             this.router.navigate(['/agent']);
           } else if (role === 'ADMIN') {
             this.router.navigate(['/admin']);
           } else {
-            // Optionally handle case where role is not recognized
             console.error('Unknown role:', role);
             alert('Invalid role');
-          }        },
+          }
+        },
         error: (error) => {
           console.error('Login failed:', error);
           console.error('Error status:', error.status);
