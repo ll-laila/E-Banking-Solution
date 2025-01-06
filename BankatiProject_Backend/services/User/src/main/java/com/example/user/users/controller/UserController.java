@@ -118,9 +118,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllClients());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
     @GetMapping("/agents")
-    public ResponseEntity<List<UserResponse>> getAllAgents() {
+    public ResponseEntity<List<User>> getAllAgents() {
         return ResponseEntity.ok(userService.getAllAgents());
     }
 
@@ -211,7 +211,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 */
-    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN') or hasRole('CLIENT')")
     @GetMapping("/client/{id}")
     public ResponseEntity<UserResponse> getClientById(@PathVariable String id) {
         return ResponseEntity.ok(userService.findById(id));
@@ -274,7 +274,7 @@ public class UserController {
         return userService.getAllServicesByAgentId(agentId);
     }
 
-    @PreAuthorize("hasRole('AGENT') ")
+    @PreAuthorize("hasRole('AGENT') or hasRole('CLIENT') ")
     @GetMapping("/serviceById/{id}")
     public ResponseEntity<?> getServiceById(@PathVariable String id) {
         try {
@@ -373,6 +373,12 @@ public class UserController {
     private final ClientService clientService;
     private final TransactionClient transactionClient;
 
+    @PreAuthorize("hasRole('CLIENT') ")
+    @GetMapping("/service/{agentId}")
+    public List<Service> getServiceByAgent(@PathVariable("agentId") String agentId) {
+        return userService.getAllServicesByAgentId(agentId);
+    }
+
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
@@ -404,7 +410,7 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
-
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-subscription")
     public ResponseEntity<String> createSubscription(@RequestParam String userId,
                                                      @RequestParam String agentId,
@@ -428,7 +434,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
         }
     }*/
-
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clientbyid/{clientId}")
     public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
         return ResponseEntity.ok(clientService.getClientById(clientId));

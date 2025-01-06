@@ -53,13 +53,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/create-client").hasAnyRole("ADMIN","AGENT")
                         .requestMatchers("/api/v1/users/clients").hasAnyRole("ADMIN","AGENT")
                         .requestMatchers("/api/v1/users/create-agent").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/users/agents").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/users/agents").hasAnyRole("ADMIN","CLIENT")
                         .requestMatchers("/api/v1/users/change-password").hasRole("CLIENT")
+                        .requestMatchers("/api/v1/users/creat-transaction").hasRole("CLIENT")
+                        .requestMatchers("/api/v1/users/creat-subscription").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/users/delete/{id}").hasRole("ADMIN")
 
                         // Agent routes
                         .requestMatchers("/api/v1/users/client/**", "/api/v1/users/service/**", "/api/v1/users/serviceByAgent/**")
-                        .hasRole("AGENT")
+                        .hasAnyRole("AGENT","CLIENT")
 
                         .anyRequest().authenticated()
                 )
