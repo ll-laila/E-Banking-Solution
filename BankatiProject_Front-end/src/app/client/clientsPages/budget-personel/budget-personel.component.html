@@ -1,7 +1,89 @@
-<div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
-<!-- Page content -->
-<!-- Table -->
-<div>
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <!-- Card: Utilisateur -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-1">Devise de l'expéditeur</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                  <div *ngIf="transactions.length > 0;">
+                    <ul>
+                      <li *ngFor="let transaction of transactions">
+                        <p>Amount: {{ transaction.senderCurrency }} €</p> <!-- Affiche le montant -->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Solde -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-1">Devise du récépteur</h5>
+                  <div *ngIf="transactions.length > 0;">
+                    <ul>
+                      <li *ngFor="let transaction of transactions">
+                        <p>Amount: {{ transaction.beneficiaryCurrency }} €</p> <!-- Affiche le montant -->
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-4">
+        <div class="card card-stats shadow">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-1">Budget</h5>
+                <p class="h4 font-weight-bold mb-0">
+                <div *ngIf="transactions.length > 0;">
+                  <ul>
+                    <li *ngFor="let transaction of transactions">
+                      <p>Amount: {{ transaction.amount }} €</p> <!-- Affiche le montant -->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                  <i class="fas fa-money-bill-alt"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="container-fluid mt--3">
-</div>
+
+
+
+
+
+
