@@ -1,5 +1,8 @@
 package com.example.user.users.controller;
 
+import com.example.user.depenseClient.DepenseClient;
+import com.example.user.depenseClient.DepenseRequest;
+import com.example.user.depenseClient.DepenseResponse;
 import com.example.user.transactionClient.SimpleTransactionRequest;
 import com.example.user.transactionClient.SubscriptionRequest;
 import com.example.user.transactionClient.TransactionClient;
@@ -521,5 +524,52 @@ public class UserController {
     }
 
 
+    /*kaoutar*/
+    @Autowired
+    private DepenseClient depenseClient;
+    /**
+     * Endpoint pour créer une nouvelle dépense.
+     */
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/create-depense")
+    public ResponseEntity<DepenseResponse> createDepense(@RequestBody DepenseRequest depenseRequest) {
+        return depenseClient.createDepense(depenseRequest);
+    }
 
+    /**
+     * Endpoint pour mettre à jour une dépense existante.
+     */
+    @PreAuthorize("hasRole('CLIENT')")
+    @PutMapping("/update-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> updateDepense(@PathVariable String depenseId,
+                                                         @RequestParam Double nouveauMontant) {
+        return depenseClient.updateDepense(depenseId, nouveauMontant);
+    }
+
+    /**
+     * Endpoint pour annuler une dépense.
+     */
+    @PreAuthorize("hasRole('CLIENT')")
+    @DeleteMapping("/cancel-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> cancelDepense(@PathVariable String depenseId) {
+        return depenseClient.cancelDepense(depenseId);
+    }
+
+    /**
+     * Endpoint pour récupérer une dépense par son ID.
+     */
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/get-depense/{depenseId}")
+    public ResponseEntity<DepenseResponse> getDepenseById(@PathVariable String depenseId) {
+        return depenseClient.getDepenseById(depenseId);
+    }
+
+    /**
+     * Endpoint pour récupérer toutes les dépenses d'un utilisateur par son ID.
+     */
+    @PreAuthorize("hasAuthority('CLIENT')")
+    @GetMapping("/list-depense")
+    public ResponseEntity<List<DepenseResponse>> getAllDepensesByUser(@RequestParam String userId) {
+        return depenseClient.getAllDepensesByUser(userId);
+    }
 }

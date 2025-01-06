@@ -21,7 +21,6 @@ import { SubscriptionsComponent } from './client/clientsPages/subscriptions/subs
 
 import { ClientsComponent } from './Back-office/pages/clients/clients.component';
 
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,
