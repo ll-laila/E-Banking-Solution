@@ -10,6 +10,7 @@ import {ClientService} from '../../../client/services/client.service'
 })
 export class TrasactionAgentComponent implements OnInit {
 
+
   public operations: TransactionResponse[];
   errorMessage: string | null = null;
 

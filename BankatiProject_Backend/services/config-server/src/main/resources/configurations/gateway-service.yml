@@ -41,4 +41,9 @@ spring:
           predicates:
             - Path=/api/v1/servicestiers/**
 
+        - id: batch-service
+          uri: lb:http://BATCH-SERVICE
+          predicates:
+            - Path=/api/v1/batch/**
+
 
