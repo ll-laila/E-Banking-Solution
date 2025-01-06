@@ -1,5 +1,10 @@
 package org.example.batchservice.config;
 
+import jakarta.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+
 public class MetaData {
     @Document(collection = "batch_job_execution")
     public class BatchJobExecution {

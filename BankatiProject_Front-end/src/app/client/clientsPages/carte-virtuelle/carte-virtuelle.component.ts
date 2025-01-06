@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {VirtualCard} from "../../../models/VirtualCard";
 import {VirtualCardService} from "../../services/virtualCard.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-carte-virtuelle',
@@ -13,9 +14,11 @@ export class CarteVirtuelleComponent implements OnInit {
   cards: VirtualCard[] = [];
   newCardRef: string = ''; // Référence de la nouvelle carte
 
-  constructor(private virtualCardService: VirtualCardService) { }
+  constructor(private route: ActivatedRoute,private virtualCardService: VirtualCardService) { }
 
   ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('id');
+
     // Appeler cette méthode pour charger les cartes dès que le composant est initialisé
     if (this.userId) {
       this.getCards();

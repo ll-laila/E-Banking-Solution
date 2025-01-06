@@ -1,11 +1,23 @@
-<div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
-<div class="container-fluid">
-  <div class="row align-items-center">
-    <div class="col-md-3 col-sm-6">
-      <div class="mt-3">
-        <button class="btn btn-primary" (click)="createCard()">Ajouter carte virtuelle</button>
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right,  #ffc107, #2c4481);">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-3 col-sm-6">
+        <div class="mt-3">
+          <button class="btn btn-primary" (click)="createCard()">Ajouter carte virtuelle</button>
+        </div>
       </div>
-    </div>
+      <div class="col-md-9 col-sm-6 d-flex justify-content-end">
+        <form class="mt-3 w-md-100" style="max-width: 350px; width: 100%;">
+          <div class="input-group input-group-rounded input-group-merge">
+            <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="chercher" aria-label="Search">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span class="fa fa-search"></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

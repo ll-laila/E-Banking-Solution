@@ -18,6 +18,8 @@ import com.example.user.users.response.UserResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
 import com.example.user.users.service.UserService;
+import com.example.user.virtualCardClient.VirtualCardClient;
+import com.example.user.virtualCardClient.VirtualCardResponse;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
@@ -35,6 +37,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +57,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserAuthenticationProvider userAuthenticationProvider;
+
+
 
 
     //login for all users (admin, agent, client)
@@ -431,5 +436,32 @@ public class UserController {
         List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getAllTransactionsByUserId(userId);
         return ResponseEntity.ok(transactions);
     }
+
+
+
+    @Autowired
+    private VirtualCardClient virtualCardClient;
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<VirtualCardResponse> addVirtualCard(@PathVariable String userId) {
+        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/activate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> activateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/deactivate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> deactivateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<VirtualCardResponse>> getCardsByUser(@PathVariable String userId) {
+        return ResponseEntity.ok(Collections.singletonList(virtualCardClient.createCard(userId)));
+    }
+
 
 }
