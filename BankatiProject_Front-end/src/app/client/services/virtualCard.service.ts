@@ -21,6 +21,12 @@ export class VirtualCardService {
     console.log('Headers:', headers.get('Authorization'));
     return this.http.post<VirtualCard>(`${this.apiUrl}/virtualcard/create/${userId}`,null, {headers});
   }
+  feedCard(clientId: string,solde :string): Observable<VirtualCard> {
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+   // const body = { clientId, solde };
+    return this.http.post<VirtualCard>(`${this.apiUrl}/feed-card/${clientId}/${solde}`,null, {headers});
+  }
 
   // Activer une carte
   activateCard(cardId: string): Observable<VirtualCard> {

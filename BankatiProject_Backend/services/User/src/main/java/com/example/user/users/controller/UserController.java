@@ -504,13 +504,13 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('CLIENT')")
-    @PostMapping("/feed-card")
-    public ResponseEntity<VirtualCardResponse> feedCard(@RequestBody Map<String, Object> requestBody) {
-        String clientId = (String) requestBody.get("clientId");
-        double somme = ((Number) requestBody.get("somme")).doubleValue();
+   @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/feed-card/{userId}/{somme}")
+    public ResponseEntity<VirtualCardResponse> feedCard(@PathVariable String userId, @PathVariable Double somme) {
+        //String clientId = (String) requestBody.get("clientId");
+        //double somme = ((Number) requestBody.get("somme")).doubleValue();
 
-        VirtualCardResponse result = virtualCardClient.feedWallet(clientId, somme);
+        VirtualCardResponse result = virtualCardClient.feedCard(userId, somme);
         return ResponseEntity.ok(result);
     }
 

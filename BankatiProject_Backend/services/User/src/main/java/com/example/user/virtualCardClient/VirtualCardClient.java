@@ -25,7 +25,7 @@ public interface VirtualCardClient {
     public List<VirtualCardResponse> getCardsByUser(@PathVariable String userId) ;
 
 
-    @GetMapping("/feedCard")
-    public VirtualCardResponse feedWallet(@RequestParam String clientId, @RequestParam double somme);
+    @PostMapping("/feedCard")
+    public VirtualCardResponse feedCard(@RequestParam String clientId, @RequestParam Double somme);
 
 }

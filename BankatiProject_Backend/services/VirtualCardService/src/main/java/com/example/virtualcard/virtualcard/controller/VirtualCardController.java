@@ -38,8 +38,8 @@ public class VirtualCardController {
     }
 
 
-    @GetMapping("/feedCard")
-    public VirtualCard feedWallet(@RequestParam String clientId, @RequestParam double somme){
+    @PostMapping("/feedCard")
+    public VirtualCard feedCard(@RequestParam String clientId, @RequestParam double somme){
         return virtualCardService.feedCard(clientId,somme);
     }
 }
