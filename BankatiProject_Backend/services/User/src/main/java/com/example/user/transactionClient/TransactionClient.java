@@ -27,4 +27,9 @@ public interface TransactionClient {
 
     @GetMapping("/user-transactions/{userId}")
     List<TransactionResponse> getAllTransactionsByUserId(@PathVariable("userId") String userId);
+
+    @GetMapping("/subscriptions/{userId}")
+     ResponseEntity<List<Subscription>> getUserSubscriptions(@PathVariable("userId") String userId);
+
+
 }

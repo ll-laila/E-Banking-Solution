@@ -2,6 +2,9 @@ package com.example.user.users.service;
 
 import com.example.user.serviceTiersClient.ServiceTiersClient;
 import com.example.user.transactionClient.*;
+import com.example.user.serviceTiersClient.ServiceTiersClient;
+import com.example.user.transactionClient.TransactionClient;
+import com.example.user.transactionClient.TransactionResponse;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;

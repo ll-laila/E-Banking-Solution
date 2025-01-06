@@ -17,3 +17,4 @@ application:
     walletcrypto-url: http://localhost:8222/api/v1/walletcrypto
     transactions-url: http://localhost:8222/api/v1/transactions
     servicestiers-url: http://localhost:8222/api/v1/servicestiers
+    depense-url: http://localhost:8222/api/v1/depenses

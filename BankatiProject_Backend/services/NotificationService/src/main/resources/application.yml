@@ -8,6 +8,6 @@ spring:
 env:
   twilio:
     sms:
-      authToken: ${AUTH_TOKEN:9f749052a547bd799df17a477ed4fde4}
+      authToken: ${AUTH_TOKEN:5f46d3a96df94f2a855efe0e3fe51f85}
       accountSid: ${ACCOUNT_SID:AC8c9b77171a457bf6fc8e72a5506f7d06}
       fromNo: ${FROM_NUMBER:+17756183795}

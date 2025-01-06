@@ -1,6 +1,4 @@
 <div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right,#ffc107, #2c4481);">
-
-
 </div>
 <div class="container-fluid mt--7">
   <!-- Dark table -->
@@ -16,14 +14,29 @@
             <tr>
               <th scope="col">Nom du client</th>
               <th scope="col">Nom du créancier</th>
-              <th scope="col">Nom du service </th>
               <th scope="col">Montant</th>
-              <th scope="col">startDate</th>
-              <th scope="col">endDate</th>
-              <th scope="col">active</th>
+              <th scope="col">Date de début</th>
+              <th scope="col">Date de fin</th>
+              <th scope="col">Actif</th>
             </tr>
             </thead>
-
+            <tbody>
+            <!-- Affichage dynamique des abonnements -->
+            <tr *ngFor="let subscription of subscriptions">
+              <td>{{ client?.firstName || 'N/A' }}{{" "}}{{client?.lastName}}</td>
+              <td>{{ agent?.firstName || 'N/A' }}{{" "}}{{agent?.lastName}}</td>
+              <td>{{ subscription.price | currency:client?.currency || 'EUR' }}</td>
+              <td>{{ subscription.startDate | date:'dd/MM/yyyy' }}</td>
+              <td>{{ subscription.endDate | date:'dd/MM/yyyy' }}</td>
+              <td>
+                  <span class="badge badge-pill"
+                        [class.badge-success]="subscription.active"
+                        [class.badge-danger]="!subscription.active">
+                    {{ subscription.active ? 'Oui' : 'Non' }}
+                  </span>
+              </td>
+            </tr>
+            </tbody>
           </table>
         </div>
         <div class="card-footer bg-default py-4">
@@ -55,4 +68,3 @@
     </div>
   </div>
 </div>
-
