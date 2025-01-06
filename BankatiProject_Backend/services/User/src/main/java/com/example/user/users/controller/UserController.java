@@ -14,6 +14,7 @@ import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.request.*;
 import com.example.user.users.response.AgentResponse;
 import com.example.user.users.response.ClientResponse;
+import com.example.user.users.response.ServiceResponse;
 import com.example.user.users.response.UserResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
@@ -142,6 +143,10 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(userId));
     }
 
+    @GetMapping("/getUserByPhone/{phone}")
+    public ResponseEntity<String> getUserIdByPhone(@PathVariable("phone") String phone) {
+        return ResponseEntity.ok(userService.getClientIdByPhoneNumber(phone));
+    }
 
     //--------------------------------------Admin-----------------------------------//
 
@@ -248,29 +253,63 @@ public class UserController {
 
     */
     @PreAuthorize("hasRole('AGENT')")
-    @PostMapping("/service/{id}")
-    public ResponseEntity<ServiceAgentResponse> createService(@RequestBody AgentServiceRequest request,@PathVariable String id) {
-        return ResponseEntity.ok(userService.createService(request, id));
+    @PostMapping("/creatService")
+    public ResponseEntity<ServiceResponse> createService(@RequestBody Service request) {
+        System.out.println("Requête reçue pour créer un service.");
+        return ResponseEntity.ok(userService.createService(request));
     }
 
     @PreAuthorize("hasRole('AGENT')")
     @PutMapping("/service/{serviceId}")
-    public ResponseEntity<ServiceAgentResponse> updateService(
+    public ResponseEntity<ServiceResponse> updateService(
             @PathVariable String serviceId,
-            @RequestBody AgentServiceRequest request
+            @RequestBody Service request
     ) {
         return ResponseEntity.ok(userService.updateService(serviceId, request));
     }
 
     @PreAuthorize("hasRole('AGENT') ")
     @GetMapping("/serviceByAgent/{agentId}")
-    public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
+    public List<Service> getServicesByAgent(@PathVariable("agentId") String agentId) {
         return userService.getAllServicesByAgentId(agentId);
     }
 
     @PreAuthorize("hasRole('AGENT') ")
+    @GetMapping("/serviceById/{id}")
+    public ResponseEntity<?> getServiceById(@PathVariable String id) {
+        try {
+            // Appel de la méthode pour récupérer le service
+            com.example.user.users.entity.Service service = userService.getServiceById(id);
+
+            if (service == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(service);
+        } catch (Exception e) {
+            // En cas d'erreur, retourne une réponse 500 avec le message d'erreur
+            return ResponseEntity.status(500).body("Erreur lors de la récupération du service : " + e.getMessage());
+        }
+    }
+    @PreAuthorize("hasRole('AGENT') ")
+    @DeleteMapping("/deleteService/{id}")
+    public ResponseEntity<?> deleteService(@PathVariable String id) {
+        try {
+            // Appel de la méthode pour supprimer le service
+            ServiceAgentResponse response = userService.deleteService(id);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            // Retourner une réponse 404 si le service n'est pas trouvé
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            // Retourner une réponse 500 pour les erreurs générales
+            return ResponseEntity.status(500).body("Erreur lors de la suppression du service : " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasRole('AGENT') ")
     @GetMapping("/clientsByAgent/{agentId}")
-    public List<UserResponse> getClientsByAgentId(@RequestParam String agentId) {
+    public List<UserResponse> getClientsByAgentId(@PathVariable ("agentId") String agentId) {
         return userService.getAllClientsByAgentId(agentId);
     }
     //--------------------------------------Client-----------------------------------//
@@ -334,6 +373,7 @@ public class UserController {
     private final ClientService clientService;
     private final TransactionClient transactionClient;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;

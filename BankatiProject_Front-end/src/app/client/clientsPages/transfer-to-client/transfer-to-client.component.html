@@ -12,30 +12,29 @@
       <hr style="border-top: 2px solid #ffc107;" />
       <form (ngSubmit)="submitTransfer()">
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="senderPhone" class="form-label Montserrat">Numéro de Téléphone de l'Expéditeur</label>
+          <div class="col-md-12 mb-3">
+            <label for="senderPhone" class="form-label Montserrat">N° Téléphone de l'Expéditeur</label>
             <input type="text" id="senderPhone" class="form-control" [(ngModel)]="senderPhoneNumber" name="senderPhoneNumber" readonly style="background-color: #F8F8F8;" />
           </div>
-          <div class="col-md-6 mb-3">
+          <!--div class="col-md-6 mb-3">
             <label for="senderAccount" class="form-label Montserrat">Numéro de Compte de l'Expéditeur</label>
             <input type="text" id="senderAccount" class="form-control" placeholder="Entrez le numéro de compte" required style="background-color: #F8F8F8;" />
-          </div>
+          </div-->
         </div>
 
-        <div class="section-title Montserrat">Informations du Bénéficiaire</div>
         <hr class="section-divider" />
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="beneficiaryPhone" class="form-label Montserrat">Numéro de Téléphone</label>
+          <div class="col-md-12 mb-3">
+            <label for="beneficiaryPhone" class="form-label Montserrat">N° Téléphone du Bénéficiaire</label>
             <input type="text" id="beneficiaryPhone" class="form-control" [(ngModel)]="beneficiaryPhoneNumber" placeholder="Entrez le Numéro" required style="background-color: #F8F8F8;" />
           </div>
-          <div class="col-md-6 mb-3">
+          <!--div class="col-md-6 mb-3">
             <label for="beneficiaryAccount" class="form-label Montserrat">Numéro de Compte</label>
             <input type="text" id="beneficiaryAccount" class="form-control" placeholder="Entrez le numéro de compte" required style="background-color: #F8F8F8;" />
-          </div>
+          </div-->
         </div>
 
-        <div class="section-title Montserrat">Détails du Transfert</div>
+        <div class="section-title Montserrat mt-3">Détails du Transfert</div>
         <hr class="section-divider" />
         <div class="row">
           <div class="col-md-6 mb-3">
@@ -47,12 +46,12 @@
           </div>
         </div>
 
-        <div class="row">
+        <!--div class="row">
           <div class="col-md-12 mb-3">
             <label for="transferReason" class="form-label Montserrat">Motif ou Référence</label>
             <textarea id="transferReason" class="form-control" placeholder="Entrez le motif du transfert" rows="3" required style="background-color: #F8F8F8;"></textarea>
           </div>
-        </div>
+        </div-->
 
         <div class="text-center">
           <button type="submit" class="btn btn-warning w-100 py-2" style="border-radius: 25px; background-color: #ffc107;">

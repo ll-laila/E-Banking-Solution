@@ -16,7 +16,9 @@ import com.example.user.users.mapper.UserMapper;
 import com.example.user.users.repository.AgentRepository;
 import com.example.user.users.repository.ServiceRepository;
 import com.example.user.users.repository.UserRepository;
+import com.example.user.users.request.ServiceRequest;
 import com.example.user.users.request.UserRequest;
+import com.example.user.users.response.ServiceResponse;
 import com.example.user.users.response.UserResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
@@ -365,6 +367,7 @@ public class UserService {
     }
 
 
+
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
@@ -405,38 +408,29 @@ public class UserService {
 
     //--------------------------------------Agent-----------------------------------//
 
-
+    @Autowired
     ServiceRepository serviceRepository;
-    public ServiceAgentResponse createService(AgentServiceRequest request, String id) {
-        // Vérifier si l'agent existe
-        User agent = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agent not found"));
-
-        request.setAgentId(id);
-
+    public ServiceResponse createService(com.example.user.users.entity.Service request) {
         // Ajouter des validations si nécessaire sur l'objet `request`
         if (request.getName() == null || request.getType() == null) {
             throw new IllegalArgumentException("Service request is invalid");
         }
-
         // Enregistrer le service
         serviceRepository.save(request);
 
         // Retourner la réponse
-        return ServiceAgentResponse.builder()
-                .message("Service created successfully for agent: " + agent.getFirstName())
-                .build();
+        return new ServiceResponse("service cree avec succee");
     }
 
-    public List<AgentServiceRequest> getAllServicesByAgentId(String agentId) {
-        List<AgentServiceRequest> servicesAgent = serviceRepository.findAllByAgentId(agentId);
+    public List<com.example.user.users.entity.Service> getAllServicesByAgentId(String agentId) {
+        List<com.example.user.users.entity.Service> servicesAgent = serviceRepository.findAllByAgentId(agentId);
         return servicesAgent.stream()
                 .map(AgentServiceMapper::ConvertToDto)
                 .collect(Collectors.toList());
     }
 
-    public ServiceAgentResponse updateService(String serviceId, AgentServiceRequest request) {
-        AgentServiceRequest agentService = serviceRepository.findServiceById(serviceId)
+    public ServiceResponse updateService(String serviceId, com.example.user.users.entity.Service request) {
+        com.example.user.users.entity.Service agentService = serviceRepository.findServiceById(serviceId)
                 .orElseThrow(() -> new RuntimeException("Service not found"));
 
         agentService.setName(request.getName());
@@ -444,9 +438,22 @@ public class UserService {
 
         serviceRepository.save(agentService);
 
-        return ServiceAgentResponse.builder().message("Service updated successfully").build();
+        return new ServiceResponse("service update avec succee");
     }
 
+    public com.example.user.users.entity.Service getServiceById(String id) {
+       return serviceRepository.findServiceById(id)
+               .map(AgentServiceMapper::ConvertToDto)
+                .orElse(null);
+   }
+    public ServiceAgentResponse deleteService(String serviceId) {
+        com.example.user.users.entity.Service agentService = serviceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        serviceRepository.delete(agentService);
+
+        return ServiceAgentResponse.builder().message("Service deleted successfully").build();
+    }
     public List<UserResponse> getAllClientsByAgentId(String agentId) {
         // Vérifier que l'agentId n'est pas nul ou vide
         if (agentId == null || agentId.isEmpty()) {
@@ -530,16 +537,15 @@ public TransactionRequest createPaymentTransaction(String senderId, String benef
         );
     }
 
-    /* public String getClientIdByPhoneNumber(String phoneNumber) {
-         // Appeler la méthode du repository
-         User client = clientRepository.findIdByPhoneNumber(phoneNumber);
-         if (client != null) {
-             return client.getId(); // Assurez-vous que getId() retourne l'ID sous forme de String
+     public String getClientIdByPhoneNumber(String phoneNumber) {
+         Optional<User> client = userRepository.findUserByPhoneNumber(phoneNumber);
+         if (client.isPresent()) {
+             return client.get().getId();
          } else {
              throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
          }
      }
- */
+
 
 
 

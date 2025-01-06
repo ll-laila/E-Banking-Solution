@@ -3,6 +3,7 @@ import {IClient} from '../../../models/Client';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ClientService} from '../../../service/client.service';
 import {AgentService} from "../../../service/agent.service";
+import {UserResponse} from "../../../models/UserResponse";
 
 @Component({
   selector: 'app-edit-client',
@@ -14,7 +15,7 @@ export class EditClientComponent implements OnInit {
 
   public loading = false;
   public id: string | null = null;
-  public client: IClient = {} as IClient;
+  public client: UserResponse = {} as UserResponse;
 
   constructor(private activatedRoute: ActivatedRoute, private agentService: AgentService, private router: Router) {
 
@@ -65,7 +66,7 @@ export class EditClientComponent implements OnInit {
   }
 
 
-  updateClient() {
+ /* updateClient() {
     this.activatedRoute.paramMap.subscribe((param) => {
       this.id = param.get('id');
     });
@@ -83,4 +84,6 @@ export class EditClientComponent implements OnInit {
 
     }
   }
+
+  */
 }

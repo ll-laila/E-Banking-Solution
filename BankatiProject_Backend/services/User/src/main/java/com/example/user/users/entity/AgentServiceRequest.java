@@ -15,11 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Builder
 public class AgentServiceRequest {
-    @Id
-    @GeneratedValue
+
     private String id;
     private String agentId;
     private String name;
     private String type;
-
 }

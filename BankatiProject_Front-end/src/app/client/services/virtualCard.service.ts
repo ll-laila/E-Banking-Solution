@@ -9,7 +9,7 @@ import {VirtualCard} from "../../models/VirtualCard";
 })
 export class VirtualCardService {
 
-  private apiUrl = 'http://localhost:8222/api/v1/virtualcard';
+  private apiUrl = 'http://localhost:8222/api/v1/users/virtualcard';
 
   constructor(private http: HttpClient) { }
 

@@ -3,7 +3,7 @@ import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/client';
 import { SharedInfosService } from '../../../service/shared-infos.service';
 import { ClientRequest } from '../../models/clientRequest';
-import { Transaction } from '../../models/transaction';
+import { TransactionResponse } from '../../models/transactionResponse';
 import {Wallet} from "../../../models/wallet";
 
 @Component({ 
@@ -13,7 +13,7 @@ import {Wallet} from "../../../models/wallet";
 })
 export class DashboardClientComponent implements OnInit {
   wallet: Wallet | null = null; // Initialisation
-  transactions: Transaction[] = [];
+  transactions: TransactionResponse[] = [];
   errorMessage: string | null = null; // Initialisation
 
 
@@ -63,8 +63,8 @@ export class DashboardClientComponent implements OnInit {
 
 
   loadAllTransactions(): void {
-    this.clientService.getAllTransactionsByUserId(this.sharedInfosService.getId()).subscribe(
-      (data: Transaction[]) => {
+    this.clientService.getAllTransactionsByUserId(localStorage.getItem('id')).subscribe(
+      (data: TransactionResponse[]) => {
         this.transactions = data;
       },
       (error) => {

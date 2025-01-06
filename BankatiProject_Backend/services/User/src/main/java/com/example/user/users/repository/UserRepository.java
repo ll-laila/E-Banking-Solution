@@ -21,6 +21,8 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByRole(Role role);
 
+    Optional<User> findUserByPhoneNumber(String phone);
+
 
 /*//-------------------------chaima------------------------------//
 @Query(value = "{ 'phoneNumber': ?0 }", fields = "{ '_id': 1 }")

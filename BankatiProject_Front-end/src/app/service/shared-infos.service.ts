@@ -107,6 +107,12 @@ export class SharedInfosService {
   getToken(): string | null {
     return this.token || localStorage.getItem('token');
   }
+  getAddress(): string | null {
+    return this.address || null;
+  }
+  getCin(): string | null {
+    return this.cin;
+  }
 
   getFirstLogin(): boolean {
     return this.firstLogin;

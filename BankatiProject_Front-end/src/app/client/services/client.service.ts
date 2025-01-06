@@ -4,7 +4,7 @@ import {catchError, Observable, throwError} from 'rxjs';
 import { Operation } from '../models/operation';
 import { ClientRequest } from '../models/clientRequest';
 import { SharedInfosService } from '../../service/shared-infos.service';
-
+import { TransactionResponse } from '../models/transactionResponse';
 import { Transaction } from '../models/transaction';
 import { CookieService } from 'ngx-cookie-service';
 import {Wallet} from "../../models/wallet";
@@ -37,11 +37,11 @@ export class ClientService {
   }
   
 
-  getAllTransactionsByUserId(userId: string): Observable<Transaction[]> {
+  getAllTransactionsByUserId(userId: string): Observable<TransactionResponse[]> {
     const url = `${this.serverUrl}/all-transactions/${userId}`;
     const headers = this.sharedInfosService.getAuthHeaders();
     console.log('Headers:', headers.get('Authorization'));
-    return this.httpClient.get<Transaction[]>(url,{ headers });
+    return this.httpClient.get<TransactionResponse[]>(url,{ headers });
   }
 
   feedWallet(clientId: string, amount: number): Observable<boolean> {
