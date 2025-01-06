@@ -23,7 +23,7 @@ export class ServicesAgentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.agentId = this.sharedInfosService.getId(); // Récupérer l'agentId
+    this.agentId = localStorage.getItem('id'); // Récupérer l'agentId
     if (this.agentId) {
       this.getAllServicesByAgent(this.agentId);
     } else {

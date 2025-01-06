@@ -29,7 +29,7 @@ export class HistoryComponent implements OnInit {
         console.error('Error fetching all user transactions:', error);
       }
     );
-  
+
   }
 
 

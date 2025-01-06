@@ -1,27 +1,7 @@
 <div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107,#2c4481);">
 
   </div>
-<div class="row">
-<div class="col-lg-6">
-  <div class="card card-stats mb-4 mb-xl-0">
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-          <h5 class="card-title text-uppercase text-muted mb-0">Solde</h5>
-          <p class="h4"><b>000</b></p>
 
-          <p class="h4"><b>{{solde}}</b></p>
-        </div>
-        <div class="col-auto">
-          <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-            <i class="fas fa-money-bill-alt"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
   <div class="container-fluid mt--7">
     <!-- Dark table -->
     <div class="row mt-2">
@@ -34,22 +14,26 @@
             <table class="table align-items-center table-dark table-flush text-center">
               <thead class="thead-dark">
               <tr>
-                <th scope="col">Nom du client</th>
-                <th scope="col">Nom du créancier</th>
-                <th scope="col">Nom du service </th>
-                <th scope="col">Montant</th>
+                <th scope="col">Référence</th>
+                <th scope="col">Nom du expéditeur</th>
+                <th scope="col">Nom du bénéficiaire</th>
+                <th scope="col">Montant </th>
+                <th scope="col">Type du transactions </th>
+                <th scope="col">Statut</th>
                 <th scope="col">Date</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let operation of operations" class="align-middle">
-                <th scope="row">{{ operation.creditorName}}</th>
-                <td>{{ operation.clientName }}</td>
-                <th scope="row">{{operation.serviceName }}</th>
-                <td>{{ operation.amount }}</td>
-                <td>{{ operation.date}}</td>
+              <tr *ngFor="let transaction of operations" class="align-middle">
+                <th scope="row">{{ transaction.id}}</th>
+                <th scope="row">{{ transaction.senderName}}</th>
+                <td scope="row">{{ transaction.beneficiaryName }}</td>
+                <td scope="row">{{ transaction.transactionType }}</td>
+                <th scope="row">{{ transaction.amount }}</th>
+                <td scope="row">{{ transaction.status }}</td>
+                <td scope="row">{{ transaction.createdDate}}</td>
               </tr>
-              </tbody>
+              </tbody> 
             </table>
           </div>
           <div class="card-footer bg-default py-4">
