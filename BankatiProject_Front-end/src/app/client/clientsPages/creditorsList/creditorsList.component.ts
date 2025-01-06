@@ -11,6 +11,8 @@ import {IAgentServices} from "../../../models/AgentServices";
 import {AdminService} from "../../../service/admin.service";
 import {AgentRequest} from "../../../models/AgentRequest";
 import {UserRequest} from "../../../models/UserRequest";
+import {AgentAndServices} from "../../../models/AgentAndServices";
+import {AgentDashComponent} from "../../../Agent/agent-dash/agent-dash.component";
 
 @Component({
   selector: 'app-icons',
@@ -18,7 +20,7 @@ import {UserRequest} from "../../../models/UserRequest";
   styleUrls: ['./creditorsList.component.scss']
 })
 export class CreditorsListComponent implements OnInit {
-
+  public agentandservices:AgentAndServices[]=[];
   public copy: string;
   public agents: AgentRequest[] = []; // Initialisation vide
   public responseMessage: string;
@@ -58,7 +60,7 @@ export class CreditorsListComponent implements OnInit {
         this.agents = agents; // Assigner les agents reçus
         console.log(this.agents);
         this.agents.forEach(agent => {
-          this.getAllServicesByAgent(agent.id);
+          this.getAllServicesByAgent(agent);
         });
       },
       (error) => {
@@ -67,10 +69,18 @@ export class CreditorsListComponent implements OnInit {
     );
   }
 
-  getAllServicesByAgent(agentId:string): void {
-    this.agentService.getAgentServices(agentId).subscribe(
+
+  getAllServicesByAgent(agent:AgentRequest): void {
+    this.agentService.getAgentServices(agent.id).subscribe(
       (services: IAgentServices[]) => {
-        this.agentservices = services;
+        const agentAndServices: AgentAndServices = {
+          agent: agent,
+          services: services
+        };
+
+        // Ajouter cet objet à la liste
+        this.agentandservices.push(agentAndServices);
+        console.log(this.agentandservices);
       },
       (error) => {
         console.error('Une erreur s\'est produite lors de la récupération des agents :', error);

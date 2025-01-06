@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/agents").hasAnyRole("ADMIN","CLIENT")
                         .requestMatchers("/api/v1/users/change-password").hasRole("CLIENT")
                         .requestMatchers("/api/v1/users/creat-transaction").hasRole("CLIENT")
+                        .requestMatchers("/api/v1/users/creat-subscription").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/users/delete/{id}").hasRole("ADMIN")
 
                         // Agent routes

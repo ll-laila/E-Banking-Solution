@@ -19,16 +19,21 @@ export class TransactionServiceService {
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) { }
 
-  createTransaction(senderId: string, beneficiaryId: string, amount: number, transactionType: TransactionType): Observable<string> {
-        const url = `${this.serverUrl}/creat-transaction`;
-        const params = new HttpParams()
-        .set('senderId', senderId)
-        .set('beneficiaryId', beneficiaryId)
-        .set('amount', amount.toString())
-        .set('transactionType', transactionType.toString());
-        const headers = this.sharedInfosService.getAuthHeaders();
-        console.log('Headers:', headers.get('Authorization'));
-        return this.httpClient.post<string>(url,null,{ params , headers });
+  createTransaction(senderId: string, beneficiaryId: string, amount: number, transactionType: TransactionType): Observable<string>{
+    const url = `${this.serverUrl}/creat-transaction`;
+    const params = new HttpParams()
+      .set('senderId', senderId)
+      .set('beneficiaryId', beneficiaryId)
+      .set('amount', amount.toString())
+      .set('transactionType', transactionType.toString());
+
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.post(url, null, {
+      params,
+      headers,
+      responseType: 'text'
+    });
   }
 
   getClientIdByPhoneNumber(phoneNumber: string): Observable<string> {

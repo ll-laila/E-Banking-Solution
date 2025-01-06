@@ -17,6 +17,7 @@ import {SharedInfosService} from "../../../service/shared-infos.service";
 import {AgentService} from "../../../service/agent.service";
 import {AgentRequest} from "../../../models/AgentRequest";
 import {UserResponse} from "../../../models/UserResponse";
+import {AgentAndServices} from "../../../models/AgentAndServices";
 
 
 @Component({
@@ -28,7 +29,6 @@ export class Payment implements OnInit {
 
   currentStep = 1;
   public paymentForm1: FormGroup;
-
   public client: UserResponse;
   public agent: Agent;
   public service: ServiceAgent;
@@ -96,7 +96,7 @@ export class Payment implements OnInit {
       return;
     }
 
-    this.paymentService.createSubscriptionTransaction(this.senderId, this.agent.id, this.donationAmount).subscribe({
+    this.paymentService.createSubscriptionTransaction(this.senderId, this.agentId, this.donationAmount).subscribe({
       next: () => {
         console.log('Abonnement activé avec succès.');
       },
@@ -128,19 +128,20 @@ export class Payment implements OnInit {
 
 
   validate3() {
-        this.transactionService.createTransaction(this.senderId, this.agentId, this.donationAmount, TransactionType.PAYMENT).subscribe({
-          next: (response) => {
-            console.log('Transaction créée avec succès:', response);
-            alert(response); // Affiche le message texte retourné par le backend
-            this.router.navigate(['/client/accueil']);
-          },
-          error: (error) => {
-            console.error('Erreur lors de la création de la transaction:', error);
-            alert(`Une erreur est survenue : ${error.message || 'Veuillez réessayer.'}`);
-          }
-        });
-
+    this.transactionService.createTransaction(this.senderId, this.agentId, this.donationAmount, TransactionType.PAYMENT).subscribe({
+      next: (response) => {
+        console.log('Transaction créée avec succès:', response);
+        alert(response);  // Accédez au message retourné par le backend
+        this.router.navigate(['/client/accueil']);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création de la transaction:', error);
+        const errorMessage = error.error?.message || 'Une erreur est survenue, veuillez réessayer.';
+        alert(`Une erreur est survenue : ${errorMessage}`);
+      }
+    });
   }
+
 
 
 

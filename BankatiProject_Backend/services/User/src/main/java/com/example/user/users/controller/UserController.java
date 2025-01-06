@@ -410,7 +410,7 @@ public class UserController {
 
         return ResponseEntity.ok("Transaction created successfully with type: " + transaction.transactionType());
     }
-
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-subscription")
     public ResponseEntity<String> createSubscription(@RequestParam String userId,
                                                      @RequestParam String agentId,

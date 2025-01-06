@@ -17,13 +17,13 @@
         </div>
         <div class="card-body">
           <div class="row icon-examples">
-            <div *ngFor="let agent of agents" class="col-lg-4 col-md-4 col-sm-6">
-              <button type="button" placement="top-center" triggers="hover focus click" ngbTooltip="{{ copy === agent.firstName ? 'Copied':'' }}" class="btn-icon-clipboard" ngxClipboard [cbContent]="agent.firstName" (cbOnSuccess)="copy = agent.firstName">
+            <div *ngFor="let agentandservice of agentandservices" class="col-lg-4 col-md-4 col-sm-6">
+              <button type="button" placement="top-center" triggers="hover focus click" ngbTooltip="{{ copy === agentandservice.agent.firstName ? 'Copied':'' }}" class="btn-icon-clipboard" ngxClipboard [cbContent]="agentandservice.agent.firstName" (cbOnSuccess)="copy = agentandservice.agent.firstName">
                 <div class="image-container" style="height: 130px;">
-                  <img [src]="agent.image" alt="{{ agent.firstName }}" class="rounded-image" />
+                  <img [src]="agentandservice.agent.image" alt="{{ agentandservice.agent.firstName }}" class="rounded-image" />
                   <ul>
-                    <h3>{{ agent?.firstName }}{{" "}}{{ agent?.lastName }}</h3>
-                    <li *ngFor="let service of agentservices " (click)="redirectToPayment(agent, service)">{{ service.name }}</li>
+                    <h3>{{ agentandservice.agent?.firstName }}{{" "}}{{ agentandservice.agent?.lastName }}</h3>
+                    <li *ngFor="let service of agentandservice.services " (click)="redirectToPayment(agentandservice.agent, service)">{{ service.name }}</li>
                   </ul>
                 </div>
               </button>
