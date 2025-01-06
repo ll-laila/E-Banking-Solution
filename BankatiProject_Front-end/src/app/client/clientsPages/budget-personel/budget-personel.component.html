@@ -9,15 +9,12 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-1">Devise de l'expéditeur</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-1">Total Expéditeur</h5>
                   <p class="h4 font-weight-bold mb-0">
-                  <div *ngIf="transactions.length > 0;">
-                    <ul>
-                      <li *ngFor="let transaction of transactions">
-                        <p>Amount: {{ transaction.senderCurrency }} €</p> <!-- Affiche le montant -->
-                      </li>
-                    </ul>
-                  </div>
+                    <!-- Affiche le total des montants des transactions où l'utilisateur est l'expéditeur -->
+                    <span *ngIf="senderTotalAmount > 0">{{ senderTotalAmount }} €</span>
+                    <span *ngIf="senderTotalAmount === 0">Aucune transaction trouvée</span>
+                  </p>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -35,14 +32,12 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-1">Devise du récépteur</h5>
-                  <div *ngIf="transactions.length > 0;">
-                    <ul>
-                      <li *ngFor="let transaction of transactions">
-                        <p>Amount: {{ transaction.beneficiaryCurrency }} €</p> <!-- Affiche le montant -->
-                      </li>
-                    </ul>
-                  </div>
+                  <h5 class="card-title text-uppercase text-muted mb-1">Total Bénéficiaire</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                    <!-- Affiche le total des montants des transactions où l'utilisateur est le bénéficiaire -->
+                    <span *ngIf="beneficiaryTotalAmount > 0">{{ beneficiaryTotalAmount }} €</span>
+                    <span *ngIf="beneficiaryTotalAmount === 0">Aucune transaction trouvée</span>
+                  </p>
                 </div>
                 <div class="col-auto">
                   <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -54,20 +49,21 @@
           </div>
         </div>
       </div>
-      <div class=" mb-4">
+
+      <!-- Card: Budget -->
+      <div class="mb-4">
         <div class="card card-stats shadow">
           <div class="card-body">
             <div class="row align-items-center">
               <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-1">Budget</h5>
+                <h5 class="card-title text-uppercase text-muted mb-1">Total Budget</h5>
                 <p class="h4 font-weight-bold mb-0">
-                <div *ngIf="transactions.length > 0;">
-                  <ul>
-                    <li *ngFor="let transaction of transactions">
-                      <p>Amount: {{ transaction.amount }} €</p> <!-- Affiche le montant -->
-                    </li>
-                  </ul>
-                </div>
+                  <!-- Affiche la somme des montants des transactions -->
+                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount > 0">
+                    {{ senderTotalAmount + beneficiaryTotalAmount }} €
+                  </span>
+                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount === 0">Aucune transaction trouvée pour le moment</span>
+                </p>
               </div>
               <div class="col-auto">
                 <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -78,12 +74,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
-
-
-
-
-
-
