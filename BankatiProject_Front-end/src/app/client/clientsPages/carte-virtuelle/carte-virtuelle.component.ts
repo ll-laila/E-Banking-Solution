@@ -18,7 +18,7 @@ export class CarteVirtuelleComponent implements OnInit {
   userId: string = ''; // L'ID utilisateur que tu veux utiliser
   card: VirtualCard = {
     id: '',
-    cardNumber: '',
+    cardNumber: '#### #### #### ####',
     userId: '',
     expirationDate: '',
     status: 'INACTIVE', // Valeur par défaut pour un état neutre
@@ -56,25 +56,26 @@ export class CarteVirtuelleComponent implements OnInit {
   ngOnInit(): void {
     this.userId = localStorage.getItem('id');
 
-    // Initialiser le formulaire
     this.paymentForm = this.fb.group({
       montant: [0, Validators.required] // Initialisation du formulaire avec un champ montant
     });
 
     this.getCards();
 
-    this.clientService.getUserById(localStorage.getItem('id')).subscribe((client) => {
-      this.client = client;
-    });
 
-    this.extractMonthYear(this.card.expirationDate);
+
+    //this.extractMonthYear(this.card.expirationDate);
   }
 
   // Récupérer les cartes pour l'utilisateur spécifié
   getCards(): void {
+    this.clientService.getUserById(localStorage.getItem('id')).subscribe((client) => {
+      this.client = client;
+    });
     this.virtualCardService.getCardsByUser(localStorage.getItem('id')).subscribe(
       (card: VirtualCard) => {
         this.card = card;
+        console.log("dataaaa",this.card);
       },
       (error) => {
         console.error('Erreur lors de la récupération des cartes:', error);

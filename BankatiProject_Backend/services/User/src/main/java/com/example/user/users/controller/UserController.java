@@ -504,9 +504,9 @@ public class UserController {
         return ResponseEntity.ok(virtualCardClient.createCard(cardId));
     }
     @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/user/{userId}")
+    @GetMapping("/virtualcard/user/{userId}")
     public ResponseEntity<VirtualCardResponse> getCardsByUser(@PathVariable String userId) {
-        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+        return ResponseEntity.ok(virtualCardClient.getCardsByUser(userId));
     }
 
 

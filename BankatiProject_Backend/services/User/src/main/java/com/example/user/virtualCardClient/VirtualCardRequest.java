@@ -7,7 +7,7 @@ public record VirtualCardRequest(
         String cardNumber,
         LocalDateTime expirationDate,
         String status, // "ACTIVE", "INACTIVE", "EXPIRED"
-        String montant
+        double montant
 ) {
 
 }

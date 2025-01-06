@@ -10,6 +10,6 @@ public record VirtualCardResponse(
         String status, // "ACTIVE", "INACTIVE", "EXPIRED"
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        String montant
+        double montant
 ) {
 }
