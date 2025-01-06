@@ -82,7 +82,7 @@ export class WalletCryptoService {
       .set('userId', userId)
       .set('cryptoName', cryptoName)
       .set('amount', amount.toString());
-    return this.httpClient.post<string>(url,null,{params, headers }).pipe(catchError(this.handleError));
+      return this.httpClient.post<string>(url,null,{params, headers });
   }
 
 

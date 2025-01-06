@@ -23,6 +23,7 @@ import {IAgentServiceResponse} from "../models/IAgentServiceResponse";
 export class AgentService {
 
   private serverUrl = `http://localhost:8222/api/v1/users`;
+  private authorization = this.cookieService.get('Authorization');
 
 
 
@@ -184,8 +185,11 @@ export class AgentService {
     return this.httpClient.get<IAgentServices>(dataUrl, {headers}).pipe(catchError(this.handleError));
   }
 
-  getAgentByPhoneNumber(phoneNum: string) {
-    return
-
+  getAgentSolde(idAgent: string) {
+    const headers = {
+      'Authorization': `${this.authorization}`
+    };
+    const dataUrl = `${this.serverUrl}/AgentSolde/${idAgent}`;
+    return this.httpClient.get<number>(dataUrl, {headers}).pipe(catchError(this.handleError));
   }
 }

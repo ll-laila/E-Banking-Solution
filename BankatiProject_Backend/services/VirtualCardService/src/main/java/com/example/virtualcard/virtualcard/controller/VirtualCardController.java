@@ -4,6 +4,7 @@ import com.example.virtualcard.virtualcard.entity.VirtualCard;
 import com.example.virtualcard.virtualcard.service.VirtualCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +17,29 @@ public class VirtualCardController {
     @Autowired
     private VirtualCardService virtualCardService;
 
-    // Créer une carte virtuelle
-    @PostMapping("/create/{userId}")
+    @PostMapping("/virtualcard/create/{userId}")
     public VirtualCard createCard(@PathVariable String userId) {
         return virtualCardService.createVirtualCard(userId);
     }
 
-    // Activer une carte virtuelle
     @PatchMapping("/activate/{cardId}")
     public VirtualCard activateCard(@PathVariable String cardId) {
         return virtualCardService.activateCard(cardId);
     }
 
-    // Désactiver une carte virtuelle
     @PatchMapping("/deactivate/{cardId}")
     public VirtualCard deactivateCard(@PathVariable String cardId) {
         return virtualCardService.deactivateCard(cardId);
     }
 
-    // Obtenir toutes les cartes d'un utilisateur
     @GetMapping("/user/{userId}")
-    public List<VirtualCard> getCardsByUser(@PathVariable String userId) {
+    public VirtualCard getCardsByUser(@PathVariable String userId) {
         return virtualCardService.getCardsByUserId(userId);
+    }
+
+
+    @GetMapping("/feedCard")
+    public VirtualCard feedWallet(@RequestParam String clientId, @RequestParam double somme){
+        return virtualCardService.feedCard(clientId,somme);
     }
 }

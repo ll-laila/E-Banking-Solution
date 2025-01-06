@@ -12,6 +12,7 @@
         <module name="TransactionService" />
         <module name="discovery" />
         <module name="Gateway" />
+        <module name="batchService" />
         <module name="VirtualCardService" />
         <module name="WalletCryptoService" />
         <module name="NotificationService" />
@@ -30,6 +31,7 @@
       <module name="VirtualCardService" options="-parameters" />
       <module name="WalletCryptoService" options="-parameters" />
       <module name="WalletService" options="-parameters" />
+      <module name="batchService" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
     </option>

@@ -19,6 +19,8 @@ import com.example.user.users.response.UserResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
 import com.example.user.users.service.UserService;
+import com.example.user.virtualCardClient.VirtualCardClient;
+import com.example.user.virtualCardClient.VirtualCardResponse;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
@@ -36,6 +38,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,6 +58,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserAuthenticationProvider userAuthenticationProvider;
+
+
 
 
     //login for all users (admin, agent, client)
@@ -94,6 +99,18 @@ public class UserController {
     public ResponseEntity<String> createClient(@RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.createClient(userRequest));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
+    @PutMapping("/deactivate-account/{id}")
+    public ResponseEntity<String> deactivateAccount(@PathVariable String id) {
+        boolean isDeactivated = userService.deactivateAccount(id);
+        if (isDeactivated) {
+            return ResponseEntity.ok("Compte désactivé avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Échec de la désactivation du compte.");
+        }
+    }
+
 
     @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/clients")
@@ -465,5 +482,44 @@ public class UserController {
         List<com.example.user.transactionClient.TransactionResponse> transactions = userService.getAllTransactionsByUserId(userId);
         return ResponseEntity.ok(transactions);
     }
+
+
+
+    @Autowired
+    private VirtualCardClient virtualCardClient;
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/virtualcard/create/{userId}")
+    public ResponseEntity<VirtualCardResponse> addVirtualCard(@PathVariable String userId) {
+        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/activate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> activateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/deactivate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> deactivateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<VirtualCardResponse> getCardsByUser(@PathVariable String userId) {
+        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+    }
+
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/feed-card")
+    public ResponseEntity<VirtualCardResponse> feedCard(@RequestBody Map<String, Object> requestBody) {
+        String clientId = (String) requestBody.get("clientId");
+        double somme = ((Number) requestBody.get("somme")).doubleValue();
+
+        VirtualCardResponse result = virtualCardClient.feedWallet(clientId, somme);
+        return ResponseEntity.ok(result);
+    }
+
+
 
 }
