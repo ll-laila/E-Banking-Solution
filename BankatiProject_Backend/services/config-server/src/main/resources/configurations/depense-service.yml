@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8077
 spring:
   data:
     mongodb:
@@ -14,5 +14,4 @@ application:
   config:
     users-url: http://localhost:8222/api/v1/users
     transactions-url: http://localhost:8222/api/v1/transactions
-    depense-url: http://localhost:8222/api/v1/depenses
 

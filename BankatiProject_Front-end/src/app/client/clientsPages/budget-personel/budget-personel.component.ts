@@ -5,7 +5,7 @@ import { Wallet } from "../../../models/wallet";
 import { ClientRequest } from "../../models/clientRequest";
 import { DepenseRequest } from '../../../models/DepenseRequest';
 import { DepenseResponse } from '../../../models/DepenseResponse';
-
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-budget-personel',
   templateUrl: './budget-personel.component.html',
@@ -13,7 +13,8 @@ import { DepenseResponse } from '../../../models/DepenseResponse';
 })
 export class BudgetPersonelComponent implements OnInit {
   depenses: DepenseResponse[] = [];
-  newDepense: DepenseRequest = { userId: '', userPhone: '', montant: 0 };
+  depense: DepenseRequest = {id: null, userId: '', userPhone: '', montant: 0 ,montantRestant:0,dateCreation: new Date()};
+  newDepense: DepenseRequest = {id: null, userId: '', userPhone: '', montant: 0 ,montantRestant:0,dateCreation: new Date()};
   userId: string = ''; // Initialisé après récupération de l'ID
   loading: boolean = false;
   error: string | null = null;
@@ -25,10 +26,11 @@ export class BudgetPersonelComponent implements OnInit {
   beneficiaryTotalAmount: number = 0;
   errorMessage: string | null = null;
 
-  constructor(private clientService: ClientService) { }
+  constructor(private clientService: ClientService,private router: Router) { }
 
   ngOnInit(): void {
     this.loadAllTransactions();
+    this.fetchDepenses();
   }
 
   loadAllTransactions(): void {
@@ -57,35 +59,16 @@ export class BudgetPersonelComponent implements OnInit {
     return transactions.reduce((total, transaction) => total + transaction.amount, 0);
   }
 
-  loadClientData(): void {
-    const storedId = localStorage.getItem('id');
-    if (storedId) {
-      this.userId = storedId;
-      this.newDepense.userId = this.userId;
-      this.fetchDepenses(); // Charger les dépenses uniquement si l'ID est défini
-    } else {
-      this.error = 'ID utilisateur non trouvé dans le stockage local.';
-    }
-  }
+
 
   fetchDepenses(): void {
-    if (!this.userId) {
-      this.error = 'Impossible de charger les dépenses sans ID utilisateur.';
-      return;
-    }
     this.loading = true;
-    this.clientService.getAllDepensesByUser(this.userId).subscribe({
-      next: (data) => {
-        this.depenses = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Erreur lors du chargement des dépenses.';
-        console.error(err);
-        this.loading = false;
-      }
+    this.clientService.getDepenseById(localStorage.getItem('id')).subscribe((depense) => {
+      this.depense = depense;
+      this.loading = false;
     });
   }
+
 
   createDepense(): void {
     if (!this.newDepense.montant || this.newDepense.montant <= 0) {
@@ -94,10 +77,45 @@ export class BudgetPersonelComponent implements OnInit {
     }
     this.newDepense.userId = this.userId;
     this.loading = true;
-    this.clientService.createDepense(this.newDepense).subscribe({
+
+    this.clientService.createDepense(localStorage.getItem('id'),localStorage.getItem('phoneNumber'),0).subscribe(
+        (data: any) => {
+          this.router.navigate(['/buget-personnel']).then();
+        },
+        (error) => {
+          setTimeout(() => {
+            this.router.navigate(['/buget-personnel']).then();
+          }, 300); // Délai de 3 secondes avant la redirection
+        }
+      );
+
+  }
+
+
+
+  get pieStyle() {
+    return {
+      backgroundImage: `conic-gradient(
+        pink ${this.senderTotalAmount}deg,
+        orange ${this.beneficiaryTotalAmount}deg
+      )`,
+    };
+  }
+
+
+//------------------------------------------------------------------------------------------------//
+
+ /* createDepensed(): void {
+    if (!this.newDepense.montant || this.newDepense.montant <= 0) {
+      this.error = 'Veuillez entrer un montant valide.';
+      return;
+    }
+    this.newDepense.userId = this.userId;
+    this.loading = true;
+    this.clientService.createDepense(localStorage.getItem('id'),localStorage.getItem('phoneNumber'),0).subscribe({
       next: (data) => {
         this.depenses.push(data);
-        this.newDepense = { userId: localStorage.getItem('id'), userPhone: '', montant: 0 };
+        this.newDepense = {  id: null, userId: localStorage.getItem('id'), userPhone: '', montant: 0 ,montantRestant:0,dateCreation: new Date()};
         this.loading = false;
       },
       error: (err) => {
@@ -106,7 +124,7 @@ export class BudgetPersonelComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
+  }*/
 
   updateDepense(depenseId: string, montant: number): void {
     if (montant <= 0) {

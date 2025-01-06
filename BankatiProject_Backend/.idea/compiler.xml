@@ -12,7 +12,6 @@
         <module name="TransactionService" />
         <module name="discovery" />
         <module name="Gateway" />
-        <module name="batchService" />
         <module name="VirtualCardService" />
         <module name="WalletCryptoService" />
         <module name="NotificationService" />
@@ -23,12 +22,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath>
+        <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="DepenseService" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="batchService" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

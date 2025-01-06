@@ -4,5 +4,5 @@ export interface DepenseResponse {
   userPhone: string;
   montant: number;
   montantRestant: number;
-  dateCreation: string;
+  dateCreation: Date;
 }

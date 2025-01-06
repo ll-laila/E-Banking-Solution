@@ -130,11 +130,12 @@ export class ClientService {
 
 //-------------------------------------------------------------------------------------//
 //------------------- Kaoutar -------------------//
-  public createDepense(depenseRequest: DepenseRequest): Observable<DepenseResponse> {
+  public createDepense(userId: string,userPhone: string, nouveauMontant: number): Observable<DepenseResponse> {
     const url = `${this.serverUrl}/create-depense`;
     const headers = this.sharedInfosService.getAuthHeaders();
     console.log('Headers:', headers.get('Authorization'));
-    return this.httpClient.post<DepenseResponse>(url, depenseRequest, { headers });
+    const body = { userId, userPhone, nouveauMontant };
+    return this.httpClient.post<DepenseResponse>(url, body, { headers });
   }
 
   public updateDepense(depenseId: string, nouveauMontant: number): Observable<DepenseResponse> {
@@ -149,10 +150,10 @@ export class ClientService {
     return this.httpClient.delete<DepenseResponse>(url, { headers }).pipe(catchError(this.handleError));
   }
 
-  public getDepenseById(depenseId: string): Observable<DepenseResponse> {
+  public getDepenseById(depenseId: string): Observable<DepenseRequest> {
     const url = `${this.serverUrl}/get-depense/${depenseId}`;
     const headers = this.sharedInfosService.getAuthHeaders();
-    return this.httpClient.get<DepenseResponse>(url, { headers }).pipe(catchError(this.handleError));
+    return this.httpClient.get<DepenseRequest>(url, { headers });
   }
 
   public getAllDepensesByUser(userId: string): Observable<DepenseResponse[]> {

@@ -9,10 +9,10 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-1">Total Expéditeur</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-1">Dépenses</h5>
                   <p class="h4 font-weight-bold mb-0">
                     <!-- Affiche le total des montants des transactions où l'utilisateur est l'expéditeur -->
-                    <span *ngIf="senderTotalAmount > 0">{{ senderTotalAmount }} €</span>
+                    <span *ngIf="senderTotalAmount > 0">{{ senderTotalAmount }} DH</span>
                     <span *ngIf="senderTotalAmount === 0">Aucune transaction trouvée</span>
                   </p>
                 </div>
@@ -32,10 +32,10 @@
             <div class="card-body">
               <div class="row align-items-center">
                 <div class="col">
-                  <h5 class="card-title text-uppercase text-muted mb-1">Total Bénéficiaire</h5>
+                  <h5 class="card-title text-uppercase text-muted mb-1">Revenus</h5>
                   <p class="h4 font-weight-bold mb-0">
                     <!-- Affiche le total des montants des transactions où l'utilisateur est le bénéficiaire -->
-                    <span *ngIf="beneficiaryTotalAmount > 0">{{ beneficiaryTotalAmount }} €</span>
+                    <span *ngIf="beneficiaryTotalAmount > 0">{{ beneficiaryTotalAmount }} DH</span>
                     <span *ngIf="beneficiaryTotalAmount === 0">Aucune transaction trouvée</span>
                   </p>
                 </div>
@@ -50,44 +50,32 @@
         </div>
       </div>
 
-      <!-- Card: Budget -->
-      <div class="mb-4">
-        <div class="card card-stats shadow">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-1">Total Budget</h5>
-                <p class="h4 font-weight-bold mb-0">
-                  <!-- Affiche la somme des montants des transactions -->
-                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount > 0">
-                    {{ senderTotalAmount + beneficiaryTotalAmount }}
-                  </span>
-                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount === 0">Aucune transaction trouvée pour le moment</span>
-                </p>
-              </div>
-              <div class="col-auto">
-                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                  <i class="fas fa-money-bill-alt"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  
     </div>
   </div>
-<div class="header pb-5 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+<div class="header pb-4 pt-4 pt-md-5" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
 
 <!-- Conteneur principal -->
-<div class="budget-container container mt-5">
-  <h1 class="text-center text-uppercase text-primary mb-4">Budget Personnel</h1>
+<div class="container">
+  <!-- Pie Chart -->
+  <div class="piechart" [ngStyle]="pieStyle"></div>
 
-  <!-- Message de chargement ou d'erreur -->
-  <div *ngIf="loading" class="alert alert-info text-center">Chargement...</div>
-  <!--<div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>-->
+  <!-- Legend -->
+  <div class="legend-container">
+    <div class="legend-item">
+      <div class="color-box color-pink"></div>
+      <span>Dépenses ({{ senderTotalAmount }} DH)</span>
+    </div>
+    <div class="legend-item">
+      <div class="color-box color-orange"></div>
+      <span>Revenus ({{ beneficiaryTotalAmount }} DH)</span>
+    </div>
+  </div>
+
+
 
   <!-- Formulaire pour créer une dépense -->
-  <div class="card shadow mb-4">
+  <!--div class="card shadow mb-4">
     <div class="card-body">
       <h5 class="card-title text-uppercase mb-3">Créer une nouvelle dépense</h5>
       <form (submit)="createDepense(); $event.preventDefault()">
@@ -120,10 +108,10 @@
 
       </form>
     </div>
-  </div>
+  </div-->
 
-  <!-- Liste des dépenses -->
-  <div class="card shadow">
+
+  <!--div class="card shadow">
     <div class="card-body">
       <h5 class="card-title text-uppercase mb-3">Liste des Dépenses</h5>
       <div *ngIf="depenses.length === 0" class="text-muted">Aucune dépense trouvée.</div>
@@ -141,5 +129,5 @@
         </li>
       </ul>
     </div>
-  </div>
+  </div-->
 </div>

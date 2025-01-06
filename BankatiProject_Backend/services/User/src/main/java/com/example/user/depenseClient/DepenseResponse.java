@@ -9,4 +9,7 @@ public record DepenseResponse(
         Double montant,
         Double montantRestant,
         LocalDate dateCreation
+
+
+
 ) {}

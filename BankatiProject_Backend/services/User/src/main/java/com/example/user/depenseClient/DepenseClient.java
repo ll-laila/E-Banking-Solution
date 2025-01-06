@@ -16,7 +16,8 @@ public interface DepenseClient {
      * Endpoint pour créer une nouvelle dépense.
      */
     @PostMapping("/create")
-    ResponseEntity<DepenseResponse> createDepense(@RequestBody DepenseRequest depenseRequest);
+    public ResponseEntity<DepenseResponse> createDepense(@RequestParam String userId, @RequestParam String userPhone, @RequestParam Double montant);
+
 
     /**
      * Endpoint pour mettre à jour une dépense existante.
@@ -34,8 +35,9 @@ public interface DepenseClient {
     /**
      * Endpoint pour récupérer une dépense par son ID.
      */
+
     @GetMapping("/get/{depenseId}")
-    ResponseEntity<DepenseResponse> getDepenseById(@PathVariable String depenseId);
+    public ResponseEntity<DepenseResponse> getDepenseById(@PathVariable String depenseId);
 
     /**
      * Endpoint pour récupérer toutes les dépenses d'un utilisateur par son ID.

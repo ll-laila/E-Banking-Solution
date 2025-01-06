@@ -26,7 +26,7 @@ public class DepenseService {
      */
     @Transactional
     public void processTransaction(TransactionConfirmation confirmation) {
-        log.info("Traitement de la transaction ID : {}", confirmation.transactionId());
+        //log.info("Traitement de la transaction ID : {}", confirmation.transactionId());
 
         if ("EXPENSE".equalsIgnoreCase(confirmation.transactionType().name())) {
             Optional<Depense> existingDepense = depenseRepository.findByUserPhone(confirmation.userPhone());
@@ -39,17 +39,17 @@ public class DepenseService {
                 double montantRestant = depense.getMontantRestant() - montantTransaction;
 
                 if (montantRestant < 0) {
-                    log.warn("Dépassement du budget pour l'utilisateur : {} {}",
-                            confirmation.userFirstname(), confirmation.userLastname());
+                    //log.warn("Dépassement du budget pour l'utilisateur : {} {}",
+                      //      confirmation.userFirstname(), confirmation.userLastname());
                 }
 
                 depense.setMontantRestant(Math.max(0, montantRestant));
                 depenseRepository.save(depense);
-                log.info("Mise à jour de la dépense terminée pour l'utilisateur : {} {}",
-                        confirmation.userFirstname(), confirmation.userLastname());
+                //log.info("Mise à jour de la dépense terminée pour l'utilisateur : {} {}",
+                      //  confirmation.userFirstname(), confirmation.userLastname());
             } else {
-                log.warn("Aucune dépense définie pour l'utilisateur : {} {}",
-                        confirmation.userFirstname(), confirmation.userLastname());
+              //  log.warn("Aucune dépense définie pour l'utilisateur : {} {}",
+                       // confirmation.userFirstname(), confirmation.userLastname());
             }
         }
     }
@@ -58,15 +58,9 @@ public class DepenseService {
      * Crée une nouvelle dépense pour un utilisateur.
      */
     public Depense createDepense(String userId, String userPhone, Double montant) {
-        Depense depense = Depense.builder()
-                .userId(userId)
-                .userPhone(userPhone) // Ajout du numéro de téléphone
-                .montant(montant)
-                .montantRestant(montant)
-                .dateCreation(LocalDate.now())
-                .build();
+        Depense depense = new Depense(null,userId,userPhone,montant,montant,LocalDate.now());
 
-        log.info("Création d'une nouvelle dépense pour l'utilisateur ID : {}, téléphone : {}", userId, userPhone);
+      //  log.info("Création d'une nouvelle dépense pour l'utilisateur ID : {}, téléphone : {}", userId, userPhone);
         return depenseRepository.save(depense);
     }
 
@@ -82,7 +76,7 @@ public class DepenseService {
         depense.setMontant(nouveauMontant);
         depense.setMontantRestant(depense.getMontantRestant() + difference);
 
-        log.info("Mise à jour de la dépense ID : {}", depenseId);
+        //log.info("Mise à jour de la dépense ID : {}", depenseId);
         return depenseRepository.save(depense);
     }
 
@@ -94,7 +88,7 @@ public class DepenseService {
                 .orElseThrow(() -> new RuntimeException("Dépense introuvable pour l'ID : " + depenseId));
 
         depense.setMontantRestant(0.0);
-        log.info("Annulation de la dépense ID : {}", depenseId);
+       // log.info("Annulation de la dépense ID : {}", depenseId);
         return depenseRepository.save(depense);
     }
 
@@ -110,7 +104,7 @@ public class DepenseService {
      * Récupère toutes les dépenses pour un utilisateur spécifique.
      */
     public List<Depense> getAllDepensesByUser(String userId) {
-        log.info("Récupération des dépenses pour l'utilisateur ID : {}", userId);
+       // log.info("Récupération des dépenses pour l'utilisateur ID : {}", userId);
         return depenseRepository.findByUserId(userId);
     }
 }

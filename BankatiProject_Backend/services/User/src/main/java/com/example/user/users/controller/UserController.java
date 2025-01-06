@@ -532,8 +532,8 @@ public class UserController {
      */
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/create-depense")
-    public ResponseEntity<DepenseResponse> createDepense(@RequestBody DepenseRequest depenseRequest) {
-        return depenseClient.createDepense(depenseRequest);
+    public ResponseEntity<DepenseResponse> createDepense(@RequestParam String userId, @RequestParam String userPhone, @RequestParam Double montant) {
+        return depenseClient.createDepense(userId,userPhone,montant);
     }
 
     /**
