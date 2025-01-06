@@ -1,10 +1,6 @@
 package com.example.user.users.controller;
 
-import com.example.user.transactionClient.SimpleTransactionRequest;
-import com.example.user.transactionClient.SubscriptionRequest;
-import com.example.user.transactionClient.TransactionClient;
-import com.example.user.transactionClient.TransactionRequest;
-import com.example.user.transactionClient.TransactionType;
+import com.example.user.transactionClient.*;
 import com.example.user.users.config.UserAuthenticationProvider;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
@@ -438,6 +434,16 @@ public class UserController {
     @GetMapping("/clientbyid/{clientId}")
     public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
         return ResponseEntity.ok(clientService.getClientById(clientId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/subscriptions/{userId}")
+    public ResponseEntity<List<Subscription>> getUserSubscriptions(@PathVariable("userId") String userId) {
+        try {
+            ResponseEntity<List<Subscription>> response = transactionClient.getUserSubscriptions(userId);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // En cas d'erreur, renvoie une réponse 500.
+        }
     }
 
     //-------------------------salwa-------------------------//

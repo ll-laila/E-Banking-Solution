@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/users/delete/{id}").hasRole("ADMIN")
 
                         // Agent routes
-                        .requestMatchers("/api/v1/users/client/**", "/api/v1/users/service/**", "/api/v1/users/serviceByAgent/**")
+                        .requestMatchers("/api/v1/users/client/**", "/api/v1/users/service/**", "/api/v1/users/serviceByAgent/**","/api/v1/users/subscriptions/**")
                         .hasAnyRole("AGENT","CLIENT")
 
                         .anyRequest().authenticated()
