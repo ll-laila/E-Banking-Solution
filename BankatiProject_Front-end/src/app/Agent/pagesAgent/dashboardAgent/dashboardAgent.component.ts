@@ -37,8 +37,9 @@ export class DashboardAgentComponent implements OnInit {
 
   agentId: string | null = null;
 
+
   ngOnInit(): void {
-    this.agentId = this.sharedInfosService.getId(); // Récupérer l'agentId
+    this.agentId = localStorage.getItem('id'); // Récupérer l'agentId
     if (this.agentId) {
       this.getAllClientsByAgentId(this.agentId);
     } else {

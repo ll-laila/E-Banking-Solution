@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Operation} from "../../../client/models/operation";
-import {ClientService} from "../../../service/client.service";
-import {SharedAgentService} from "../../../service/shared-agent.service";
-import {IAgent} from "../../../models/Agent";
+import { TransactionResponse } from '../../../client/models/transactionResponse';
+import {ClientService} from '../../../client/services/client.service'
+
 
 @Component({
   selector: 'app-trasaction-agent',
@@ -11,20 +10,29 @@ import {IAgent} from "../../../models/Agent";
 })
 export class TrasactionAgentComponent implements OnInit {
 
-  public agent: IAgent;
-  public operations: Operation[];
+  public operations: TransactionResponse[];
+  errorMessage: string | null = null;
 
-  constructor(private clientService: ClientService,private sharedAgentService:SharedAgentService) {}
+
+  constructor(private clientService: ClientService) {}
 
   ngOnInit() {
-    this.agent = this.sharedAgentService.getAgent();
-    this.getAgentOperations(this.agent.id);
+
+    this.clientService.getAllTransactionsByUserId(localStorage.getItem('id')).subscribe(
+          (data: TransactionResponse[]) => {
+            this.operations = data;
+          },
+          (error) => {
+            this.errorMessage = 'Erreur lors de la récupération de toutes les transactions.';
+            console.error('Error fetching all user transactions:', error);
+          }
+        );
   }
 
 
-  public getAgentOperations(idAgent: number) {
 
-  }
+
+
 
 
 }
