@@ -23,7 +23,7 @@
                   <img [src]="agent.image" alt="{{ agent.firstName }}" class="rounded-image" />
                   <ul>
                     <h3>{{ agent?.firstName }}{{" "}}{{ agent?.lastName }}</h3>
-                    <li *ngFor="let service of agent.services" (click)="redirectToPayment(agent, service)">{{ service.name }}</li>
+                    <li *ngFor="let service of agentservices " (click)="redirectToPayment(agent, service)">{{ service.name }}</li>
                   </ul>
                 </div>
               </button>

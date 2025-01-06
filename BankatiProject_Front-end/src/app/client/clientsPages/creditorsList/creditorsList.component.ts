@@ -6,6 +6,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SharedAgentService} from "../../services/shared-agent.service";
 import {SharedAgentServiceService} from "../../services/shared-agent-service.service";
 import {PaymentService} from "../../services/payment.service";
+import {AgentService} from "../../../service/agent.service";
+import {IAgentServices} from "../../../models/AgentServices";
+import {AdminService} from "../../../service/admin.service";
+import {AgentRequest} from "../../../models/AgentRequest";
+import {UserRequest} from "../../../models/UserRequest";
 
 @Component({
   selector: 'app-icons',
@@ -15,25 +20,23 @@ import {PaymentService} from "../../services/payment.service";
 export class CreditorsListComponent implements OnInit {
 
   public copy: string;
-  public agents: Agent[];
+  public agents: AgentRequest[] = []; // Initialisation vide
   public responseMessage: string;
   public currentMsg: number;
+  public agentservices: IAgentServices[] = []; // Initialisation vide
 
-
-
-  constructor(private clientService: ClientService,
-              private paymentService: PaymentService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private sharedAgentService: SharedAgentService,
-              private sharedAgentServiceService: SharedAgentServiceService
-  ) { }
+  constructor(
+    private agentService: AgentService,
+    private adminService: AdminService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.copy = "";
     this.getAllAgents();
     this.route.queryParams.subscribe(params => {
-      if(params['responseMessage'] != null){
+      if (params['responseMessage'] != null) {
         switch (+params['status']) {
           case 1:
             this.currentMsg = 1;
@@ -47,31 +50,48 @@ export class CreditorsListComponent implements OnInit {
     });
   }
 
+  getAllAgents(): void {
 
-  getAllAgents() {
-    this.paymentService.getAllAgents().subscribe(res => {
-      console.log(res);
-      this.agents = res;
-      this.getAgentsServices();
-    }, error => {
-      console.log(error);
-    })
+    this.adminService.getAllAgents().subscribe(
+      (agents) => {
+
+        this.agents = agents; // Assigner les agents reçus
+        console.log(this.agents);
+        this.agents.forEach(agent => {
+          this.getAllServicesByAgent(agent.id);
+        });
+      },
+      (error) => {
+        console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
+      }
+    );
   }
 
-  getAgentsServices() {
-    this.agents.forEach(agent => {
-      this.clientService.getAgentServiceById(agent.id).subscribe(services => {
-        agent.services = services;
-      }, error => {
-        console.log(error);
-      });
+  getAllServicesByAgent(agentId:string): void {
+    this.agentService.getAgentServices(agentId).subscribe(
+      (services: IAgentServices[]) => {
+        this.agentservices = services;
+      },
+      (error) => {
+        console.error('Une erreur s\'est produite lors de la récupération des agents :', error);
+      }
+    );
+  }
+
+
+
+  redirectToPayment(agent: AgentRequest, service: IAgentServices) {
+    this.router.navigate(['/client/paiement'], {
+      queryParams: {
+        agentId: agent.id,
+        agentImage:agent.image,
+        serviceId: service.id,
+        agentName: `${agent.firstName} ${agent.lastName}`,
+        serviceName: service.name,
+        serviceType:service.type,
+
+      }
     });
-  }
-
-  redirectToPayment(agent: Agent, service: ServiceAgent) {
-    this.sharedAgentService.setAgent(agent);
-    this.sharedAgentServiceService.setServiceAgent(service);
-    this.router.navigate(['/client/paiement']);
   }
 
 }
