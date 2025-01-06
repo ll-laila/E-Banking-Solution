@@ -13,8 +13,13 @@
   text-transform: uppercase;
 }
 
+.btn {
+  background-color:#ffc107 ;
+  border: none;
+}
+
 .container {
-  margin-top: -220px; /* Ajustez la marge négative pour rapprocher le contenu */
+  margin-top: -500px; /* Ajustez la marge négative pour rapprocher le contenu */
   padding-top: 0; /* Supprime tout remplissage supérieur */
   min-height: 100vh;
   background: #f7fafc; /* Fond gris clair */

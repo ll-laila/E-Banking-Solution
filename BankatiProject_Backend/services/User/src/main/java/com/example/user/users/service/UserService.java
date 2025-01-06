@@ -234,13 +234,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<UserResponse> getAllAgents() {
-            return userRepository.findByRole(AGENT)
-                    .stream()
-                    .map(userMapper::fromUser)
-                    .collect(Collectors.toList());
-
-        }
 
 
     public String createAgent(UserRequest userRequest) {
@@ -423,6 +416,10 @@ public class UserService {
 
         // Retourner la réponse
         return new ServiceResponse("service cree avec succee");
+    }
+
+    public List<User> getAllAgents() {
+        return userRepository.findByRole(Role.AGENT);
     }
 
     public List<com.example.user.users.entity.Service> getAllServicesByAgentId(String agentId) {

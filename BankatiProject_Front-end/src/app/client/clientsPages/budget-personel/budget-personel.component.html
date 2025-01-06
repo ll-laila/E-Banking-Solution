@@ -1,3 +1,82 @@
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <!-- Card: Utilisateur -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-1">Total Expéditeur</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                    <!-- Affiche le total des montants des transactions où l'utilisateur est l'expéditeur -->
+                    <span *ngIf="senderTotalAmount > 0">{{ senderTotalAmount }} €</span>
+                    <span *ngIf="senderTotalAmount === 0">Aucune transaction trouvée</span>
+                  </p>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card: Solde -->
+        <div class="col-lg-6 mb-4">
+          <div class="card card-stats shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-1">Total Bénéficiaire</h5>
+                  <p class="h4 font-weight-bold mb-0">
+                    <!-- Affiche le total des montants des transactions où l'utilisateur est le bénéficiaire -->
+                    <span *ngIf="beneficiaryTotalAmount > 0">{{ beneficiaryTotalAmount }} €</span>
+                    <span *ngIf="beneficiaryTotalAmount === 0">Aucune transaction trouvée</span>
+                  </p>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                    <i class="fas fa-money-bill-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Budget -->
+      <div class="mb-4">
+        <div class="card card-stats shadow">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-1">Total Budget</h5>
+                <p class="h4 font-weight-bold mb-0">
+                  <!-- Affiche la somme des montants des transactions -->
+                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount > 0">
+                    {{ senderTotalAmount + beneficiaryTotalAmount }} €
+                  </span>
+                  <span *ngIf="senderTotalAmount + beneficiaryTotalAmount === 0">Aucune transaction trouvée pour le moment</span>
+                </p>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                  <i class="fas fa-money-bill-alt"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 <div class="header pb-5 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
 
 <!-- Conteneur principal -->

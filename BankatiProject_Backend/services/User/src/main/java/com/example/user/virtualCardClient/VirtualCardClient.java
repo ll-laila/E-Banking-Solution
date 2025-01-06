@@ -13,7 +13,7 @@ import java.util.List;
         url = "${application.config.virtualCard-url}"
 )
 public interface VirtualCardClient {
-    @PostMapping("/create/{userId}")
+    @PostMapping("/virtualcard/create/{userId}")
     public VirtualCardResponse createCard(@PathVariable String userId);
 
     @PatchMapping("/activate/{cardId}")
@@ -23,5 +23,9 @@ public interface VirtualCardClient {
 
     @GetMapping("/user/{userId}")
     public List<VirtualCardResponse> getCardsByUser(@PathVariable String userId) ;
+
+
+    @PostMapping("/feedCard")
+    public VirtualCardResponse feedCard(@RequestParam String clientId, @RequestParam Double somme);
 
 }

@@ -4,6 +4,7 @@ import com.example.virtualcard.virtualcard.entity.VirtualCard;
 import com.example.virtualcard.virtualcard.service.VirtualCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class VirtualCardController {
     @Autowired
     private VirtualCardService virtualCardService;
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/virtualcard/create/{userId}")
     public VirtualCard createCard(@PathVariable String userId) {
         return virtualCardService.createVirtualCard(userId);
     }
@@ -32,7 +33,13 @@ public class VirtualCardController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<VirtualCard> getCardsByUser(@PathVariable String userId) {
+    public VirtualCard getCardsByUser(@PathVariable String userId) {
         return virtualCardService.getCardsByUserId(userId);
+    }
+
+
+    @PostMapping("/feedCard")
+    public VirtualCard feedCard(@RequestParam String clientId, @RequestParam double somme){
+        return virtualCardService.feedCard(clientId,somme);
     }
 }

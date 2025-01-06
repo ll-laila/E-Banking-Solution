@@ -4,6 +4,7 @@ import {Transaction} from "../../models/transaction";
 import {TransactionType} from "../../models/transaction-type";
 import {ClientRequest} from "../../models/clientRequest";
 import {Router} from "@angular/router";
+import {UserResponse} from "../../../models/UserResponse";
 
 @Component({
   selector: 'app-transfer-to-client',
@@ -11,7 +12,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./transfer-to-client.component.scss']
 })
 export class TransferToClientComponent implements OnInit {
-  senderId: string = localStorage.getItem('id'); 
+  senderId: string = localStorage.getItem('id');
   sender: ClientRequest;
   beneficiaryPhoneNumber: string = '';
   amount: number | null = null;
@@ -24,7 +25,7 @@ export class TransferToClientComponent implements OnInit {
   ngOnInit(): void {
     // Récupérer les informations du sender via son ID
     this.transactionService.getClientInfos(this.senderId).subscribe({
-      next: (sender: ClientRequest) => {
+      next: (sender: UserResponse) => {
         this.senderPhoneNumber = sender.phoneNumber;
         this.devise = sender.currency;
         console.log('Infos du sender récupérées avec succès :', sender);
