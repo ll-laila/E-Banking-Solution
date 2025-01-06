@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,13 +39,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(Customizer.withDefaults()) // Enable CORS
                 .csrf(AbstractHttpConfigurer::disable)
-                //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 //                .sessionManagement(session ->
 //                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                )
                 .authorizeHttpRequests(requests -> requests
                         // Public routes
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/login", "/api/v1/users/register").permitAll()
 
                         // routes
@@ -53,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/create-agent").hasRole("ADMIN")
                         .requestMatchers("/api/v1/users/agents").hasRole("ADMIN")
                         .requestMatchers("/api/v1/users/change-password").hasRole("CLIENT")
+                        .requestMatchers("/api/v1/users/list-depense").hasRole("CLIENT")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/users/delete/{id}").hasRole("ADMIN")
 
                         // Agent routes
@@ -71,16 +74,6 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Update as needed
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 }
 

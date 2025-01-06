@@ -17,10 +17,13 @@ import com.example.user.users.mapper.ClientMapper;
 import com.example.user.users.request.*;
 import com.example.user.users.response.AgentResponse;
 import com.example.user.users.response.ClientResponse;
+import com.example.user.users.response.ServiceResponse;
 import com.example.user.users.response.UserResponse;
 import com.example.user.users.service.AdminService;
 import com.example.user.users.service.AgentService;
 import com.example.user.users.service.UserService;
+import com.example.user.virtualCardClient.VirtualCardClient;
+import com.example.user.virtualCardClient.VirtualCardResponse;
 import com.example.user.walletClient.WalletClient;
 import com.example.user.walletClient.WalletResponse;
 import com.example.user.walletCryptoClient.TransactionResponse;
@@ -38,12 +41,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
@@ -59,11 +63,15 @@ public class UserController {
     private UserAuthenticationProvider userAuthenticationProvider;
 
 
+
+
     //login for all users (admin, agent, client)
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto) {
         // Authenticate user
         UserDto userDto = userService.login(credentialsDto);
+
+        log.info("Creating token for phone number: {}", userDto.getPhoneNumber());
 
         // Generate token with phone number
         String token = userAuthenticationProvider.createToken(userDto.getPhoneNumber());
@@ -95,6 +103,18 @@ public class UserController {
         return ResponseEntity.ok(userService.createClient(userRequest));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AGENT')")
+    @PutMapping("/deactivate-account/{id}")
+    public ResponseEntity<String> deactivateAccount(@PathVariable String id) {
+        boolean isDeactivated = userService.deactivateAccount(id);
+        if (isDeactivated) {
+            return ResponseEntity.ok("Compte désactivé avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Échec de la désactivation du compte.");
+        }
+    }
+
+
     @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/clients")
     public ResponseEntity<List<UserResponse>> getAllClients() {
@@ -121,6 +141,16 @@ public class UserController {
     }
 
 
+    @GetMapping("/getUser/{userId}")
+    public ResponseEntity<UserResponse> getUser(@PathVariable("userId") String userId) {
+        return ResponseEntity.ok(userService.findById(userId));
+    }
+
+    @GetMapping("/getUserByPhone/{phone}")
+    public ResponseEntity<String> getUserIdByPhone(@PathVariable("phone") String phone) {
+        return ResponseEntity.ok(userService.getClientIdByPhoneNumber(phone));
+    }
+
     //--------------------------------------Admin-----------------------------------//
 
     @PostMapping("/addAdmin")
@@ -128,11 +158,6 @@ public class UserController {
         return ResponseEntity.ok(service.saveAdmin(request));
     }
 
-
-    @PostMapping("/addAgent")
-    public ResponseEntity<AgentResponse> AddAgent(@RequestBody AgentRequest request) {
-        return ResponseEntity.ok(service.addAgent(request));
-    }
 
 
     @GetMapping("/getAgent/{id}")
@@ -163,14 +188,13 @@ public class UserController {
 
     //--------------------------------------Agent-----------------------------------//
 
-    private final AgentService agentService;
-    private final ClientMapper clientMapper;
 
-    @PostMapping("/client")
+
+   /* @PostMapping("/client")
     public ResponseEntity<ClientResponse> createClient(@RequestBody ClientRequest clientRequest) {
         return ResponseEntity.ok(agentService.createClient(clientRequest));
     }
-
+*/
     /*@PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
     @GetMapping("/client/allClients")
     public ResponseEntity<List<ClientResponse>> getAllClients() {
@@ -182,15 +206,23 @@ public class UserController {
     }*/
 
 
-    @GetMapping("/client/{id}")
+  /*  @GetMapping("/client/{id}")
     public ResponseEntity<ClientResponse> getClientById(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 
         return clientOpt.map(client -> ResponseEntity.ok(clientMapper.fromClient(client)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+*/
+    @PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+    @GetMapping("/client/{id}")
+    public ResponseEntity<UserResponse> getClientById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.findById(id));
 
-    @PutMapping("/client/{id}")
+    }
+
+
+   /* @PutMapping("/client/{id}")
     public ResponseEntity<ClientResponse> updateClient(@PathVariable String id, @RequestBody ClientRequest clientRequest) {
         Optional<Client> existingClientOpt = agentService.getClientById(id);
 
@@ -208,7 +240,9 @@ public class UserController {
         return ResponseEntity.ok(clientResponse);
     }
 
-    @DeleteMapping("/client/{id}")
+    */
+
+   /* @DeleteMapping("/client/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable String id) {
         Optional<Client> clientOpt = agentService.getClientById(id);
 
@@ -220,37 +254,67 @@ public class UserController {
         return ResponseEntity.noContent().build(); // Retourner le statut HTTP 204 No Content
     }
 
-    @PostMapping("/service/{id}")
-    //@PreAuthorize("hasAuthority('agent:create')")
-    //@Hidden
-    public ResponseEntity<ServiceAgentResponse> createService(@PathVariable String id, @RequestBody AgentServiceRequest request) {
-        return ResponseEntity.ok(agentService.createService(request, id));
+    */
+    @PreAuthorize("hasRole('AGENT')")
+    @PostMapping("/creatService")
+    public ResponseEntity<ServiceResponse> createService(@RequestBody Service request) {
+        System.out.println("Requête reçue pour créer un service.");
+        return ResponseEntity.ok(userService.createService(request));
     }
 
-
+    @PreAuthorize("hasRole('AGENT')")
     @PutMapping("/service/{serviceId}")
-    //@PreAuthorize("hasAuthority('agent:update')")
-    public ResponseEntity<ServiceAgentResponse> updateService(
+    public ResponseEntity<ServiceResponse> updateService(
             @PathVariable String serviceId,
-            @RequestBody AgentServiceRequest request
+            @RequestBody Service request
     ) {
-        return ResponseEntity.ok(agentService.updateService(serviceId, request));
+        return ResponseEntity.ok(userService.updateService(serviceId, request));
     }
 
-   /* @DeleteMapping("/service/{serviceId}")
-    //@PreAuthorize("hasAuthority('agent:delete')")
-    public RegisterAgentResponse deleteService(@PathVariable Long serviceId) {
-        return agentservice.deleteService(serviceId);
-    }*/
-
-
+    @PreAuthorize("hasRole('AGENT') ")
     @GetMapping("/serviceByAgent/{agentId}")
-    //@PreAuthorize("hasAuthority('agent:read')")
-    public List<AgentServiceRequest> getServicesByAgent(@PathVariable("agentId") String agentId) {
-        return agentService.getAllServicesByAgentId(agentId);
+    public List<Service> getServicesByAgent(@PathVariable("agentId") String agentId) {
+        return userService.getAllServicesByAgentId(agentId);
     }
 
+    @PreAuthorize("hasRole('AGENT') ")
+    @GetMapping("/serviceById/{id}")
+    public ResponseEntity<?> getServiceById(@PathVariable String id) {
+        try {
+            // Appel de la méthode pour récupérer le service
+            com.example.user.users.entity.Service service = userService.getServiceById(id);
 
+            if (service == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(service);
+        } catch (Exception e) {
+            // En cas d'erreur, retourne une réponse 500 avec le message d'erreur
+            return ResponseEntity.status(500).body("Erreur lors de la récupération du service : " + e.getMessage());
+        }
+    }
+    @PreAuthorize("hasRole('AGENT') ")
+    @DeleteMapping("/deleteService/{id}")
+    public ResponseEntity<?> deleteService(@PathVariable String id) {
+        try {
+            // Appel de la méthode pour supprimer le service
+            ServiceAgentResponse response = userService.deleteService(id);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            // Retourner une réponse 404 si le service n'est pas trouvé
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            // Retourner une réponse 500 pour les erreurs générales
+            return ResponseEntity.status(500).body("Erreur lors de la suppression du service : " + e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasRole('AGENT') ")
+    @GetMapping("/clientsByAgent/{agentId}")
+    public List<UserResponse> getClientsByAgentId(@PathVariable ("agentId") String agentId) {
+        return userService.getAllClientsByAgentId(agentId);
+    }
     //--------------------------------------Client-----------------------------------//
 
     //-------------------------laila-------------------------//
@@ -312,6 +376,7 @@ public class UserController {
     private final ClientService clientService;
     private final TransactionClient transactionClient;
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/creat-transaction")
     public ResponseEntity<String> createTransaction(@RequestParam String senderId, @RequestParam String beneficiaryId, @RequestParam BigDecimal amount, @RequestParam TransactionType transactionType) {
         TransactionRequest transaction;
@@ -357,7 +422,7 @@ public class UserController {
         return ResponseEntity.ok("Subscription created successfully");
     }
 
-    @GetMapping("/clientByPhone/{phoneNumber}")
+    /*@GetMapping("/clientByPhone/{phoneNumber}")
     public ResponseEntity<String> getClientIdByPhoneNumber(@PathVariable String phoneNumber) {
         String clientId = clientService.getClientIdByPhoneNumber(phoneNumber);
         if (clientId != null) {
@@ -365,7 +430,7 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Client introuvable");
         }
-    }
+    }*/
 
     @GetMapping("/clientbyid/{clientId}")
     public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
@@ -379,11 +444,14 @@ public class UserController {
     //-------------------------kawtar-------------------------//
     // kawtar here
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/wallet/{clientId}")
     public ResponseEntity<WalletResponse> getWalletInfo(@PathVariable("clientId") String clientId) {
         WalletResponse wallet = userService.getWalletByUserId(clientId);
         return ResponseEntity.ok(wallet);
     }
+
+
 
     @GetMapping("/transactions/{userId}")
     public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getUserTransactions(
@@ -392,6 +460,8 @@ public class UserController {
         return ResponseEntity.ok(transactions);
     }
 
+
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/feed-wallet")
     public ResponseEntity<Boolean> feedWallet(@RequestBody Map<String, Object> requestBody) {
         String clientId = (String) requestBody.get("clientId");
@@ -401,6 +471,8 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/all-transactions/{userId}")
     public ResponseEntity<List<com.example.user.transactionClient.TransactionResponse>> getAllTransactionsByUserId(
             @PathVariable("userId") String userId) {
@@ -408,11 +480,39 @@ public class UserController {
         return ResponseEntity.ok(transactions);
     }
 
+
+
+    @Autowired
+    private VirtualCardClient virtualCardClient;
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<VirtualCardResponse> addVirtualCard(@PathVariable String userId) {
+        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/activate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> activateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @PatchMapping("/deactivate/{cardId}")
+    public ResponseEntity<VirtualCardResponse> deactivateCard(@PathVariable String cardId){
+        return ResponseEntity.ok(virtualCardClient.createCard(cardId));
+    }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<VirtualCardResponse>> getCardsByUser(@PathVariable String userId) {
+        return ResponseEntity.ok(Collections.singletonList(virtualCardClient.createCard(userId)));
+    }
+
+    /*kaoutar*/
     @Autowired
     private DepenseClient depenseClient;
     /**
-            * Endpoint pour créer une nouvelle dépense.
-            */
+     * Endpoint pour créer une nouvelle dépense.
+     */
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/create-depense")
     public ResponseEntity<DepenseResponse> createDepense(@RequestBody DepenseRequest depenseRequest) {
         return depenseClient.createDepense(depenseRequest);
@@ -421,6 +521,7 @@ public class UserController {
     /**
      * Endpoint pour mettre à jour une dépense existante.
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/update-depense/{depenseId}")
     public ResponseEntity<DepenseResponse> updateDepense(@PathVariable String depenseId,
                                                          @RequestParam Double nouveauMontant) {
@@ -430,6 +531,7 @@ public class UserController {
     /**
      * Endpoint pour annuler une dépense.
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/cancel-depense/{depenseId}")
     public ResponseEntity<DepenseResponse> cancelDepense(@PathVariable String depenseId) {
         return depenseClient.cancelDepense(depenseId);
@@ -438,6 +540,7 @@ public class UserController {
     /**
      * Endpoint pour récupérer une dépense par son ID.
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/get-depense/{depenseId}")
     public ResponseEntity<DepenseResponse> getDepenseById(@PathVariable String depenseId) {
         return depenseClient.getDepenseById(depenseId);
@@ -446,6 +549,7 @@ public class UserController {
     /**
      * Endpoint pour récupérer toutes les dépenses d'un utilisateur par son ID.
      */
+    @PreAuthorize("hasAuthority('CLIENT')")
     @GetMapping("/list-depense")
     public ResponseEntity<List<DepenseResponse>> getAllDepensesByUser(@RequestParam String userId) {
         return depenseClient.getAllDepensesByUser(userId);

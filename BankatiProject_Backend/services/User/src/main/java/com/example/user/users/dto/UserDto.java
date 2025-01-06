@@ -32,7 +32,6 @@ public class UserDto {
     private Boolean isPaymentAccountActivated ;
     private String typeHissab;
     private String currency;
-
     private String token;
     private String message;
 

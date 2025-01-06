@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AgentService} from "../../../service/agent.service";
 import {IAgent} from "../../../models/Agent";
+import {AgentRequest} from "../../../models/AgentRequest";
 import {AdminService} from "../../../service/admin.service";
 
 @Component({
@@ -10,7 +11,7 @@ import {AdminService} from "../../../service/admin.service";
   styleUrls: ['./new-agent.component.scss']
 })
 export class NewAgentComponent implements OnInit {
-  agents: IAgent[] = [];
+  agents: AgentRequest[] = [];
   errorMessage: string | null = null; // Gestion des erreurs
   successMessage: string | null = null;
   constructor(private router: Router, private adminService: AdminService) { }
@@ -35,11 +36,18 @@ export class NewAgentComponent implements OnInit {
     this.router.navigate(['/add-agent']);
   }
 
-  deleteAgent(id: number) {
-
+  deleteAgent(id: string): void {
+    this.adminService.deleteUser(id).subscribe(
+      () => {
+        this.getAllAgents();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'agent :', error);
+      }
+    );
   }
 
-  viewAgentDetails(id: number) {
+  viewAgentDetails(id: string) {
     this.router.navigate(['/details-agent', id]);
   }
 }

@@ -1,6 +1,8 @@
 package com.example.user.users.service;
 
 import com.example.user.serviceTiersClient.ServiceTiersClient;
+import com.example.user.transactionClient.*;
+import com.example.user.serviceTiersClient.ServiceTiersClient;
 import com.example.user.transactionClient.TransactionClient;
 import com.example.user.transactionClient.TransactionResponse;
 import com.example.user.users.dto.CredentialsDto;
@@ -9,17 +11,17 @@ import com.example.user.users.dto.UserDto;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
 import com.example.user.users.dto.UserDto;
-import com.example.user.users.entity.Agent;
-import com.example.user.users.entity.Client;
-import com.example.user.users.entity.Role;
-import com.example.user.users.entity.User;
+import com.example.user.users.entity.*;
 import com.example.user.users.exceptions.AppException;
 import com.example.user.users.exceptions.UserNotFoundException;
+import com.example.user.users.mapper.AgentServiceMapper;
 import com.example.user.users.mapper.UserMapper;
 import com.example.user.users.repository.AgentRepository;
-import com.example.user.users.repository.ClientRepository;
+import com.example.user.users.repository.ServiceRepository;
 import com.example.user.users.repository.UserRepository;
+import com.example.user.users.request.ServiceRequest;
 import com.example.user.users.request.UserRequest;
+import com.example.user.users.response.ServiceResponse;
 import com.example.user.users.response.UserResponse;
 import com.example.user.users.twilio.Const;
 import com.example.user.users.twilio.ENVConfig;
@@ -39,8 +41,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.user.users.entity.Role.AGENT;
+import static com.example.user.users.entity.Role.CLIENT;
 import static java.lang.String.format;
 
 
@@ -74,6 +81,7 @@ public class UserService {
     private TwilioConfiguration twilioConfiguration;
 
     private static final String CHARACTERS = "0123456789";
+
 
 
 
@@ -122,7 +130,7 @@ public class UserService {
             UserDto userDto = userMapper.toUserDto(user);
 
             // Enforce first login password change for clients
-            if (user.getRole() == Role.CLIENT && user.isFirstLogin()) {
+            if (user.getRole() == CLIENT && user.isFirstLogin()) {
                 userDto.setMessage("Please change your password.");
             }
 
@@ -131,7 +139,6 @@ public class UserService {
 
         throw new AppException("Unknown credentials", HttpStatus.NOT_FOUND);
     }
-
 
 
     public UserDto register(SignUpDto signUpDto) {
@@ -173,10 +180,10 @@ public class UserService {
     }
 
 
-    public String createClient(UserRequest userRequest) {
+   public String createClient(UserRequest userRequest) {
         // Ensure the role is CLIENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.CLIENT) {
+        if (role != CLIENT) {
             throw new AppException("Only CLIENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -200,7 +207,7 @@ public class UserService {
         var idWallet = walletClient.saveWallet(wallet);
 
         //twilio
-        String formattedPhoneNumber=formatPhoneNumber(savedUser.getPhoneNumber());
+        String formattedPhoneNumber = formatPhoneNumber(savedUser.getPhoneNumber());
         String msg =   "Bonjour "+ savedUser.getFirstName() +" "+savedUser.getLastName() + ", votre mot de passe est "+ userRequest.password() + ".";
         Message twilioMessage = (Message) sendSms(formattedPhoneNumber, Const.OTP_MESSAGE.replace("<otp>",msg) );
         log.info("Twilio Response : {}", twilioMessage.getStatus());
@@ -208,16 +215,27 @@ public class UserService {
         return savedUser.getId();
     }
 
+    public boolean deactivateAccount(String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setIsPaymentAccountActivated(false);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
 
     public List<UserResponse> getAllClients() {
-        return userRepository.findByRole(Role.CLIENT)
+        return userRepository.findByRole(CLIENT)
                 .stream()
                 .map(userMapper::fromUser)
                 .collect(Collectors.toList());
     }
 
     public List<UserResponse> getAllAgents() {
-            return userRepository.findByRole(Role.AGENT)
+            return userRepository.findByRole(AGENT)
                     .stream()
                     .map(userMapper::fromUser)
                     .collect(Collectors.toList());
@@ -228,7 +246,7 @@ public class UserService {
     public String createAgent(UserRequest userRequest) {
         // Ensure the role is AGENT
         Role role = Role.fromString(String.valueOf(userRequest.role()));
-        if (role != Role.AGENT) {
+        if (role != AGENT) {
             throw new AppException("Only AGENT role is allowed", HttpStatus.BAD_REQUEST);
         }
 
@@ -278,9 +296,13 @@ public class UserService {
 */
 
     public UserDto findByLogin(String login) {
-        // Find user by phone number
-        User user = userRepository.findByPhoneNumber(login)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        log.info("Searching for user with login: {}", login);
+
+        // Try to find user by phone number first
+        Optional<User> userOptional = userRepository.findByPhoneNumber(login);
+
+        // If still not found, throw an exception
+        User user = userOptional.orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         return userMapper.toUserDto(user);
     }
@@ -348,12 +370,10 @@ public class UserService {
     }
 
 
+
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
-
-
-
 
 
 
@@ -377,16 +397,166 @@ public class UserService {
         return "+212" + formatted;
     }
 
-    /*kaoutar*/
-    @Autowired
-    private  TransactionClient transactionClient;
-    @Autowired
-    private  ServiceTiersClient serviceTiersClient;
 
-    public User getUserById(String userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+
+    //--------------------------------------BackOffice-----------------------------------//
+
+
+
+
+
+
+
+
+    //--------------------------------------Agent-----------------------------------//
+
+    @Autowired
+    ServiceRepository serviceRepository;
+    public ServiceResponse createService(com.example.user.users.entity.Service request) {
+        // Ajouter des validations si nécessaire sur l'objet `request`
+        if (request.getName() == null || request.getType() == null) {
+            throw new IllegalArgumentException("Service request is invalid");
+        }
+        // Enregistrer le service
+        serviceRepository.save(request);
+
+        // Retourner la réponse
+        return new ServiceResponse("service cree avec succee");
     }
+
+    public List<com.example.user.users.entity.Service> getAllServicesByAgentId(String agentId) {
+        List<com.example.user.users.entity.Service> servicesAgent = serviceRepository.findAllByAgentId(agentId);
+        return servicesAgent.stream()
+                .map(AgentServiceMapper::ConvertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ServiceResponse updateService(String serviceId, com.example.user.users.entity.Service request) {
+        com.example.user.users.entity.Service agentService = serviceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        agentService.setName(request.getName());
+        agentService.setType(request.getType());
+
+        serviceRepository.save(agentService);
+
+        return new ServiceResponse("service update avec succee");
+    }
+
+    public com.example.user.users.entity.Service getServiceById(String id) {
+       return serviceRepository.findServiceById(id)
+               .map(AgentServiceMapper::ConvertToDto)
+                .orElse(null);
+   }
+    public ServiceAgentResponse deleteService(String serviceId) {
+        com.example.user.users.entity.Service agentService = serviceRepository.findServiceById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
+
+        serviceRepository.delete(agentService);
+
+        return ServiceAgentResponse.builder().message("Service deleted successfully").build();
+    }
+    public List<UserResponse> getAllClientsByAgentId(String agentId) {
+        // Vérifier que l'agentId n'est pas nul ou vide
+        if (agentId == null || agentId.isEmpty()) {
+            throw new IllegalArgumentException("Agent ID cannot be null or empty");
+        }
+
+        // Récupérer tous les utilisateurs associés à cet agentId
+        List<User> clients = userRepository.findAllByAgentId(agentId);
+
+        // Mapper les résultats en objets UserRequest
+        return clients.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getAgentId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getAddress(),
+                        user.getCin(),
+                        user.getBirthDate(),
+                        user.getPhoneNumber(),
+                        user.getRole(),
+                        user.getPassword(),
+                        user.isFirstLogin(),
+                        user.getCommercialRn(),
+                        user.getImage(),
+                        user.getPatentNumber(),
+                        user.getIsPaymentAccountActivated(),
+                        user.getTypeHissab(),
+                        user.getCurrency()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+    //--------------------------------------client-----------------------------------//
+
+
+public TransactionRequest createPaymentTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
+    UserResponse beneficiary = findById(beneficiaryId);
+    UserResponse sender = findById(senderId);
+
+    return new TransactionRequest(
+            null, // ID généré ultérieurement
+            amount,
+            beneficiary.id(),
+            beneficiary.firstName()+" "+beneficiary.lastName(),
+            beneficiary.phoneNumber(),
+            AGENT,
+            TransactionType.PAYMENT,
+            TransactionStatus.COMPLETED, // Statut initial
+            beneficiary.currency(),
+            null, // Pas de date de validation au début
+            sender.id(),
+            sender.firstName()+" "+sender.lastName(),
+            sender.phoneNumber(),
+            CLIENT,
+            sender.currency()
+    );
+}
+
+    public TransactionRequest createTransferTransaction(String senderId, String beneficiaryId, BigDecimal amount) {
+        UserResponse beneficiary =findById(beneficiaryId);
+        UserResponse sender =findById(senderId);
+        return new TransactionRequest(
+                null, // ID généré ultérieurement
+                amount,
+                beneficiary.id(),
+                beneficiary.firstName()+" "+beneficiary.lastName(),
+                beneficiary.phoneNumber(),
+                CLIENT,
+                TransactionType.TRANSFER,
+                TransactionStatus.COMPLETED, // Statut initial
+                beneficiary.currency(),
+                null, // Pas de date de validation au début
+                sender.id(),
+                sender.firstName()+" "+sender.lastName(),
+                sender.phoneNumber(),
+                CLIENT,
+                sender.currency()
+        );
+    }
+
+     public String getClientIdByPhoneNumber(String phoneNumber) {
+         Optional<User> client = userRepository.findUserByPhoneNumber(phoneNumber);
+         if (client.isPresent()) {
+             return client.get().getId();
+         } else {
+             throw new RuntimeException("Aucun client trouvé avec le numéro de téléphone : " + phoneNumber);
+         }
+     }
+
+
+
+
+    @Autowired
+    private TransactionClient transactionClient;
+    @Autowired
+    private ServiceTiersClient serviceTiersClient;
+
 
     public WalletResponse getWalletByUserId(String userId) {
         return walletClient.getWalletByIdClient(userId).getBody();

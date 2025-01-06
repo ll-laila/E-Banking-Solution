@@ -10,6 +10,7 @@ import {IAgent} from '../../../models/Agent';
 import {AgentService} from '../../../service/agent.service';
 import {SharedInfosService} from '../../../service/shared-infos.service';
 import {Subscription} from "rxjs";
+import {UserResponse} from "../../../models/UserResponse";
 
 
 
@@ -19,51 +20,45 @@ import {Subscription} from "rxjs";
   styleUrls: ['./dashboardAgent.component.scss']
 })
 export class DashboardAgentComponent implements OnInit {
-  clients: any[] = [];
+  clients: UserResponse[] = [];
   phoneNumber: string;
-  agent: IAgent;
+
 
   // tslint:disable-next-line:max-line-length
   constructor(private router: Router,  private agentService: AgentService,
               private sharedInfosService : SharedInfosService, private route: ActivatedRoute
   ) {
   }
-
-
-  async ngOnInit(): Promise<void> {
-    this.getAllClients();
-    /*
-    try {
-      const phoneNumber = this.sharedInfosService.getPhoneNumber();
-      this.agent = await this.getAgentByPhone(phoneNumber);
-      if (this.agent) {
-        this.getAllClients(this.agent.id);
-      }
-    } catch (error) {
-      console.error('Error retrieving agent:', error);
-    }
-
-     */
+  addClient() {
+    this.router.navigate(['/add-clientt']);
   }
 
-  /*
-    async getAgentByPhone(phoneNum: string): Promise<IAgent> {
-      try {
-        const agent = await this.agentService.getAgentByPhoneNumber(phoneNum).toPromise();
-        console.log(agent);
-        return agent;
-      } catch (error) {
-        console.error('Error retrieving agent by phone number:', error);
-        throw error;
-      }
+
+
+  agentId: string | null = null;
+
+
+  ngOnInit(): void {
+    this.agentId = localStorage.getItem('id'); // Récupérer l'agentId
+    if (this.agentId) {
+      this.getAllClientsByAgentId(this.agentId);
+    } else {
+      console.error('Aucun agentId trouvé.');
     }
+  }
 
+  getAllClientsByAgentId(agentId: string): void {
+    this.agentService.getClientsByAgentId(agentId).subscribe(
+      (clients) => {
+        this.clients = clients;
+      },
+      (error) => {
+        console.error('Une erreur s\'est produite lors de la récupération des clients :', error);
+      }
+    );
+  }
 
-   */
-
-
-
-  getAllClients(): void {
+  /*getAllClients(): void {
      this.agentService.getAllClients().subscribe(
 
       (clients) => {
@@ -75,7 +70,9 @@ export class DashboardAgentComponent implements OnInit {
     );
   }
 
-  getAllClientByAgentId(): void {
+
+   */
+  /*getAllClientByAgentId(): void {
     this.agentService.getAllClients().subscribe(res => {
       this.clients = res;
     }, error => {
@@ -113,6 +110,8 @@ export class DashboardAgentComponent implements OnInit {
     );
    // window.location.reload();
   }
+
+   */
 
 
 

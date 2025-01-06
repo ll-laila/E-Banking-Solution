@@ -1,64 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/client';
-
-import { Transaction } from '../../models/transaction';
+import { SharedInfosService } from '../../../service/shared-infos.service';
+import { ClientRequest } from '../../models/clientRequest';
+import { TransactionResponse } from '../../models/transactionResponse';
 import {Wallet} from "../../../models/wallet";
 
-@Component({
+@Component({ 
   selector: 'app-dashboard-client',
   templateUrl: './dashboardClient.component.html',
   styleUrls: ['./dashboardClient.component.scss'],
 })
 export class DashboardClientComponent implements OnInit {
-  client: Client | null = null; // Initialisation
   wallet: Wallet | null = null; // Initialisation
-  transactions: Transaction[] = [];
+  transactions: TransactionResponse[] = [];
   errorMessage: string | null = null; // Initialisation
 
-  constructor(private clientService: ClientService) {}
+
+ client: ClientRequest = {
+    id: '',
+    agentId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    cin: '',
+    birthDate: new Date(),
+    phoneNumber: '',
+    role: '',
+    password: '',
+    isFirstLogin: false,
+    commercialRn: '',
+    image: '',
+    patentNumber: '',
+    isPaymentAccountActivated: false,
+    typeHissab: '',
+    currency: '',
+    token: ''
+  };
+
+
+  constructor(private clientService: ClientService,private sharedInfosService: SharedInfosService) {}
 
   ngOnInit(): void {
-    const clientId = '67596dcc2500d851f75a6f98';
-    this.loadClientData(clientId);
-    this.loadAllTransactions(clientId);
+    this.loadClientData();
+    this.loadAllTransactions();
+  } 
+
+  loadClientData(): void {
+    this.clientService.getUserById(localStorage.getItem('id')).subscribe((client) => {
+      this.client = client;
+    });
+    this.clientService.getWalletByClientId(localStorage.getItem('id')).subscribe((wallet) => {
+      this.wallet = wallet;
+    },
+    (error) => {
+      this.errorMessage = 'Erreur lors de la récupération des données du portefeuille.';
+      console.error('Error fetching wallet data:', error);
+    });
   }
 
-  loadClientData(clientId: string): void {
-    this.clientService.getClientById(clientId).subscribe(
-      (data: Client) => {
-        this.client = data;
-      },
-      (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des données du client.';
-        console.error('Error fetching client data:', error);
-      }
-    );
 
-    this.clientService.getWalletByClientId(clientId).subscribe(
-      (data: Wallet) => {
-        this.wallet = data;
-      },
-      (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des données du portefeuille.';
-        console.error('Error fetching wallet data:', error);
-      }
-    );
-  }
-  loadTransactions(userId: string): void {
-    this.clientService.getTransactionsByUserId(userId).subscribe(
-      (data: Transaction[]) => {
-        this.transactions = data;
-      },
-      (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des transactions.';
-        console.error('Error fetching transactions:', error);
-      }
-    );
-  }
-  loadAllTransactions(userId: string): void {
-    this.clientService.getAllTransactionsByUserId(userId).subscribe(
-      (data: Transaction[]) => {
+
+  loadAllTransactions(): void {
+    this.clientService.getAllTransactionsByUserId(localStorage.getItem('id')).subscribe(
+      (data: TransactionResponse[]) => {
         this.transactions = data;
       },
       (error) => {

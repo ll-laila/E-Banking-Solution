@@ -1,7 +1,67 @@
-<div class="header pb- pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
-<!-- Page content -->
-<!-- Table -->
-<div>
-</div>
-<div class="container-fluid mt--3">
+<div class="header pb-5 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);"></div>
+
+<!-- Conteneur principal -->
+<div class="budget-container container mt-5">
+  <h1 class="text-center text-uppercase text-primary mb-4">Budget Personnel</h1>
+
+  <!-- Message de chargement ou d'erreur -->
+  <div *ngIf="loading" class="alert alert-info text-center">Chargement...</div>
+  <!--<div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>-->
+
+  <!-- Formulaire pour créer une dépense -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase mb-3">Créer une nouvelle dépense</h5>
+      <form (submit)="createDepense(); $event.preventDefault()">
+        <div class="mb-3">
+          <label for="montant" class="form-label">Montant :</label>
+          <input
+            type="number"
+            id="montant"
+            name="montant"
+            class="form-control"
+            [(ngModel)]="newDepense.montant"
+            placeholder="Entrez le montant"
+            required />
+        </div>
+        <div class="mb-3">
+          <label for="userPhone" class="form-label">Téléphone :</label>
+          <input
+            type="text"
+            id="userPhone"
+            name="userPhone"
+            class="form-control"
+            [(ngModel)]="newDepense.userPhone"
+            placeholder="Téléphone de l'utilisateur"
+            required />
+        </div>
+        <button
+          type="submit"
+          class="btn w-100"
+          style="background-color: #ffc107; color: #fff; border: none;">Ajouter une dépense</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Liste des dépenses -->
+  <div class="card shadow">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase mb-3">Liste des Dépenses</h5>
+      <div *ngIf="depenses.length === 0" class="text-muted">Aucune dépense trouvée.</div>
+      <ul *ngIf="depenses.length > 0" class="list-group">
+        <li *ngFor="let depense of depenses" class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ depense.montant }} MAD</span>
+          <div>
+            <button
+              class="btn btn-outline-primary btn-sm me-2"
+              (click)="updateDepense(depense.id, depense.montant + 100)">Augmenter</button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              (click)="cancelDepense(depense.id)">Supprimer</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

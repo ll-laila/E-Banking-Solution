@@ -31,5 +31,7 @@ public class VirtualCard {
 
     private LocalDateTime updatedAt;
 
+    private String montant;
+
 
 }

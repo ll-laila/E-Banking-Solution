@@ -139,4 +139,35 @@ public class TransactionService {
     }
 
 
+    //For Batch Service
+
+    //les transactions qui nécessitent une conciliation.
+    public List<Transaction> getUnreconciledTransactions() {
+        return repository.findByStatus(TransactionStatus.PENDING);
+    }
+
+//    public void updateTransactionAfterReconciliation(Transaction transaction, boolean isReconciled) {
+//        transaction.setStatus(isReconciled ? TransactionStatus.RECONCILED : TransactionStatus.FAILED);
+//        repository.save(transaction);
+//    }
+
+    public boolean validateWithProvider(Transaction transaction) {
+        TiersClientRequest tiersClientRequest = new TiersClientRequest(
+                transaction.getSenderCurrency(),
+                transaction.getBeneficiaryCurrency(),
+                transaction.getAmount(),
+                transaction.getSenderId(),
+                transaction.getBeneficiaryId()
+        );
+
+        ResponseEntity<TiersClientResponse> responseEntity = servicesTiersClient.doTransaction(tiersClientRequest);
+
+        if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
+            return responseEntity.getBody().isValid();
+        }
+
+        return false;
+    }
+
+
 }

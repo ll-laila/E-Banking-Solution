@@ -11,3 +11,8 @@ application:
       expiration: 31536000000
       refresh-token:
         expiration: 31536000000
+
+logging:
+  level:
+    org:
+      springframework.web.cors.reactive: DEBUG

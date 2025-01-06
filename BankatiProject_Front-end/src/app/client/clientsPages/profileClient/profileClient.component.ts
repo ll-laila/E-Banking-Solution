@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Client } from '../../models/client';
+import { ClientRequest } from '../../models/clientRequest';
+import {Wallet} from "../../../models/wallet";
 import {SharedClientService} from "../../services/shared-client.service";
 import {ClientService} from "../../services/client.service";
 import {SharedInfosService} from "../../../service/shared-infos.service";
@@ -11,22 +12,40 @@ import {SharedInfosService} from "../../../service/shared-infos.service";
 })
 export class ProfileClientComponent implements OnInit {
 
-  public client: Client
+  wallet: Wallet | null = null;
+ client: ClientRequest = {
+    id: '',
+    agentId: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    cin: '',
+    birthDate: new Date(),
+    phoneNumber: '',
+    role: '',
+    password: '',
+    isFirstLogin: false,
+    commercialRn: '',
+    image: '',
+    patentNumber: '',
+    isPaymentAccountActivated: false,
+    typeHissab: '',
+    currency: '',
+    token: ''
+  };
 
-  constructor(private sharedClientService: SharedClientService,
-              private sharedInfosService: SharedInfosService,
-              private clientService: ClientService) { }
+  constructor(private clientService: ClientService) { }
 
   ngOnInit() {
-    this.getClientByPhone( this.sharedInfosService.getPhoneNumber());
+    this.clientService.getUserById(localStorage.getItem('id')).subscribe((client) => {
+      this.client = client;
+    });
+    this.clientService.getWalletByClientId(localStorage.getItem('id')).subscribe((wallet) => {
+      this.wallet = wallet;
+    });
   }
 
-  getClientByPhone(phoneNum: string) {
-
-  }
-
-  public getClientPaymentAccount() {
-
-  }
+  
 
 }

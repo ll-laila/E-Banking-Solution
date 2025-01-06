@@ -35,9 +35,9 @@
           <table class="table align-items-center table-dark table-flush text-center">
             <thead class="thead-dark">
             <tr>
-              <th scope="col">Prénom</th>
-              <th scope="col">Nom</th>
+              <th scope="col">Agent</th>
               <th scope="col">Email</th>
+              <th scope="col">Address</th>
               <th scope="col">N° téléphone</th>
               <th scope="col">N° d'immatriculation</th>
               <th scope="col">Actions</th>
@@ -45,9 +45,9 @@
             </thead>
             <tbody>
             <tr *ngFor="let agent of agents" class="align-middle">
-              <th scope="row">{{ agent.firstName }}</th>
-              <td>{{ agent.lastName }}</td>
+              <th scope="row">{{ agent.firstName }} </th>
               <td>{{ agent.email }}</td>
+              <td>{{ agent.address }}</td>
               <td>{{ agent.phoneNumber }}</td>
               <td>{{ agent.commercialRn}}</td>
               <td class="text-right">

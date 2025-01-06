@@ -21,8 +21,11 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByRole(Role role);
 
+    Optional<User> findUserByPhoneNumber(String phone);
 
-//-------------------------chaima------------------------------//
+
+/*//-------------------------chaima------------------------------//
 @Query(value = "{ 'phoneNumber': ?0 }", fields = "{ '_id': 1 }")
-User findIdByPhoneNumber(String phoneNumber);
+User findIdByPhoneNumber(String phoneNumber);*/
+List<User> findAllByAgentId(String agentId);
 }

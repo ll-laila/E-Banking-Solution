@@ -89,7 +89,7 @@ public class UserMapper {
             userDto.setBirthDate(u.getBirthDate());
             userDto.setPhoneNumber(u.getPhoneNumber());
             userDto.setRole(u.getRole());
-            userDto.setPhoneNumber(u.getPassword());
+            userDto.setPassword(u.getPassword());
             userDto.setFirstLogin(u.isFirstLogin());
             userDto.setCommercialRn(u.getCommercialRn());
             userDto.setImage(u.getImage());

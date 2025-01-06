@@ -13,15 +13,22 @@ import {SharedInfosService} from "../../../service/shared-infos.service";
   templateUrl: './add-service.component.html',
   styleUrls: ['./add-service.component.scss']
 })
-export class AddServiceComponent implements OnInit { public service: IAgentServices = {} as IAgentServices;
+export class AddServiceComponent implements OnInit {
+
   clients: IClient[] = [];
   agent: IAgent;
+  agentId:string;
+  public service:IAgentServices={
+    id: null,
+    agentId:'',
+    name:'',
+    type:''
+  };
   constructor(private agentService: AgentService, private router: Router,private sharedInfosService:SharedInfosService) {}
 
   async ngOnInit(): Promise<void> {
     try {
-      const phoneNumber = this.sharedInfosService.getPhoneNumber();
-      //this.agent = await this.getAgentByPhone(phoneNumber);
+      this.agentId = this.sharedInfosService.getId();
     } catch (error) {
       console.error('Error retrieving agent:', error);
     }
@@ -42,7 +49,8 @@ export class AddServiceComponent implements OnInit { public service: IAgentServi
    */
 
   createService() {
-    this.agentService.createService(this.service,123)
+    this.service.agentId=this.agentId;
+    this.agentService.createService(this.service)
       .pipe(
         catchError(error => {
           console.error('Erreur lors de la création du service:', error);

@@ -1,40 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {CookieService} from "ngx-cookie-service";
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import {ClientChangePasswordService} from "../../service/client-change-password.service";
+import {Router} from "@angular/router";  // For notifications
 
 @Component({
   selector: 'app-client-change-password',
-  templateUrl: 'client-change-password.component.html',
-  styleUrls: ['client-change-password.component.scss']
+  templateUrl: './client-change-password.component.html',
+  styleUrls: ['./client-change-password.component.scss']
 })
-export class ClientChangePasswordComponent implements OnInit {
+export class ClientChangePasswordComponent {
+  phoneNumber: string = '';
+  newPassword: string = '';
+  oldPassword: string = '';
   test: Date = new Date();
-  loading = false;
-  submitted = false;
+
 
   constructor(
+    private changePasswordService: ClientChangePasswordService,
     private router: Router,
-    private userService: ClientChangePasswordService,
-    private cookieService: CookieService,
-    private route: ActivatedRoute
+    private toastr: ToastrService
   ) {}
 
-  ngOnInit() {
-    const token = this.cookieService.get('token');
-    this.route.queryParams.subscribe(params => {
-      const token = params['token'];
-    });
+  // Method to handle form submission
+  onSubmit(): void {
+    if (this.newPassword && this.oldPassword && this.phoneNumber) {
+      const changePasswordRequest = {
+        phoneNumber: this.phoneNumber,
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword
+      };
+
+      this.changePasswordService.changePassword(changePasswordRequest).subscribe(
+        () => {
+          this.toastr.success('Mot de passe changé avec succès', 'Succès');
+          this.router.navigate(['/client']).then();
+        },
+        (error) => {
+          this.toastr.error('Erreur lors du changement de mot de passe', 'Erreur');
+          console.error('Error changing password:', error);
+        }
+      );
+    } else {
+      this.toastr.warning('Veuillez remplir tous les champs', 'Attention');
+    }
   }
 
-  changePasswordForm = new FormGroup({
-    password: new FormControl('', Validators.required)
-  });
 
-  onSubmit(changePswForm: NgForm) {
 
-  }
-
-  get f() { return this.changePasswordForm.controls; }
 }

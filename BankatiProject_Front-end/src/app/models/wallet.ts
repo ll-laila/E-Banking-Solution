@@ -1,4 +1,6 @@
 export interface Wallet {
-  id: number;
+  id: string;
   balance: number;
+  clientId: string;
+  bankAccountId: string;
 }
