@@ -1,54 +1,72 @@
-<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right,  #ffc107, #2c4481);">
+<div class="header pb-8 pt-5 pt-md-8" style="background: linear-gradient(to right, #ffc107, #2c4481);">
   <div class="container-fluid">
     <div class="col-md-3 col-sm-6">
       <div class="mt-3">
         <button class="btn btn-primary" (click)="createCard()">Ajouter Carte Virtuelle</button>
       </div>
-
+      <ul class="navbar-nav align-items-center d-none d-md-flex">
+        <li class="nav-item" ngbDropdown placement="bottom-right">
+          <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+            <div class="media align-items-center">
+              <i class="fas fa-exchange-alt text-red"></i>
+              <div class="media-body ml-2 d-none d-lg-block">
+                <span class="mb-0 text-sm font-weight-bold">Alimenter</span>
+              </div>
+            </div>
+          </a>
+          <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+            <form [formGroup]="paymentForm">
+              <div class="dropdown-header noti-title">
+                <h6 class="text-overflow m-0">Montant</h6>
+              </div>
+              <div>
+                <input type="number" class="form-control form-control-alternative" formControlName="montant" placeholder="Entrez un montant">
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item">
+                <button class="btn btn-sm btn-primary" type="button" (click)="feedCard()">Confirmer</button>
+              </div>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="container">
-
   <div class="card-container">
-
     <div class="front">
       <div class="image">
-        <img src="C:\Users\pc\Documents\Projects\Bankati\BankatiProject\BankatiProject_Front-end\src\assets\img\chip.png" alt="">
-        <img src="C:\Users\pc\Documents\Projects\Bankati\BankatiProject\BankatiProject_Front-end\src\assets\img\visa.png" alt="">
+        <img src="assets/img/chip.png" alt="Chip"/>
+        <img src="assets/img/visa.png" alt="Visa"/>
       </div>
-      <div class="card-number-box">###</div>
+      <div class="card-number-box">{{ card.cardNumber }}</div>
       <div class="flexbox">
         <div class="box">
-          <span>card holder</span>
-          <div class="card-holder-name">full name</div>
+          <div class="card-holder-name">{{ client.lastName}} {{client.firstName}}</div>
         </div>
         <div class="box">
-          <span>expires</span>
+          <span>Expire</span>
           <div class="expiration">
-            <span class="exp-month">mm</span>
-            <span class="exp-year">yy</span>
+            <span class="exp-month">{{ card.expirationDate}}</span>
+          </div>
+        </div>
+        <div class="box">
+          <span>Solde</span>
+          <div class="expiration">
+            <span class="exp">{{ card.montant}}</span>
           </div>
         </div>
       </div>
     </div>
-
     <div class="back">
       <div class="stripe"></div>
       <div class="box">
-        <span>cvv</span>
+        <span>CVV</span>
         <div class="cvv-box"></div>
-        <img src="C:\Users\pc\Documents\Projects\Bankati\BankatiProject\BankatiProject_Front-end\src\assets\img\visa.png" alt="">
+        <img src="assets/img/visa.png" alt=""/>
       </div>
     </div>
-
   </div>
-
-
-
 </div>
-
-
-
-

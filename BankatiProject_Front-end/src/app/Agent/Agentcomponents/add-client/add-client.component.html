@@ -152,23 +152,32 @@
                           <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="client.phoneNumber" name="phoneNumber">
                         </div>
                       </div>
-
                       <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="phoneNumber">Currency</label>
+                          <select class="form-control" id="currency" [(ngModel)]="client.currency" name="currency">
+                            <option value="DH">DH - Dirhams Marocains</option>
+                            <option value="USD">USD - Dollars Américains</option>
+                            <option value="EUR">EUR - Euros</option>
+                          </select>
+                        </div>
+                      </div>
+                      <!--div class="col-md-6">
                         <div class="form-group">
                           <label for="commercialRn">Numéro commercial</label>
                           <input type="text" class="form-control" id="commercialRn" [(ngModel)]="client.commercialRn" name="commercialRn">
                         </div>
-                      </div>
+                      </div-->
                     </div>
 
                     <div class="row">
                       <!-- Patent Number and Payment Account Checkbox on the same line -->
-                      <div class="col-md-6">
+                      <!--div class="col-md-6">
                         <div class="form-group">
                           <label for="patentNumber">Numéro de patente</label>
                           <input type="text" class="form-control" id="patentNumber" [(ngModel)]="client.patentNumber" name="patentNumber">
                         </div>
-                      </div>
+                      </div-->
 
                       <!--div class="col-md-6">
                         <div class="form-group">
@@ -177,7 +186,7 @@
                         </div>
                       </div-->
 
-                      <div class="col-md-6">
+                      <!--div class="col-md-6">
                         <div class="form-group">
                           <select class="form-control" id="currency" [(ngModel)]="client.currency" name="currency">
                             <option value="DH">DH - Dirhams Marocains</option>
@@ -185,7 +194,7 @@
                             <option value="EUR">EUR - Euros</option>
                           </select>
                         </div>
-                      </div>
+                      </div-->
 
                     </div>
 

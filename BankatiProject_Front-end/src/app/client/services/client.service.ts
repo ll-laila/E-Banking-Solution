@@ -8,6 +8,8 @@ import { TransactionResponse } from '../models/transactionResponse';
 import { Transaction } from '../models/transaction';
 import { CookieService } from 'ngx-cookie-service';
 import {Wallet} from "../../models/wallet";
+import {DepenseResponse} from "../../models/DepenseResponse";
+import {DepenseRequest} from "../../models/DepenseRequest";
 
 
 
@@ -35,7 +37,7 @@ export class ClientService {
     console.log('Headers:', headers.get('Authorization'));
     return this.httpClient.get<Wallet>(url,{ headers });
   }
-  
+
 
   getAllTransactionsByUserId(userId: string): Observable<TransactionResponse[]> {
     const url = `${this.serverUrl}/all-transactions/${userId}`;
@@ -127,6 +129,38 @@ export class ClientService {
 
 
 //-------------------------------------------------------------------------------------//
+//------------------- Kaoutar -------------------//
+  public createDepense(depenseRequest: DepenseRequest): Observable<DepenseResponse> {
+    const url = `${this.serverUrl}/create-depense`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.post<DepenseResponse>(url, depenseRequest, { headers });
+  }
+
+  public updateDepense(depenseId: string, nouveauMontant: number): Observable<DepenseResponse> {
+    const url = `${this.serverUrl}/update-depense/${depenseId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    return this.httpClient.put<DepenseResponse>(url, { nouveauMontant }, { headers }).pipe(catchError(this.handleError));
+  }
+
+  public cancelDepense(depenseId: string): Observable<DepenseResponse> {
+    const url = `${this.serverUrl}/cancel-depense/${depenseId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    return this.httpClient.delete<DepenseResponse>(url, { headers }).pipe(catchError(this.handleError));
+  }
+
+  public getDepenseById(depenseId: string): Observable<DepenseResponse> {
+    const url = `${this.serverUrl}/get-depense/${depenseId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    return this.httpClient.get<DepenseResponse>(url, { headers }).pipe(catchError(this.handleError));
+  }
+
+  public getAllDepensesByUser(userId: string): Observable<DepenseResponse[]> {
+    const url = `${this.serverUrl}/list-depense?userId=${userId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<DepenseResponse[]>(url, { headers }).pipe(catchError(this.handleError));
+  }
 
 
 
