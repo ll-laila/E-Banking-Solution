@@ -499,9 +499,21 @@ public class UserController {
     }
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<VirtualCardResponse>> getCardsByUser(@PathVariable String userId) {
-        return ResponseEntity.ok(Collections.singletonList(virtualCardClient.createCard(userId)));
+    public ResponseEntity<VirtualCardResponse> getCardsByUser(@PathVariable String userId) {
+        return ResponseEntity.ok(virtualCardClient.createCard(userId));
     }
+
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @PostMapping("/feed-card")
+    public ResponseEntity<VirtualCardResponse> feedCard(@RequestBody Map<String, Object> requestBody) {
+        String clientId = (String) requestBody.get("clientId");
+        double somme = ((Number) requestBody.get("somme")).doubleValue();
+
+        VirtualCardResponse result = virtualCardClient.feedWallet(clientId, somme);
+        return ResponseEntity.ok(result);
+    }
+
 
 
 }

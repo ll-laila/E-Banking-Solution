@@ -3,6 +3,8 @@ package com.example.virtualcard.virtualcard.service;
 
 import com.example.virtualcard.virtualcard.entity.VirtualCard;
 import com.example.virtualcard.virtualcard.repository.VirtualCardRepository;
+import com.example.virtualcard.walletClient.Wallet;
+import com.example.virtualcard.walletClient.WalletClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,10 @@ public class VirtualCardService {
 
     @Autowired
     private VirtualCardRepository virtualCardRepository;
+
+    @Autowired
+    private WalletClient walletClient;
+
 
     // Créer une carte virtuelle
     public VirtualCard createVirtualCard(String userId) {
@@ -53,8 +59,25 @@ public class VirtualCardService {
     }
 
     // Obtenir toutes les cartes d'un utilisateur
-    public List<VirtualCard> getCardsByUserId(String userId) {
+    public VirtualCard getCardsByUserId(String userId) {
         return virtualCardRepository.findByUserId(userId);
     }
 
+
+    public VirtualCard feedCard(String clientId, double somme){
+        Wallet wallet = walletClient.getWalletByIdClient(clientId).getBody();
+        VirtualCard virtualCard = getCardsByUserId(clientId);
+        Wallet walletUpdate = new Wallet(wallet.id(),wallet.balance()-somme,wallet.clientId(),wallet.bankAccountId());
+        walletClient.updateWallet(walletUpdate);
+        VirtualCard virtualCardUpdate = new VirtualCard(virtualCard.getId(),
+                virtualCard.getCardNumber(),
+                virtualCard.getUserId(),
+                virtualCard.getExpirationDate() ,
+                virtualCard.getStatus(),
+                virtualCard.getCreatedAt(),
+                virtualCard.getUpdatedAt(),
+                virtualCard.getMontant() + somme
+                );
+        return virtualCardRepository.save(virtualCardUpdate);
+    }
 }
