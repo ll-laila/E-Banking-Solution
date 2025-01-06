@@ -4,10 +4,10 @@ import com.example.user.users.entity.Agent;
 
 public record ServiceRequest (
         String id,
+        String agentId,
         String name,
+        String type
 
-        String type,
 
-        Agent agent
 ){
 }

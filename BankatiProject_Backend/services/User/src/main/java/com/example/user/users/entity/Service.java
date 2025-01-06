@@ -14,11 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Service {
     @Id
     private String id;
+    private String agentId;
     private String name;
 
     private String type;
-
-    @DBRef
-    private Agent agent;
 
 }

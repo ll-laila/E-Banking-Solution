@@ -12,6 +12,8 @@ import {IAgentServices} from "../models/AgentServices";
 import {UserRequest} from "../models/UserRequest";
 import {SharedInfosService} from "./shared-infos.service";
 import {UserResponse} from "../models/UserResponse";
+import {AgentRequest} from "../models/AgentRequest";
+import {IAgentServiceResponse} from "../models/IAgentServiceResponse";
 
 
 
@@ -20,22 +22,36 @@ import {UserResponse} from "../models/UserResponse";
 })
 export class AgentService {
 
-  private serverUrl = `http://localhost:8010/api/v1/users`;
+  private serverUrl = `http://localhost:8222/api/v1/users`;
 
 
-  private authorization = this.cookieService.get('Authorization');
+
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) {
   }
 
+
+  /*public createClient(clientRegisterRequest: UserRequest): Observable<string> {
+    const dataUrl = `${this.serverUrl}/create-client`;
+
   public createClient(clientRegisterRequest: IClient): Observable<string> {
     const dataUrl = `${this.serverUrl}/client`;
+
     const headers = this.sharedInfosService.getAuthHeaders();
     return this.httpClient
       .post<string>(dataUrl, clientRegisterRequest, { headers }) // Les en-têtes doivent être placés dans l'objet des options
       .pipe(catchError(this.handleError));
   }
 
+   */
+  public createClient(agentRequest: AgentRequest): Observable<AgentRequest> {
+    const url = `${this.serverUrl}/create-client`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    console.log('Client Request:', agentRequest);
+
+    return this.httpClient.post<AgentRequest>(url, agentRequest, { headers });
+  }
 
   public getAllClients(): Observable<IClient[]> {
 
@@ -44,13 +60,13 @@ export class AgentService {
     return this.httpClient.get<IClient[]>(dataUrl, ).pipe(catchError(this.handleError));
   }
 
+
+
   public getClientsByAgentId(agentId: string): Observable<UserResponse[]> {
     const url = `${this.serverUrl}/clientsByAgent/${agentId}`;
     const headers = this.sharedInfosService.getAuthHeaders();
-
-    return this.httpClient
-      .get<UserResponse[]>(url, { headers })
-      .pipe(catchError(this.handleError));
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<UserResponse[]>(url,{headers});
   }
 
   //const dataUrl = `${this.serverUrl}/listByAgent/${idAgent}`;
@@ -88,12 +104,11 @@ export class AgentService {
 
 
 
-  public getClient(id: string): Observable<IClient> {
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
+  public getClient(id: string): Observable<UserResponse> {
     const dataUrl = `${this.serverUrl}/client/${id}`;
-    return this.httpClient.get<IClient>(dataUrl, {headers}).pipe(catchError(this.handleError));
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<UserResponse>(dataUrl, {headers}).pipe(catchError(this.handleError));
   }
 
   public handleError(error: HttpErrorResponse) {
@@ -115,10 +130,8 @@ export class AgentService {
 
   getAgentOperation(id: number): Observable<Operation[]> {
     const dataUrl = `${this.serverUrl}/operations/${id}`;
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    return this.httpClient.get<Operation[]>(dataUrl, {headers}).pipe(catchError(this.handleError));
+
+    return this.httpClient.get<Operation[]>(dataUrl).pipe(catchError(this.handleError));
   }
 
   updateClient(id: string, client:  IClient): Observable<IClient>  {
@@ -127,51 +140,41 @@ export class AgentService {
 
   }
 
-  public createService(client: IAgentServices, id: number): Observable<IAgentServices> {
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    //const dataUrl = `${this.serverUrl}/services/${id}`;
-    const dataUrl = `${this.serverUrl}/service/123`;
-    return this.httpClient.post<IAgentServices>(dataUrl, client, {headers}).pipe(catchError(this.handleError));
+  public createService(service: IAgentServices): Observable<IAgentServiceResponse> {
+    const url = `${this.serverUrl}/creatService`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.post<IAgentServiceResponse>(url, service,{headers}).pipe(catchError(this.handleError));
   }
 
 
-  public getAllAgentServices(): Observable<IAgentServices[]> {
-    //const dataUrl = `${this.serverUrl}/serviceByAgent/${idAgent}`;
-    const dataUrl = `${this.serverUrl}/serviceByAgent/123`;
-
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-
-    return this.httpClient.get<IAgentServices[]>(dataUrl, {headers}).pipe(catchError(this.handleError));
+  public getAllAgentServices(agentId:string): Observable<IAgentServices[]> {
+    const url = `${this.serverUrl}/serviceByAgent/${agentId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<IAgentServices[]>(url,{headers});
   }
 
-  public deleteService(serviceId: number): Observable<HttpResponse<{}>> {
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    const dataUrl = `${this.serverUrl}/service/delete/${serviceId}`;
-    return this.httpClient.delete<HttpResponse<{}>>(dataUrl, {headers}).pipe(catchError(this.handleError));
+  public deleteService(id: string): Observable<IAgentServiceResponse> {
+    const dataUrl = `${this.serverUrl}/deleteService/${id}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.delete<IAgentServiceResponse>(dataUrl,{headers}).pipe(catchError(this.handleError));
   }
 
-  public updateService(service: IAgentServices, serviceId: number): Observable<IAgentServices> {
+  public updateService(service: IAgentServices, serviceId: string): Observable<IAgentServiceResponse> {
 
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    const dataUrl = `${this.serverUrl}/service/update/${serviceId}`;
-    return this.httpClient.put<IAgentServices>(dataUrl, service, {headers}).pipe(catchError(this.handleError));
+    const dataUrl = `${this.serverUrl}/service/${serviceId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.put<IAgentServiceResponse>(dataUrl, service,{headers}).pipe(catchError(this.handleError));
   }
 
 
-  public getService(serviceId: number): Observable<IAgentServices> {
-    const headers = {
-      'Authorization': `${this.authorization}`
-    };
-    //const dataUrl = `${this.serverUrl}/serviceByAgent/${serviceId}`;
-    const dataUrl = `${this.serverUrl}/serviceByAgent/123}`;
+  public getService(serviceId: string): Observable<IAgentServices> {
+    const dataUrl = `${this.serverUrl}/serviceById/${serviceId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
     return this.httpClient.get<IAgentServices>(dataUrl, {headers}).pipe(catchError(this.handleError));
   }
 

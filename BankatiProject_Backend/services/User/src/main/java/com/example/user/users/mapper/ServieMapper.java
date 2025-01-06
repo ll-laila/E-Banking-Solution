@@ -15,21 +15,11 @@ public class ServieMapper {
                 .id(request.id())
                 .name(request.name())
                 .type(request.type())
-                .agent(request.agent())
+                .agentId(request.agentId())
                 .build();
 
     }
 
-    public ServiceResponse fromService(com.example.user.users.entity.Service service) {
 
-        return new ServiceResponse(
-                service.getId(),
-                service.getName(),
-                service.getType(),
-                service.getAgent()
-        );
-
-
-    }
 
 }
