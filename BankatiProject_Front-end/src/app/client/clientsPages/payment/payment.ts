@@ -67,14 +67,15 @@ export class Payment implements OnInit {
       this.serviceType=params['serviceType'];
       this.agentImage=params['agentImage'];
     });
-    this.senderId=this.sharedInfosService.getId();
-    this.agentId = this.sharedInfosService.getAgentId();
-    this.service = this.sharedAgentServiceService.getServiceAgent();
+    this.senderId= localStorage.getItem('id');
+    this.agentId =  localStorage.getItem('agentId');
+
 
     this.transactionService.getClientInfos(this.senderId).subscribe({
       next: (response) => {
         this.client = response;
         console.log('Client Info:', this.client);
+        console.log("agentID:",this.agentId)
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des infos client:', err);

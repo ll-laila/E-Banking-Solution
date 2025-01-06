@@ -74,6 +74,7 @@ export class SharedInfosService {
     localStorage.setItem('token', this.token);
     localStorage.setItem('id',response.id);
     localStorage.setItem('phoneNumber',response.phoneNumber);
+    localStorage.setItem('agentId',response.id);
   }
 
   // Getters

@@ -1,5 +1,7 @@
 package com.example.user.users.controller;
 
+
+import com.example.user.transactionClient.*;
 import com.example.user.depenseClient.DepenseClient;
 import com.example.user.depenseClient.DepenseRequest;
 import com.example.user.depenseClient.DepenseResponse;
@@ -8,6 +10,7 @@ import com.example.user.transactionClient.SubscriptionRequest;
 import com.example.user.transactionClient.TransactionClient;
 import com.example.user.transactionClient.TransactionRequest;
 import com.example.user.transactionClient.TransactionType;
+
 import com.example.user.users.config.UserAuthenticationProvider;
 import com.example.user.users.dto.CredentialsDto;
 import com.example.user.users.dto.SignUpDto;
@@ -442,6 +445,16 @@ public class UserController {
     public ResponseEntity<User> getClientInfo(@PathVariable("clientId") String clientId) {
         return ResponseEntity.ok(clientService.getClientById(clientId));
     }
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/subscriptions/{userId}")
+    public ResponseEntity<List<Subscription>> getUserSubscriptions(@PathVariable("userId") String userId) {
+        try {
+            ResponseEntity<List<Subscription>> response = transactionClient.getUserSubscriptions(userId);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // En cas d'erreur, renvoie une réponse 500.
+        }
+    }
 
     //-------------------------salwa-------------------------//
     // salwa here
@@ -507,9 +520,9 @@ public class UserController {
         return ResponseEntity.ok(virtualCardClient.createCard(cardId));
     }
     @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/user/{userId}")
+    @GetMapping("/virtualcard/user/{userId}")
     public ResponseEntity<VirtualCardResponse> getCardsByUser(@PathVariable String userId) {
-        return ResponseEntity.ok(virtualCardClient.createCard(userId));
+        return ResponseEntity.ok(virtualCardClient.getCardsByUser(userId));
     }
 
 

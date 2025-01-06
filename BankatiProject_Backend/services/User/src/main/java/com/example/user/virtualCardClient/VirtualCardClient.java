@@ -22,7 +22,7 @@ public interface VirtualCardClient {
     public VirtualCardResponse deactivateCard(@PathVariable String cardId);
 
     @GetMapping("/user/{userId}")
-    public List<VirtualCardResponse> getCardsByUser(@PathVariable String userId) ;
+    public VirtualCardResponse getCardsByUser(@PathVariable String userId) ;
 
 
     @PostMapping("/feedCard")

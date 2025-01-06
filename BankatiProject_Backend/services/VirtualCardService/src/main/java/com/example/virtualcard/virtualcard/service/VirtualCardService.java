@@ -60,7 +60,9 @@ public class VirtualCardService {
 
     // Obtenir toutes les cartes d'un utilisateur
     public VirtualCard getCardsByUserId(String userId) {
-        return virtualCardRepository.findByUserId(userId);
+        VirtualCard card = virtualCardRepository.findByUserId(userId);
+        System.out.println("virtual card "+ card);
+        return card;
     }
 
 
