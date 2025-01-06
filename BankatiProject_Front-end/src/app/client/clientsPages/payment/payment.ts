@@ -13,6 +13,11 @@ import {SharedAgentService} from "../../services/shared-agent.service";
 import {Transaction} from "../../models/transaction";
 import {TransactionServiceService} from "../../services/transaction-service.service";
 import {TransactionType} from "../../models/transaction-type";
+import {SharedInfosService} from "../../../service/shared-infos.service";
+import {AgentService} from "../../../service/agent.service";
+import {AgentRequest} from "../../../models/AgentRequest";
+import {UserResponse} from "../../../models/UserResponse";
+import {AgentAndServices} from "../../../models/AgentAndServices";
 
 
 @Component({
@@ -24,12 +29,16 @@ export class Payment implements OnInit {
 
   currentStep = 1;
   public paymentForm1: FormGroup;
-
-  public client: Client;
+  public client: UserResponse;
   public agent: Agent;
   public service: ServiceAgent;
   public donationAmount: number;
   public refOp: string;
+  public agentId:string;
+  public agentName: string;
+  public serviceName: string;
+  public serviceType:string;
+  public agentImage:string;
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,
@@ -37,8 +46,9 @@ export class Payment implements OnInit {
               private paymentService: PaymentService,
               private sharedClientService: SharedClientService,
               private sharedAgentServiceService: SharedAgentServiceService,
-              private sharedAgentService: SharedAgentService,
+              private agentService:AgentService,
               private transactionService: TransactionServiceService,
+              private sharedInfosService: SharedInfosService
    ) {
 
     this.paymentForm1 = this.fb.group({
@@ -47,24 +57,29 @@ export class Payment implements OnInit {
     });
   }
 
-  senderId: string = '675d672698a04453154ddc2e';
+  senderId: string ;
 
 
   ngOnInit() {
-    this.transactionService.getClientInfo(this.senderId).subscribe({
-      next: (sender: Client) => {
-        this.client=sender;
-        console.log('Infos du sender récupérées avec succès :', sender);
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des infos du sender :', error);
-        alert('Impossible de récupérer les informations de l\'expéditeur.');
-      }
-    })
-
-
-    this.agent = this.sharedAgentService.getAgent();
+    this.route.queryParams.subscribe(params => {
+      this.agentName = params['agentName'];
+      this.serviceName = params['serviceName'];
+      this.serviceType=params['serviceType'];
+      this.agentImage=params['agentImage'];
+    });
+    this.senderId=this.sharedInfosService.getId();
+    this.agentId = this.sharedInfosService.getAgentId();
     this.service = this.sharedAgentServiceService.getServiceAgent();
+
+    this.transactionService.getClientInfos(this.senderId).subscribe({
+      next: (response) => {
+        this.client = response;
+        console.log('Client Info:', this.client);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des infos client:', err);
+      }
+    });
   }
 
   onCheckboxChange(event: Event) {
@@ -81,7 +96,7 @@ export class Payment implements OnInit {
       return;
     }
 
-    this.paymentService.createSubscriptionTransaction(this.senderId, this.agent.id, this.donationAmount).subscribe({
+    this.paymentService.createSubscriptionTransaction(this.senderId, this.agentId, this.donationAmount).subscribe({
       next: () => {
         console.log('Abonnement activé avec succès.');
       },
@@ -113,19 +128,20 @@ export class Payment implements OnInit {
 
 
   validate3() {
-        this.transactionService.createTransaction(this.senderId, this.agent.id, this.donationAmount, TransactionType.PAYMENT).subscribe({
-          next: (response) => {
-            console.log('Transaction créée avec succès:', response);
-            alert(response); // Affiche le message texte retourné par le backend
-            this.router.navigate(['/client/accueil']);
-          },
-          error: (error) => {
-            console.error('Erreur lors de la création de la transaction:', error);
-            alert(`Une erreur est survenue : ${error.message || 'Veuillez réessayer.'}`);
-          }
-        });
-
+    this.transactionService.createTransaction(this.senderId, this.agentId, this.donationAmount, TransactionType.PAYMENT).subscribe({
+      next: (response) => {
+        console.log('Transaction créée avec succès:', response);
+        alert(response);  // Accédez au message retourné par le backend
+        this.router.navigate(['/client/accueil']);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création de la transaction:', error);
+        const errorMessage = error.error?.message || 'Une erreur est survenue, veuillez réessayer.';
+        alert(`Une erreur est survenue : ${errorMessage}`);
+      }
+    });
   }
+
 
 
 

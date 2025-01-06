@@ -155,6 +155,12 @@ export class AgentService {
     console.log('Headers:', headers.get('Authorization'));
     return this.httpClient.get<IAgentServices[]>(url,{headers});
   }
+  public getAgentServices(agentId:string):Observable<IAgentServices[]>{
+    const url = `${this.serverUrl}/service/${agentId}`;
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.get<IAgentServices[]>(url,{headers});
+  }
 
   public deleteService(id: string): Observable<IAgentServiceResponse> {
     const dataUrl = `${this.serverUrl}/deleteService/${id}`;

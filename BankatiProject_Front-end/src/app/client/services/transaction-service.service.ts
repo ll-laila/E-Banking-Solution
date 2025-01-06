@@ -8,6 +8,8 @@ import {TransactionType} from "../models/transaction-type";
 import { SharedInfosService } from '../../service/shared-infos.service';
 import { ClientRequest } from '../models/clientRequest';
 import { map } from 'rxjs/operators';
+import {AgentRequest} from "../../models/AgentRequest";
+import {UserResponse} from "../../models/UserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -17,23 +19,28 @@ export class TransactionServiceService {
 
   constructor(private httpClient: HttpClient, private cookieService: CookieService,private sharedInfosService: SharedInfosService) { }
 
-  createTransaction(senderId: string, beneficiaryId: string, amount: number, transactionType: TransactionType): Observable<string> {
-        const url = `${this.serverUrl}/creat-transaction`;
-        const params = new HttpParams()
-        .set('senderId', senderId)
-        .set('beneficiaryId', beneficiaryId)
-        .set('amount', amount.toString())
-        .set('transactionType', transactionType.toString());
-        const headers = this.sharedInfosService.getAuthHeaders();
-        console.log('Headers:', headers.get('Authorization'));
-        return this.httpClient.post<string>(url,null,{ params , headers });
+  createTransaction(senderId: string, beneficiaryId: string, amount: number, transactionType: TransactionType): Observable<string>{
+    const url = `${this.serverUrl}/creat-transaction`;
+    const params = new HttpParams()
+      .set('senderId', senderId)
+      .set('beneficiaryId', beneficiaryId)
+      .set('amount', amount.toString())
+      .set('transactionType', transactionType.toString());
+
+    const headers = this.sharedInfosService.getAuthHeaders();
+    console.log('Headers:', headers.get('Authorization'));
+    return this.httpClient.post(url, null, {
+      params,
+      headers,
+      responseType: 'text'
+    });
   }
 
   getClientIdByPhoneNumber(phoneNumber: string): Observable<string> {
     const url = `${this.serverUrl}/getUserByPhone/${phoneNumber}`;
     const headers = this.sharedInfosService.getAuthHeaders();
     console.log('Headers:', headers.get('Authorization'));
-  
+
     return this.httpClient.get(url, { headers, responseType: 'text' }).pipe(
       map(response => {
         try {
@@ -45,19 +52,17 @@ export class TransactionServiceService {
       })
     );
   }
-  
 
 
-   public getClientInfos(id: string): Observable<ClientRequest> {
-      const url = `${this.serverUrl}/getUser/${id}`;
+
+   public getClientInfos(id: string): Observable<UserResponse> {
+      const url = `${this.serverUrl}/client/${id}`;
       const headers = this.sharedInfosService.getAuthHeaders();
       console.log('Headers:', headers.get('Authorization'));
-      return this.httpClient.get<ClientRequest>(url,{ headers });
-    }
-
-
-  getClientInfo(clientId: string): Observable<Client> {
-    return this.httpClient.get<Client>(`${this.serverUrl}/clientbyid/${clientId}`);
+      return this.httpClient.get<UserResponse>(url,{ headers });
   }
+
+
+
 
 }
