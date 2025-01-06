@@ -483,7 +483,7 @@ public class UserController {
     private VirtualCardClient virtualCardClient;
 
     @PreAuthorize("hasRole('CLIENT')")
-    @PostMapping("/create/{userId}")
+    @PostMapping("/virtualcard/create/{userId}")
     public ResponseEntity<VirtualCardResponse> addVirtualCard(@PathVariable String userId) {
         return ResponseEntity.ok(virtualCardClient.createCard(userId));
     }

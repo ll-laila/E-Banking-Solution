@@ -11,13 +11,13 @@ import {ActivatedRoute} from "@angular/router";
 export class CarteVirtuelleComponent implements OnInit {
 
   userId: string = '';  // L'ID utilisateur que tu veux utiliser
-  cards: VirtualCard[] = [];
+  card: VirtualCard ;
   newCardRef: string = ''; // Référence de la nouvelle carte
 
   constructor(private route: ActivatedRoute,private virtualCardService: VirtualCardService) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id');
+    this.userId = localStorage.getItem('id');
 
     // Appeler cette méthode pour charger les cartes dès que le composant est initialisé
     if (this.userId) {
@@ -28,8 +28,8 @@ export class CarteVirtuelleComponent implements OnInit {
   // Récupérer les cartes pour l'utilisateur spécifié
   getCards(): void {
     this.virtualCardService.getCardsByUser(this.userId).subscribe(
-      (cards: VirtualCard[]) => {
-        this.cards = cards;
+      (card: VirtualCard) => {
+        this.card = card;
       },
       (error) => {
         console.error('Erreur lors de la récupération des cartes:', error);
@@ -41,7 +41,7 @@ export class CarteVirtuelleComponent implements OnInit {
   createCard(): void {
     this.virtualCardService.createCard(this.userId).subscribe(
       (card: VirtualCard) => {
-        this.cards.push(card);  // Ajoute la nouvelle carte à la liste
+        this.card = card  // Ajoute la nouvelle carte à la liste
         console.log('Carte créée:', card);
       },
       (error) => {

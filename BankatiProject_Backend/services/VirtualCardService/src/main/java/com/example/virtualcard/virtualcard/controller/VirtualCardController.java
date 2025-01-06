@@ -16,7 +16,7 @@ public class VirtualCardController {
     @Autowired
     private VirtualCardService virtualCardService;
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/virtualcard/create/{userId}")
     public VirtualCard createCard(@PathVariable String userId) {
         return virtualCardService.createVirtualCard(userId);
     }
