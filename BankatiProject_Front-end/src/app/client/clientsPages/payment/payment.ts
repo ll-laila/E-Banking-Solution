@@ -97,10 +97,10 @@ export class Payment implements OnInit {
       return;
     }
 
-    this.paymentService.createSubscriptionTransaction(this.senderId, this.agentId, this.donationAmount).subscribe({
+    this.paymentService.createSubscriptionTransaction(localStorage.getItem('id'), localStorage.getItem('agentId'), this.donationAmount).subscribe({
       next: () => {
         console.log('Abonnement activé avec succès.');
-      },
+      }, 
       error: (err) => {
         console.error('Erreur lors de la création de l\'abonnement : ', err);
         alert(`Erreur : ${err}`);
@@ -129,7 +129,7 @@ export class Payment implements OnInit {
 
 
   validate3() {
-    this.transactionService.createTransaction(this.senderId, this.agentId, this.donationAmount, TransactionType.PAYMENT).subscribe({
+    this.transactionService.createTransaction(localStorage.getItem('id'),localStorage.getItem('agentId'), this.donationAmount, TransactionType.PAYMENT).subscribe({
       next: (response) => {
         console.log('Transaction créée avec succès:', response);
         alert(response);  // Accédez au message retourné par le backend
