@@ -18,6 +18,7 @@ Bankati est une application complète de gestion de transactions et de paiements
  - Front-end : Angular.
  - Base de données : Nosql/MongoDB.
  - Autres : JWT, Docker, Twilio, AWS.
+ - https://github.com/e-Bankati
 
 #
 <img width="958" alt="Capture d’écran 2025-01-14 161608" src="https://github.com/user-attachments/assets/88110eee-2b3f-4dab-a38d-8cc7497c19ec" />
